@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Completar caso</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="http://localhost/codeigniter2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="http://localhost/codeigniter2/css/sb-admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://localhost/codeigniter2/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Opciones</a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu message-dropdown">
+                        <li class="message-preview">
+                            <a href="#">
+                                <div class="media">
+                                    <span class="pull-left">
+                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                    </span>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>Fede Sarmiento</strong>
+                                        </h5>
+                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer 4:32 PM</p>
+                                        <p>Mensaje nuevo...</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-footer">
+                            <a href="#">Leer todos los mensajes</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown">
+                        <li>
+                            <a href="#">Notif 1 <span class="label label-default">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Notif 2 <span class="label label-primary">Alert Badge</span></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">Ver todas</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Fede <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Perfil</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Mensajes</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Opciones</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="<?= site_url().'/dashboardusuariocomun'?>"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <a href="<?= site_url().'/usuariocomun/ver_casossubidos'?>" method="POST"><i class="fa fa-fw fa-briefcase"></i> Mis casos</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Completar caso "<?php echo $titulo?>"
+                                                            
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <i class="fa fa-dashboard"></i>  <a href="<?= site_url().'/dashboardusuariocomun'?>">Dashboard</a>
+                            </li>
+                            <li>
+                                <i class="fa fa-briefcase"></i>  <a href="<?= site_url().'/usuariocomun/ver_casossubidos'?>">Mis casos</a>
+                            </li>
+                            <li class="active">
+                                <i class="fa fa-edit"></i> Caso: <?php echo $titulo?>: Descripción del componente, parte 1.
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-5 col-sm-5 col-md-10 col-sm-offset-2 col-md-offset-1">
+                        <div class="panel panel-default" >
+                            <div class="panel-heading" align ="center">
+                                <h1 class="panel-title">Paso 2: Decripción del componente.</h1>
+                            </div>
+                            <div class="panel-body">
+                                <?=form_open_multipart(site_url()."/piezas/guardarinfo_casocomponente1/".$id)?>
+                                <!--<form name="form_ncaso" action="<?= site_url().'/piezas/guardarinfo_casocomponente1/'.$id?>" method="POST"> -->
+                                    <ul class="list-group">
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <h5><strong>Nombre genérico de la pieza o el conjunto que presenta la falla:</strong></h5>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                    <input type="text" name="nombregen" class="form-control" placeholder="Nombre genérico">
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <h5><strong>Nombre o código interno de la pieza o el conjunto:</strong></h5>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                    <input type="text" name="codigoint" class="form-control" placeholder="Código interno">
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li class="list-group-item">
+                                          <div class="row">
+                                                <div class="col-lg-8">
+                                                    <h5><strong>Cantidad de piezas que presentan la falla:</strong></h5>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <input type="text" name="cantpiezas" class="form-control" placeholder="Cantidad">
+                                                </div>
+                                          </div>  
+                                      </li>
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-7">
+                                                <h5><strong>Imagen del plano de la pieza:</strong></h5>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <span class="btn btn-default btn-file">
+                                                    <input type="file" name="imagen1" />
+                                                </span>
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-7">
+                                                <h5><strong>Imagen/es de la pieza en buen estado (3 máx):</strong></h5>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagen2" />
+                                                    </span> 
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagen3" />
+                                                    </span> 
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagen4" />
+                                                    </span>
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <h5><strong>Uso de la pieza (uso específico del componente, o forma de uso habitual):</strong></h5>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                    <input type="text" name="usopieza" class="form-control" placeholder="Forma de uso.">
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <h5><strong>Máquina o mecanismo sobre el que se encuentra montada (si corresponde):</strong></h5>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                    <input type="text" name="maqomec" class="form-control" placeholder="Máquina">
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <h5><strong>Especificaciones del montaje (según fabricante de la máquina o según norma, si existiese):</strong></h5>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                    <input type="text" name="especmontaje" class="form-control" placeholder="Montaje">
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-7">
+                                                <h5><strong>Imagen del esquema de montaje y funcionamiento de la pieza:</strong></h5>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagen5" />
+                                                    </span>
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                <h5><strong>¿La pieza fue montada y utilizada siguiendo las especificaciones técnicas recomendadas por el fabricante o normas relativas al componente?</strong></h5>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <label class="radio-inline">
+                                                  <input type="radio" name="siguiendonorma" id="siguiendonorma" value=<?php echo '1'; ?>> Si
+                                                </label>
+                                                <label class="radio-inline">
+                                                  <input type="radio" name="siguiendonorma" id="siguiendonorma" value=<?php echo '0'; ?>> No
+                                                </label>
+                                            </div>
+                                        </div>
+                                      </li>
+                                    </ul>
+                                    <div class="row">
+                                        <div class="col-xs-4 col-md-4">
+                                            <input type="submit"value="Continuar" name="submit_comp1" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                                        </div>
+                                    </div>
+                               <?=form_close()?>
+                                <hr />
+                                <?php if(validation_errors()!= ""):?>
+                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                      <strong>Oh no!</strong><?= validation_errors(); ?>
+                                    </div>
+                                <?php endif;?>   
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery Version 1.11.0 -->
+    <script src="http://localhost/codeigniter2/js/jquery-1.11.0.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="http://localhost/codeigniter2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

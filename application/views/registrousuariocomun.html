@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Detección de fallas</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="http://localhost/codeigniter2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="http://localhost/codeigniter2/css/sb-admin.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="http://localhost/codeigniter2/css/plugins/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://localhost/codeigniter2/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+    	<div class="panel panel-default" align="center">
+    		<div class="panel-heading">
+                                <h1 class="panel-title">Registro de Usuarios Comunes</h1>
+            </div>
+             <div class="panel-body">
+		<form name="form_reg" action="<?= site_url().'/usuarios/registrouc_very'?>" method="POST">
+			<div class="form-group">
+				<input type="text" name="nombre" value= "<?= @set_value('nombre')?>" class="form-control input-lg" placeholder="Nombre" tabindex="1">
+			</div>
+			<div class="form-group">
+				<input type="text" name="apellido" value= "<?= @set_value('apellido')?>" class="form-control input-lg" placeholder="Apellido" tabindex="2">
+			</div>
+			<div class="form-group">
+				<input type="text" name="correo" value= "<?= @set_value('correo')?>" class="form-control input-lg" placeholder="Correo electrónico" tabindex="3">
+			</div>
+			<div class="form-group">
+				<input type="text" name="domicilio" value= "<?= @set_value('domicilio')?>" class="form-control input-lg" placeholder="Domicilio" tabindex="4">
+			</div>
+			<div class="form-group">
+				<input type="text" name="telefono" value= "<?= @set_value('telefono')?>" class="form-control input-lg" placeholder="Teléfono" tabindex="5">
+			</div>
+			<div class="form-group">
+				<input type="text" name="usuario" value= "<?= @set_value('usuario')?>" class="form-control input-lg" placeholder="Usuario" tabindex="6">
+			</div>
+			<div class="form-group">
+						<input type="password" name="pass" value= "<?= @set_value('pass')?>" class="form-control input-lg" placeholder="Contraseña" tabindex="7">
+			</div>
+			<div class="form-group">
+						<input type="password" name="pass2" value= "<?= @set_value('pass2')?>" class="form-control input-lg" placeholder="Repetir contraseña" tabindex="8">
+			</div>
+			<div class="row">
+				<div class="col-xs-6 col-md-6">
+					<input type="submit" value="Registrar" name="submit_reg" class="btn btn-primary btn-block btn-lg" tabindex="9">
+				</div>
+				<div class="col-xs-6 col-md-6">
+					<a href="<?= site_url().'/usuarios/'?>" class="btn btn-success btn-block btn-lg">Iniciar Sesión</a>
+				</div>
+			</div>
+		</form>
+		<hr />
+		<?php if(validation_errors()!= ""):?>
+            <div class="alert alert-danger alert-dismissible" role="alert">
+			  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			  <strong>Oh no!</strong><?= validation_errors(); ?>
+			</div>
+        <?php endif;?>	 
+	</div>
+	</div>
+	</div>
+</div>
+
+</body>
+
+    <!-- jQuery Version 1.11.0 -->
+    <script src="http://localhost/codeigniter2/js/jquery-1.11.0.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="http://localhost/codeigniter2/js/bootstrap.min.js"></script>
+
+</html>

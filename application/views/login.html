@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Detección de fallas</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="http://localhost/codeigniter2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="http://localhost/codeigniter2/css/sb-admin.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="http://localhost/codeigniter2/css/plugins/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://localhost/codeigniter2/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+    	<div class="panel panel-default" align="center">
+    		<div class="panel-heading">
+                                <h1 class="panel-title">Ingresa al sitio.</h1>
+                            </div>
+            <div class="panel-body">
+            <?php if(isset($mensaje) && $mensaje == 'El Usuario/Contraseña son incorrectos.'):?>
+            <div class="alert alert-danger alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <strong><?= $mensaje;?></strong>
+            </div>
+            <?php endif;?>  
+            <?php if(isset($mensaje) && $mensaje != 'El Usuario/Contraseña son incorrectos.'):?>
+            <div class="alert alert-info alert-dismissible" role="alert">
+			  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			  <strong><?= $mensaje;?></strong>
+			</div>
+            <?php endif;?>	    	
+		<form name="form_iniciar" action="<?= site_url().'/usuarios/very_sesion'?>" method="POST">
+			<div class="form-group">
+				<input type="text" name="user" value= "<?= @set_value('user')?>" class="form-control input-lg" placeholder="Usuario" tabindex="1">
+			</div>
+			<div class="form-group">
+						<input type="password" name="pass" value= "<?= @set_value('pass')?>" class="form-control input-lg" placeholder="Contraseña" tabindex="2">
+			</div>
+			<div class="row">
+				<div class="col-xs-4 col-md-4">
+					<input type="submit" value="Entrar" name="submit" class="btn btn-primary btn-block btn-lg" tabindex="7">
+				</div>
+				<div class="col-xs-4 col-md-4">
+					<a href="<?= site_url().'/usuarios/registroucomun'?>" class="btn btn-success btn-block btn-lg">Registrarme</a>
+				</div>
+				<div class="col-xs-4 col-md-4">
+					<a href="<?= site_url().'/usuarios/registrouesp'?>" class="btn btn-success btn-block btn-lg">Especialistas</a>
+				</div>
+			</div>
+		</form>
+		<?= validation_errors(); ?>
+	</div>
+	</div>
+	</div>
+</div>
+
+</body>
+
+    <!-- jQuery Version 1.11.0 -->
+    <script src="http://localhost/codeigniter2/js/jquery-1.11.0.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="http://localhost/codeigniter2/js/bootstrap.min.js"></script>
+
+</html>
