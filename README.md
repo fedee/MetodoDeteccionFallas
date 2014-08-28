@@ -11,6 +11,7 @@ Espero que a más de uno le sirva y pueda reutilizar algunas features que estoy 
 Antes de empezar, cabe aclarar que el Framework es muy simple de implementar. Particularmente estoy usando como servidor local Apache en XAMPP; por lo que hay que descargar XAMPP, descargar este proyecto, ir a la carpeta htdocs en el directorio de XAMPP y crear una nueva de título "MiProyecto" por ejemplo, copiar todo el código de este repositorio allí y listo! 
 
 Lo que hay codificado por ahora:
+
 1. Login de usuarios (3 tipos diferentes: Administrador, Especialista y Usuario Común).
 2. Al usuario Especialista, lo debe activar el Administrador. Este usuario es el que se encarga de analizar el caso cargado por el Usuario Común.
 3. El Administrador asigna casos pendientes a algún Especialista.
