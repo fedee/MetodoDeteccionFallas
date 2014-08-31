@@ -31,6 +31,7 @@ Detalles a mejorar en algún momento:
 - Que el caso quede abierto hasta que el usuario común decida, que no quede finalizado cuando completa el caso.
 - El sistema de mensajería, donde el especialista pueda solicitar cambios en determinada respuesta y e usuario común también pueda preguntar dudas en determinada pregunta.
 - Enumerar las preguntas.
+- Crear vistas para que el usuario común pueda editar su caso, ya ingresado anteriormente.
 
 Podría tener (si llego con el tiempo):
 - Un archivo de configuración.
