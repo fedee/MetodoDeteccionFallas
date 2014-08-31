@@ -24,6 +24,18 @@ Lo que hay codificado por ahora:
 10. Reutilización de elementos Bootstrap, y fragmentos de panel de usuario y dashboard basado en el mismo (sb-admin). Uso de diversos componentes como iconos, font-awesome, panels, labels, alerts, buttons, forms, diversos componentes basandome en su sistema de grillas (grids).
 11. Implementación de AJAX para llenar select en cascada, y completar una tabla según datos seleccionados de uno de los select.
 
+Detalles a mejorar en algún momento:
+- Que los casos por asignar se paginen, y haya un buscador tanto para casos como para especialistas, esto en la parte del admin en "Asignar Casos".
+- Validación por email del correo de tanto especialistas como usuarios comunes.
+- Permisos para ver ciertas paginas.
+- Que el caso quede abierto hasta que el usuario común decida, que no quede finalizado cuando completa el caso.
+- El sistema de mensajería, donde el especialista pueda solicitar cambios en determinada respuesta y e usuario común también pueda preguntar dudas en determinada pregunta.
+- Enumerar las preguntas.
+
+Podría tener (si llego con el tiempo):
+- Un archivo de configuración.
+- Implementación del módulo FEA de análisis de elementos finitos para piezas simples.
+
 Lo que viene en el próximo Sprint:
 - Actualmente me encuentro desarrollando la paginación, utilizando la librería "pagination" del Framework que facilita el trabajo. 
 - El objetivo de la paginación, será implementar un sistema de mensajería entre usuarios-especialistas y especialistas-admin. 
