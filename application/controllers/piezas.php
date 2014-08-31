@@ -125,7 +125,7 @@ class Piezas extends CI_Controller {
                   }*/
                   }
 
-                  $this->casos_model->actualizarestado($idcaso,'2');
+                  $this->casos_model->actualizarestado($idcaso,'0');
                   $this->casos_model->actualizarpaso($idcaso,'2');
                   redirect(site_url().'/usuariocomun/ver_casossubidos/'); 
 

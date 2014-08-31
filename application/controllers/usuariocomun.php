@@ -8,6 +8,7 @@ class UsuarioComun extends CI_Controller
       parent::__construct();
       $this->load->model('usuarios_model');
       $this->load->model('casos_model');
+      $this->load->model('material_model');
    }
 
    public function index()
@@ -54,6 +55,11 @@ class UsuarioComun extends CI_Controller
       $this->irapaso2componente($idcaso);
     }
 
+    if ($numpaso == 2)
+    {
+      $this->irapaso2componentecontinuacion($idcaso);
+    }
+
     
   }
 
@@ -65,6 +71,16 @@ class UsuarioComun extends CI_Controller
     $caso['id'] = $idcaso;
     $caso['titulo'] =  $this->casos_model->devolver_tituloporid($idcaso);
     $this->load->view('casocomponente.html',$caso);
+  }
+
+  public function irapaso2componentecontinuacion($idcaso)
+  {
+    $this->load->helper('url');
+
+    $paso['id'] = $idcaso;
+    $paso['titulo'] =  $this->casos_model->devolver_tituloporid($idcaso);
+    $paso['materiales'] = $this->material_model->devolver_todoslosmateriales();
+    $this->load->view('casocomponentecont.html',$paso);
   }
 
 }

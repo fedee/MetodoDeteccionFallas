@@ -1,3 +1,32 @@
+<style>
+
+   #paginacion{
+      background-color: #808080;
+      padding: 4px;
+      margin: auto;
+      width: 550px;
+      text-align: center;
+   }
+
+   #paginacion a{
+      color: #222;
+      text-decoration: none;
+      padding: 4px;
+   }
+
+   #paginacion a:hover{
+      background-color: #333333;
+      color: #C0C0C0;
+   }
+
+   .actual{
+      color:#FFFFFF;
+      padding: 4px;
+   }
+
+
+</style>
+
 <?php
 
 class Paginacion extends CI_Controller {
