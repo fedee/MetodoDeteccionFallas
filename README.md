@@ -22,7 +22,7 @@ Lo que hay codificado por ahora:
 8. Cada tipo de usuario tiene su respectivo panel. 
 9. Uso de la librería "upload" para el tratamiento con imágenes. Guardado de imágenes en carpetas dentro del proyecto y la ruta a las mismas para acceder en la base de datos, y creación de miniaturas (thumbnails). 
 10. Reutilización de elementos Bootstrap, y fragmentos de panel de usuario y dashboard basado en el mismo (sb-admin). Uso de diversos componentes como iconos, font-awesome, panels, labels, alerts, buttons, forms, diversos componentes basandome en su sistema de grillas (grids).
-11. Implementación de AJAX para llenar select en cascada, y completar una tabla según datos seleccionados de uno de los select.
+11. Implementación de AJAX para llenar select en cascada, completar una tabla según datos seleccionados de uno de los select, y traer partes de formulario HTML.
 
 Detalles a mejorar en algún momento:
 - Que los casos por asignar se paginen, y haya un buscador tanto para casos como para especialistas, esto en la parte del admin en "Asignar Casos".
