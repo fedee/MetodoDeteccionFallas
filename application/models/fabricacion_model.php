@@ -41,6 +41,25 @@ class Fabricacion_model extends CI_Model {
       return $nombre;
    }
 
+   public function devolver_cantidadcampos($idproceso)
+   {
+      $consulta = $this->db->like('id_proceso', $idproceso);
+      $this->db->from('atributos');
+      return $this->db->count_all_results();
+   }
+
+   public function devolver_todoslosatributos($idproceso)
+   {
+
+      $consulta = $this->db->get_where('atributos',array(
+                                                         'id_proceso'=>$idproceso,
+                                                       ));
+      if ($consulta->num_rows() > 0) {
+         $consulta = $consulta->result_array();
+         return $consulta;
+      }
+   }
+
 }
 
 ?>

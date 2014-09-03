@@ -34,7 +34,66 @@ class Fabricacion extends CI_Controller {
       else {
       $nombreproceso = $this->fabricacion_model->devolver_nombreprocesoporid($idproceso);}
 
+      $cantidadcampos = $this->fabricacion_model->devolver_cantidadcampos($idproceso);
+
+      $atributos = $this->fabricacion_model->devolver_todoslosatributos($idproceso);
+
       if($nombreproceso == 'Fundición') //vamos con parametros generales.
+      {
+         echo "<li class='list-group-item'>
+                  <div class='row'>
+                     <div class='col-lg-12'>
+                        <h4 align='center'><strong>PARÁMETROS GENERALES DE PROCESO</strong></h4>
+                     </div>
+                  </div>
+               </li>";
+
+         $cantidaddeli = (float)$cantidadcampos/3;
+         $cantidaddelientero = intval($cantidadcampos/3);
+         if($cantidaddeli != $cantidaddelientero) $cantidaddeli = $cantidaddelientero+1;
+
+         $var = 0;
+         $j = 0;
+         for($i=0 ; $i<$cantidaddeli; $i++)
+         {  
+            echo "<li class='list-group-item'>
+                     <div class='row'>";
+
+            for($j; $j<3; $j++)
+                     {
+                     echo"<div class='col-lg-2'>";
+                     echo "<h5><strong>"; echo $atributos[$var]['leyenda']; echo"</strong></h5>
+                     </div>
+                     <div class='col-lg-2'>";
+                        if($atributos[$var]['tipo_campo'] == 0)
+                        {
+                           echo "<input type='text' name="; echo $atributos[$var]['atributo']; echo " class='form-control''>";
+                        }
+                        if($atributos[$var]['tipo_campo'] == 1)
+                        {
+                           echo "<label class='radio-inline'>";
+                           echo "<input type='radio' name="; echo $atributos[$var]['atributo']; echo " value=<?php echo '1'; ?> Si";
+                           echo "</label>";
+                           echo "<label class='radio-inline'>";
+                           echo "<input type='radio' name="; echo $atributos[$var]['atributo']; echo "value=<?php echo '0'; ?> No";
+                           echo "</label>";
+                        }
+                     echo "</div>";
+                     $var = $var +1;
+                     $cantidadcampos = $cantidadcampos - 1;
+                     }
+
+                     if($cantidadcampos>3){$j=0;}
+                     else {$j = 3 - $cantidadcampos;}
+
+             echo " </div>
+               </li>";
+
+         }
+
+      }
+
+      if($nombreproceso == 'Fundición2') //vamos con parametros generales.
       {
          echo "<li class='list-group-item'>
                   <div class='row'>
