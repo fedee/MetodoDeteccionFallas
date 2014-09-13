@@ -60,6 +60,52 @@ class Fabricacion_model extends CI_Model {
       }
    }
 
+   public function devolver_atributosaprecargar($idatributo)
+   {
+
+      $consulta = $this->db->get_where('atributos_precargar',array(
+                                                         'id_atributo'=>$idatributo,
+                                                       ));
+      if ($consulta->num_rows() > 0) {
+         $consulta = $consulta->result_array();
+         return $consulta;
+      }
+   }
+
+   public function devolver_cantidadprecargados($idatributo)
+   {
+      $consulta = $this->db->like('id_atributo', $idatributo);
+      $this->db->from('atributos_precargar');
+      return $this->db->count_all_results();
+   }
+
+   public function devolver_cantidadcampossubtipo($idsubtipo)
+   {
+      $consulta = $this->db->like('id_subtipo', $idsubtipo);
+      $this->db->from('atributos');
+      return $this->db->count_all_results();
+   }
+
+   public function devolver_atributosespecificos($idsubtipo)
+   {
+
+      $consulta = $this->db->get_where('atributos',array(
+                                                         'id_subtipo'=>$idsubtipo,
+                                                       ));
+      if ($consulta->num_rows() > 0) {
+         $consulta = $consulta->result_array();
+         return $consulta;
+      }
+   }
+
+   public function devolver_precargadoporid($idprecargado)
+   {
+      $consulta = $this->db->get_where('precargados',array('id'=>$idprecargado));
+      $row = $consulta->row(1);
+      $nombre = $row->nombre_atributo;
+      return $nombre;
+   }
+
 }
 
 ?>

@@ -255,7 +255,10 @@
     $(document).on('change', '#subtipos', function(e){
 
         var current = $('#subtipos').val();
-        var params = {id_subtipo: current}
+        var proceso = $('#proceso').val();
+
+        var params = {id_subtipo: current,
+                      id_proceso: proceso}
 
         $.ajax({
           type: "POST",
