@@ -150,8 +150,7 @@
                                 <h1 class="panel-title">Paso 3: Fabricación.</h1>
                             </div>
                             <div class="panel-body">
-                                <?=form_open_multipart(site_url()."/piezas/guardarinfo_casocomponente1/".$id)?>
-                                <!--<form name="form_ncaso" action="<?= site_url().'/piezas/guardarinfo_casocomponente1/'.$id?>" method="POST"> -->
+                                <form name="form_ncaso" action="<?= site_url().'/piezas/guardarinfo_casofabricacion/'.$id?>" method="POST">
                                     <ul class="list-group">
                                       <li class="list-group-item">
                                         <div class="row">
@@ -188,7 +187,7 @@
                                             <input type="submit"value="Continuar" name="submit_comp1" class="btn btn-primary btn-block btn-lg" tabindex="7">
                                         </div>
                                     </div>
-                               <?=form_close()?>
+                                </form>
                                 <hr />
                                 <?php if(validation_errors()!= ""):?>
                                     <div class="alert alert-danger alert-dismissible" role="alert">
@@ -255,10 +254,7 @@
     $(document).on('change', '#subtipos', function(e){
 
         var current = $('#subtipos').val();
-        var proceso = $('#proceso').val();
-
-        var params = {id_subtipo: current,
-                      id_proceso: proceso}
+        var params = {id_subtipo: current}
 
         $.ajax({
           type: "POST",

@@ -139,8 +139,6 @@ class Piezas extends CI_Controller {
             $caso['titulo'] =  $this->casos_model->devolver_tituloporid($idcaso);
             $this->load->view('casocomponente.html',$caso);
          }
-
-      //De acá para abajo es para guardar las imágenes.
       
       }
    }
@@ -169,6 +167,19 @@ class Piezas extends CI_Controller {
         $this->image_lib->resize();
 
     }
+
+
+   public function guardarinfo_casofabricacion($idcaso)
+   {
+       $this->load->helper('url');
+
+       $this->piezas_model->guardainfo_casofabricacion($idcaso);
+            
+   }
+        
+      
+      
+   
 }
 
 ?>

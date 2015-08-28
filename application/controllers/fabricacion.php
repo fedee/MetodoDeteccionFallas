@@ -19,7 +19,7 @@ class Fabricacion extends CI_Controller {
       $id_proceso = (int)$this->input->post('id_proceso');
 
       $subtipos = $this->fabricacion_model->devolver_subtiposporidproceso($id_proceso);
-      echo "<option value=<?php echo '0'; ?>Elegir</option>";
+      echo "<option value='0'>Elegir</option>";
       foreach ($subtipos as $key => $subt) {
          $valor = $subt['id'];
          $texto = $subt['nombre'];         
@@ -32,10 +32,9 @@ class Fabricacion extends CI_Controller {
    {
          $idproceso = (int)$this->input->post('id_proceso');
 
-         $cantidadcampos = $this->fabricacion_model->devolver_cantidadcampos($idproceso);
+         $cantidadcampos = $this->fabricacion_model->devolver_cantidadcamposgeneral($idproceso);
 
          $atributos = $this->fabricacion_model->devolver_todoslosatributos($idproceso);
-
 
          echo "<li class='list-group-item'>
                   <div class='row'>
@@ -68,10 +67,10 @@ class Fabricacion extends CI_Controller {
                                    break;
                                case 1:
                                    echo "<label class='radio-inline'>";
-                                   echo "<input type='radio' name='"; echo $atributos[$var]['atributo']; echo "' value='1'> Si";
+                                   echo "<input type='radio' name= '"; echo $atributos[$var]['atributo']; echo "'value='1'> Si";
                                    echo "</label>";
                                    echo "<label class='radio-inline'>";
-                                   echo "<input type='radio' name='"; echo $atributos[$var]['atributo']; echo "'value='0'> No";
+                                   echo "<input type='radio' name= '"; echo $atributos[$var]['atributo']; echo "'value='0'> No";
                                    echo "</label>";
                                    break;
                                case 2:
@@ -107,7 +106,6 @@ class Fabricacion extends CI_Controller {
 
    public function getparametrosespecificos()
    {
-         $idproceso= (int)$this->input->post('id_proceso');
          $idsubtipo = (int)$this->input->post('id_subtipo');
 
          $cantidadcampos = $this->fabricacion_model->devolver_cantidadcampossubtipo($idsubtipo);
@@ -158,7 +156,7 @@ class Fabricacion extends CI_Controller {
                                    echo "<select name='"; echo $atributos[$var]['atributo']; echo"' class='form-control'>";
                                    for ($k=0; $k<$cantidadprecargados; $k++)
                                    {
-                                       echo "<option value="; echo $k; echo ">"; echo $aprecargar[$k]['opcion']; echo"</option>";
+                                       echo "<option value="; echo $k; echo ">"; echo $this->fabricacion_model->devolver_precargadoporid($aprecargar[$k]['opcion']); echo"</option>";
                                    }
                                    echo "</select>";
                                    break;

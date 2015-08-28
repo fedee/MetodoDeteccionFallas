@@ -55,5 +55,22 @@ class Piezas_model extends CI_Model{
         $this->db->insert('imagenes', $data);
     }
 
+
+    public function guardainfo_casofabricacion($idcaso)
+   {
+      $numeroatr = count($_POST);
+      $tags = array_keys($_POST);
+      $valores = array_values($_POST);
+
+      for($i = 0; $i<$numeroatr; $i++)
+      {
+        echo $tags[$i];
+        echo ": ";
+        echo $valores[$i];
+        echo "</br>";
+      }
+
+   }
+
 }
 ?>

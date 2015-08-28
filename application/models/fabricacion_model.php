@@ -41,9 +41,10 @@ class Fabricacion_model extends CI_Model {
       return $nombre;
    }
 
-   public function devolver_cantidadcampos($idproceso)
+   public function devolver_cantidadcamposgeneral($idproceso)
    {
       $consulta = $this->db->like('id_proceso', $idproceso);
+      $consulta = $this->db->like('parent_id', '0');
       $this->db->from('atributos');
       return $this->db->count_all_results();
    }
@@ -53,6 +54,7 @@ class Fabricacion_model extends CI_Model {
 
       $consulta = $this->db->get_where('atributos',array(
                                                          'id_proceso'=>$idproceso,
+                                                         'id_subtipo'=>NULL,
                                                        ));
       if ($consulta->num_rows() > 0) {
          $consulta = $consulta->result_array();
