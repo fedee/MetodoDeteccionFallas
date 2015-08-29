@@ -61,7 +61,7 @@ class UsuarioComun extends CI_Controller
       $this->irapaso2componentecontinuacion($idcaso);
     }
 
-    if ($numpaso == 4)
+    if ($numpaso == 3)
     {
       $this->irapaso3fabricacion($idcaso);
     }
@@ -96,6 +96,7 @@ class UsuarioComun extends CI_Controller
     $paso['id'] = $idcaso;
     $paso['titulo'] =  $this->casos_model->devolver_tituloporid($idcaso);
     $paso['tiposprocesos'] = $this->fabricacion_model->devolver_todoslosprocesos();
+    $paso['numeroproceso'] = "Nuevo proceso.";
     $this->load->view('casofabricacion.html',$paso);
   }
 

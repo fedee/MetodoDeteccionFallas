@@ -218,5 +218,33 @@ class Casos_model extends CI_Model{
       $this->db->update('casos', $data); 
    }
 
+   public function devolver_procesos($idcaso)
+   {
+
+      $this->db->distinct();
+      $this->db->select('proceso');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('fabricacion_listaprocesos');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $this->devolver_nombreprocesoporid($row->proceso);
+      }
+      return $datos;
+   }
+
+   public function devolver_nombreprocesoporid($idproceso)
+   {
+      $consulta = $this->db->get_where('procesosfab_generales',array('id'=>$idproceso));
+      $row = $consulta->row(1);
+      $nombre = $row->nombre;
+      return $nombre;
+   }
+
+   //VER MAÑANA DE DEVOLVER SUBTIPOS. SI HAY 2 VECES EXTRUSION POR EJ EL DISTINCT HACE QUE DEVUELVA SOLO 1, VER COMO ARREGLAR ESO..
+   //TAL VEZ PONIENDO EN LA BD UN CAMPO EXTRA QUE INDIQUE EL NUMERO DE PROCESO.
+
+
 }
 ?>

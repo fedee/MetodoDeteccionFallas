@@ -150,8 +150,8 @@
                                 <h1 class="panel-title">Paso 2: Decripción del componente. Parte 2.</h1>
                             </div>
                             <div class="panel-body">
-                                <?=form_open_multipart(site_url()."/piezas/guardarinfo_casocomponente1/".$id)?>
-                                <!--<form name="form_ncaso" action="<?= site_url().'/piezas/guardarinfo_casocomponente1/'.$id?>" method="POST"> -->
+                                <?=form_open_multipart(site_url()."/piezas/guardarinfo_casocomponente2/".$id)?>
+                                <!--<form name="form_ncaso" action="<?= site_url().'/piezas/guardarinfo_casocomponente2/'.$id?>" method="POST"> -->
                                     <ul class="list-group">
                                       <li class="list-group-item">
                                         <div class="row">
@@ -311,7 +311,7 @@
                                                     <h5><strong>Unidad:</strong></h5>
                                                 </div>
                                                 <div class="col-lg-2">
-                                                    <select name="umedida" id="umedida" class="form-control">
+                                                    <select name="umedidapres" id="umedidapres" class="form-control">
                                                       <option value=<?php echo '0'; ?>>Kg/cm^2</option>
                                                       <option value=<?php echo '1'; ?>>BAR</option>
                                                       <option value=<?php echo '2'; ?>>PSI</option>
@@ -424,7 +424,7 @@
                                     </ul>
                                     <div class="row">
                                         <div class="col-xs-4 col-md-4">
-                                            <input type="submit"value="Continuar" name="submit_comp1" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                                            <input type="submit"value="Continuar" name="submit_comp2" class="btn btn-primary btn-block btn-lg" tabindex="7">
                                         </div>
                                     </div>
                                <?=form_close()?>

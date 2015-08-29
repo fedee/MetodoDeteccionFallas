@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Completar caso</title>
+    <title>Mis casos</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="http://localhost/codeigniter2/css/bootstrap.min.css" rel="stylesheet">
@@ -126,82 +126,64 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Completar caso "<?php echo $titulo?>"
-                                                            
+                            Mis casos
                         </h1>
                         <ol class="breadcrumb">
                             <li>
                                 <i class="fa fa-dashboard"></i>  <a href="<?= site_url().'/dashboardusuariocomun'?>">Dashboard</a>
                             </li>
-                            <li>
-                                <i class="fa fa-briefcase"></i>  <a href="<?= site_url().'/usuariocomun/ver_casossubidos'?>">Mis casos</a>
-                            </li>
                             <li class="active">
-                                <i class="fa fa-edit"></i> Caso: <?php echo $titulo?>: Proceso de fabricación.
+                                <i class="fa fa-briefcase"></i> Mis casos
                             </li>
                         </ol>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-5 col-sm-5 col-md-10 col-sm-offset-2 col-md-offset-1">
-                        <div class="panel panel-default" >
-                            <div class="panel-heading" align ="center">
-                                <h1 class="panel-title">Paso 3: Fabricación.  <?php echo $numeroproceso?></h1>
+                    <div class="col-lg-8">
+                        <form name="form_iniciar" action="<?= site_url().'/casos/asignar_caso'?>" method="POST">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Número</th>
+                                                    <th>Proceso</th>
+                                                    <th>Subproceso</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php  
+                                                    for($i = 0; $i <count($procesos); $i++) {
+                                                ?>
+                                                    <tr>
+                                                        <td><?php echo $i+1; ?></td>
+                                                        <td><?php echo $procesos[$i]; ?></td>
+                                                        <td><?php echo "Holis" ?></td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" align="center">
+                                <h3 class="panel-title">Opciones</h3>
                             </div>
                             <div class="panel-body">
-                                <form name="form_ncaso" action="<?= site_url().'/piezas/guardarinfo_casofabricacion/'.$id?>" method="POST">
-                                    <ul class="list-group">
-                                      <li class="list-group-item">
-                                        <div class="row">
-                                                <div class="col-lg-2">
-                                                    <h5><strong>Tipo de proceso:</strong></h5>
-                                                </div>
-                                                <div class="col-lg-4">
-                                                    <select name="proceso" id="proceso" class="form-control">
-                                                      <option value=<?php echo '-1'; ?>>Elegir</option>
-                                                      <?php foreach($tiposprocesos as $tp):?>
-                                                      <option value=<?= $tp['id']; ?>><?= $tp['nombre']; ?></option>
-                                                      <?php endforeach; ?>   
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-1">
-                                                    <h5><strong>Subtipo:</strong></h5>
-                                                </div>
-                                                <div class="col-lg-5">
-                                                    <select name="subtipos" id="subtipos" class="form-control">
-                                                    </select>  
-                                                </div>
-                                          </div>
-                                          </br>
-                                      </li>
-                                      <div id ='paramger'>
-                                      
-                                      </div>
-                                      <div id ='paramesp'>
-                                      
-                                      </div>
-                                    </ul>
-                                    <div class="row">
-                                        <div class="col-xs-4 col-md-4">
-                                            <input type="submit"value="Agregar otro proceso" name="submit_comp1" class="btn btn-primary btn-block btn-lg" tabindex="7">
-                                        </div>
-                                        <div class="col-xs-4 col-md-4">
-                                            <input type="submit"value="Continuar" name="irarevision" class="btn btn-primary btn-block btn-lg" tabindex="7">
-                                        </div>
-                                    </div>
-                                </form>
-                                <hr />
-                                <?php if(validation_errors()!= ""):?>
-                                    <div class="alert alert-danger alert-dismissible" role="alert">
-                                      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                      <strong>Oh no!</strong><?= validation_errors(); ?>
-                                    </div>
-                                <?php endif;?>   
-                           </div>
-                       </div>
-                   </div>
-               </div>
+                                <button type="button" class="btn btn-primary btn-lg btn-block" onClick=" window.location.href='<?= site_url().'/usuariocomun/subir_caso' ?>'">Nuevo caso</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
 
             </div>
             <!-- /.container-fluid -->
@@ -212,68 +194,11 @@
     </div>
     <!-- /#wrapper -->
 
-
     <!-- jQuery Version 1.11.0 -->
     <script src="http://localhost/codeigniter2/js/jquery-1.11.0.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
     <script src="http://localhost/codeigniter2/js/bootstrap.min.js"></script>
-
-    <script type="text/javascript"> 
-
-    $(document).on('change', '#proceso', function(e){
-
-        var current = $('#proceso').val();
-        var params = {id_proceso: current}
-
-        $.ajax({
-          type: "POST",
-          url: '/codeigniter2/index.php/fabricacion/getsubtipos',
-          data: params,
-          success: function(data)
-          {
-            $('#subtipos').html(data);
-          }
-        });
-
-    });
-
-    $(document).on('change', '#proceso', function(e){
-
-        var current = $('#proceso').val();
-        var params = {id_proceso: current}
-
-        $.ajax({
-          type: "POST",
-          url: '/codeigniter2/index.php/fabricacion/getparametrosgenerales',
-          data: params,
-          success: function(data)
-          {
-            $('#paramesp').html("");
-            $('#paramger').html(data);
-          }
-        });
-
-    });
-
-    $(document).on('change', '#subtipos', function(e){
-
-        var current = $('#subtipos').val();
-        var params = {id_subtipo: current}
-
-        $.ajax({
-          type: "POST",
-          url: '/codeigniter2/index.php/fabricacion/getparametrosespecificos',
-          data: params,
-          success: function(data)
-          {
-            $('#paramesp').html(data);
-          }
-        });
-
-    });
-
-    </script>  
-
-    
 
 </body>
 

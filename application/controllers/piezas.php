@@ -8,6 +8,7 @@ class Piezas extends CI_Controller {
       $this->load->library('form_validation');
       $this->load->model('casos_model');
       $this->load->model('piezas_model');
+      $this->load->model('fabricacion_model');
    }
 
    public function index() 
@@ -127,7 +128,7 @@ class Piezas extends CI_Controller {
 
                   $this->casos_model->actualizarestado($idcaso,'0');
                   $this->casos_model->actualizarpaso($idcaso,'2');
-                  redirect(site_url().'/usuariocomun/ver_casossubidos/'); 
+                  redirect(site_url().'/usuariocomun/irapaso2componentecontinuacion/'.$idcaso); 
 
          }
          else
@@ -138,6 +139,46 @@ class Piezas extends CI_Controller {
             $caso['id'] = $idcaso;
             $caso['titulo'] =  $this->casos_model->devolver_tituloporid($idcaso);
             $this->load->view('casocomponente.html',$caso);
+         }
+      
+      }
+   }
+
+
+   public function guardarinfo_casocomponente2($idcaso)
+   {
+      $this->load->helper('url');
+       $this->load->helper('form');
+
+      if($this->input->post('submit_comp2'))
+      {
+
+         $this->form_validation->set_rules('material','Material es requerido','required');
+         /*$this->form_validation->set_rules('codigoint','Código interno de la pieza','required');
+         $this->form_validation->set_rules('cantpiezas','Cantidad de piezas','required');
+         $this->form_validation->set_rules('usopieza','Uso de la pieza','required');
+         $this->form_validation->set_rules('maqomec','Máquina o mecanismo donde se encuentra montada la pieza','required');
+         $this->form_validation->set_rules('especmontaje','Especificaciones del montaje','required');
+         $this->form_validation->set_rules('siguiendonorma','Especificar si la pieza fue montada siguiendo la norma del fabricante o no','required');
+         $this->form_validation->set_message('required','El campo %s es obligatorio.');*/
+      
+
+         if($this->form_validation->run() != FALSE)
+         {
+            $this->piezas_model->guardainfo_casocomponente2($idcaso);
+            $this->casos_model->actualizarestado($idcaso,'0');
+            $this->casos_model->actualizarpaso($idcaso,'3');
+            redirect(site_url().'/usuariocomun/irapaso3fabricacion/'.$idcaso); 
+
+         }
+         else
+         {
+            $this->load->helper('url');
+            $this->load->helper('form');
+
+            $caso['id'] = $idcaso;
+            $caso['titulo'] =  $this->casos_model->devolver_tituloporid($idcaso);
+            $this->load->view('casocomponentecont.html',$caso);
          }
       
       }
@@ -171,9 +212,40 @@ class Piezas extends CI_Controller {
 
    public function guardarinfo_casofabricacion($idcaso)
    {
-       $this->load->helper('url');
+       if($this->input->post('submit_comp1'))
+      {
 
-       $this->piezas_model->guardainfo_casofabricacion($idcaso);
+         $this->load->helper('url');
+         $this->piezas_model->guardainfo_casofabricacion($idcaso);
+
+         $paso['id'] = $idcaso;
+         $paso['titulo'] =  $this->casos_model->devolver_tituloporid($idcaso);
+         $paso['tiposprocesos'] = $this->fabricacion_model->devolver_todoslosprocesos();
+         $paso['numeroproceso'] = "Agregar otro proceso.";
+         $this->load->view('casofabricacion.html',$paso);
+
+      }
+
+      if($this->input->post('irarevision'))
+      {
+
+         $this->load->helper('url');
+
+         $paso['id'] = $idcaso;
+         $paso['titulo'] =  $this->casos_model->devolver_tituloporid($idcaso);
+
+         $datosrevision = array(
+         'procesos' => $this->casos_model->devolver_procesos($idcaso),
+         //VER MAÑANA: 'subprocesos' => $this->casos_model->devolver_subtipos($idcaso),
+        );
+
+        $this->load->view('revisionprocesosfabricacion.html',$datosrevision,$paso);
+
+
+        //$this->load->view('revisionprocesosfabricacion.html',$paso);
+       
+      }
+
             
    }
         

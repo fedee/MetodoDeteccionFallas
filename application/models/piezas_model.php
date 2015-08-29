@@ -36,6 +36,40 @@ class Piezas_model extends CI_Model{
 
    }
 
+  //Guardos IDs de los selectores, cuando vaya a hacer una view tipo la de edición tengo que fijarme a que nombre corresponde dicho ID del
+  //selector en particular.
+
+   public function guardainfo_casocomponente2($idcaso)
+   {
+      $data = array(
+               'material'=>$this->input->post('material',TRUE),
+               'submaterial'=>$this->input->post('submat',TRUE),
+               'especifico'=>$this->input->post('matesp',TRUE),
+               'descdetallada'=>$this->input->post('descdetallada',TRUE),
+               'tipocargas'=>$this->input->post('tipocargas',TRUE),
+               'umedidacargas'=>$this->input->post('umedida',TRUE),
+               'cantcargas'=>$this->input->post('cantidad',TRUE),
+               'tiposujeciones'=>$this->input->post('tiposujeciones',TRUE),
+               'condtermicas'=>$this->input->post('condtermicas',TRUE),
+               'utempcondtermicas'=>$this->input->post('utemp',TRUE),
+               'cantidadtermica'=>$this->input->post('cantidadtermica',TRUE),
+               'tipopresiones'=>$this->input->post('tipopresiones',TRUE),
+               'distribpresiones'=>$this->input->post('distrib',TRUE),
+               'umedidapres'=>$this->input->post('umedidapres',TRUE),
+               'valpresion'=>$this->input->post('valpresion',TRUE),
+               'veloctrab'=>$this->input->post('veloctrab',TRUE),
+               'trayectoria'=>$this->input->post('trayectoria',TRUE),
+               'unidadveloc'=>$this->input->post('unidadveloc',TRUE),
+               'valveloc'=>$this->input->post('valveloc',TRUE),
+               'modifcond'=>$this->input->post('modifcond',TRUE),
+               'modificaciones'=>$this->input->post('modificaciones',TRUE),
+            );
+
+      $this->db->where('id_caso', $idcaso);
+      $this->db->update('pieza', $data); 
+
+   }
+
    public function devolver_idpiezaporidcaso($idcaso)
    {
       $consulta = $this->db->get_where('pieza',array('id_caso'=>$idcaso));
@@ -62,13 +96,43 @@ class Piezas_model extends CI_Model{
       $tags = array_keys($_POST);
       $valores = array_values($_POST);
 
-      for($i = 0; $i<$numeroatr; $i++)
+      $proceso = $valores[0];
+      $subtipo = $valores[1];
+
+      for($i = 2; $i<($numeroatr-1); $i++)
       {
-        echo $tags[$i];
+          if($valores[$i] != "")
+          {
+              $consulta = $this->db->get_where('atributos',array('atributo'=>$tags[$i]));
+              $row = $consulta->row(1);
+              $espadre = $row->parent_id;
+
+              if($espadre != 0){
+                $espadre = 1;
+              }
+
+              $this->db->insert('fabricacion_listaprocesos',array(
+                                              'id_caso'=>$idcaso,
+                                              'proceso'=>$proceso,
+                                              'subtipo'=>$subtipo,
+                                              'param_nombre'=>$tags[$i],
+                                              'param_valor' => $valores[$i],
+                                              'es_general' => $espadre 
+                                              ));
+          }
+
+      }
+
+      /*echo $tags[$i];
         echo ": ";
         echo $valores[$i];
-        echo "</br>";
-      }
+        echo ", es Padre: ";
+        echo $espadre;
+        echo "</br>";*/
+
+      //Para cuando haga el panel de edición, puedo fijarme el nombre de los atributos en "atributos" para relacionar las tablas con
+      //la de precargados, y de ahi precargar los selectores que hagan falta via comparación de IDs. Revisar los nombres porque puede 
+      //llegar a haber conflictos con nombres iguales de atributos. Si todos son distintos va a andar perfecto.
 
    }
 
