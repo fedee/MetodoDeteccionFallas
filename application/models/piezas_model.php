@@ -96,6 +96,8 @@ class Piezas_model extends CI_Model{
       $tags = array_keys($_POST);
       $valores = array_values($_POST);
 
+      $cantidad_procesos = $this->devolver_cantidadprocesos($idcaso);
+
       $proceso = $valores[0];
       $subtipo = $valores[1];
 
@@ -113,6 +115,7 @@ class Piezas_model extends CI_Model{
 
               $this->db->insert('fabricacion_listaprocesos',array(
                                               'id_caso'=>$idcaso,
+                                              'numero_proceso'=>($cantidad_procesos),
                                               'proceso'=>$proceso,
                                               'subtipo'=>$subtipo,
                                               'param_nombre'=>$tags[$i],
@@ -134,6 +137,22 @@ class Piezas_model extends CI_Model{
       //la de precargados, y de ahi precargar los selectores que hagan falta via comparación de IDs. Revisar los nombres porque puede 
       //llegar a haber conflictos con nombres iguales de atributos. Si todos son distintos va a andar perfecto.
 
+   }
+
+   public function devolver_cantidadprocesos($idcaso)
+   {
+      $this->db->distinct();
+      $this->db->select('numero_proceso');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('fabricacion_listaprocesos');
+      $cantidad = 0;
+
+      foreach ($consulta->result() as $row)
+      {
+        $cantidad = $cantidad+1;
+      }
+
+      return ($cantidad+1);
    }
 
 }

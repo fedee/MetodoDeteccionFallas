@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Mis casos</title>
+    <title>Completar caso</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="http://localhost/codeigniter2/css/bootstrap.min.css" rel="stylesheet">
@@ -126,7 +126,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Procesos ingresados
+                            Módulo FEA
+                                                            
                         </h1>
                         <ol class="breadcrumb">
                             <li>
@@ -136,54 +137,71 @@
                                 <i class="fa fa-briefcase"></i>  <a href="<?= site_url().'/usuariocomun/ver_casossubidos'?>">Mis casos</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-briefcase"></i> Caso: <?php echo $titulo?>. Revisión de procesos.
+                                <i class="fa fa-edit"></i> Caso: <?php echo $titulo?>. Módulo FEA.
                             </li>
                         </ol>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-12">
-                        <?=form_open_multipart(site_url()."/usuariocomun/irafea/".$id)?>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-hover table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Número</th>
-                                                    <th>Proceso</th>
-                                                    <th>Subproceso</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php  
-                                                    for($i = 0; $i <count($procesos); $i++) {
-                                                ?>
-                                                    <tr>
-                                                        <td><?php echo $i+1; ?></td>
-                                                        <td><?php echo $procesos[$i]; ?></td>
-                                                        <td><?php echo $subprocesos[$i]; ?></td>
-                                                    </tr>
-                                                <?php } ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                    <div class="col-xs-5 col-sm-5 col-md-10 col-sm-offset-2 col-md-offset-1">
+                        <div class="panel panel-default" >
+                            <div class="panel-heading" align ="center">
+                                <h1 class="panel-title">Módulo FEA</h1>
                             </div>
-                        
-                    </div>
-                </div>
-
-                </br>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <input type="submit"value="Continuar" name="submit_irafea" class="btn btn-primary btn-block btn-lg" tabindex="7">
-                    </div>
-                </div>
-                </br>
-                <?=form_close()?>
-                
+                            <div class="panel-body">
+                                <?=form_open_multipart(site_url()."/piezas/guardarinfo_casocomponente2/".$id)?>
+                                <!--<form name="form_ncaso" action="<?= site_url().'/piezas/guardarinfo_casocomponente2/'.$id?>" method="POST"> -->
+                                    
+                                      
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <img align="center" src="https://jasf1961.files.wordpress.com/2015/06/biela-fem.jpg" alt="Mountain View" style="width:430px;height:380px;" >
+                                                <h5><strong>Imagen a modo de ejemplo.</strong></h5></br>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="row">
+                                                    <div class="col-lg-8">
+                                                        <h5><strong>Módulo de validación por el método de elementos finitos #MFEA: Dicha rama del software es la encargada de la validación de los diseños, ya sea para nuevos productos, productos con modificaciones en su diseño o modificaciones en las condiciones de carga del componente.
+                                                        </br></br>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        </br></br>
+                                                        <button type="button" class="btn btn-primary btn-lg btn-block" onClick=" window.open('https://drive.google.com/file/d/0B2s2L4ch6DAidVdNZzVqc25nRjQ/view?usp=sharing')">Ver más</button>
+                                                        </br>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                    La validación del diseño se refiere a la verificación de su resistencia a las tensiones producidas o a las deformaciones inducidas por las cargas, su resistencia a resonar a causas de vibraciones, capacidad de soportar pandeo y su predicción de vida útil a la fatiga; todos estos, fenómenos que pueden ser estudiados  a través de los softwares comerciales actuales dedicados a Cálculos Multi-Físicos por el Método de Elementos Finitos  conocidos como CAE (Computer Aided Engineering o de Ingeniería Asistida por Computadora). 
+                                                    </br> </br> 
+                                                    En este caso se utilizó principalmente SolidWorks Simulation® para la validación de diseños en los casos analizados por el grupo de investigación ya que es la licencia con que cuenta la Facultad de Ingeniería de la Universidad Católica de Córdoba. 
+                                                    </br> </br> 
+                                                    </div>
+                                               </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                Se tomó como referencia para este módulo, materiales de entrenamiento y cursos de capacitación de Solid Works Simulation para guiar al usuario del CAFAP para su uso, pero esto debe tomarse solo a modo de ejemplo ya que  puede utilizar cualquier software comercial del mismo tipo para realizar este análisis por computadora. Algunos ejemplos de softwares similares son: Autodesk Algor®, MSC Nstran/Patran®, Autodesk Inventor Professional®, Catia Simula®, COMSOL Multi-Physics®, Abaqus® y otros.</strong></h5>
+                                            </br> </br> </br>
+                                            </div>
+                                        </div>
+                                      
+                                    
+                                    <div class="row">
+                                        <div class="col-xs-4 col-md-4">
+                                            <input type="submit"value="Continuar" name="submit_comp2" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                                        </div>
+                                    </div>
+                               <?=form_close()?>
+                                <hr />
+                                <?php if(validation_errors()!= ""):?>
+                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                      <strong>Oh no!</strong><?= validation_errors(); ?>
+                                    </div>
+                                <?php endif;?>   
+                           </div>
+                       </div>
+                   </div>
+               </div>
 
             </div>
             <!-- /.container-fluid -->
@@ -193,12 +211,6 @@
 
     </div>
     <!-- /#wrapper -->
-
-    <!-- jQuery Version 1.11.0 -->
-    <script src="http://localhost/codeigniter2/js/jquery-1.11.0.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="http://localhost/codeigniter2/js/bootstrap.min.js"></script>
 
 </body>
 

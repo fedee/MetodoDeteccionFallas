@@ -110,8 +110,6 @@ class Piezas extends CI_Controller {
                                     $parathumb['idpieza'] =  $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
                                     $parathumb['filename'] =  $file_info['file_name'];
 
-
-
                                     $this->_create_thumbnail($parathumb);  
                                     
                                     $data = array('upload_data' => $this->upload->data());
@@ -231,15 +229,17 @@ class Piezas extends CI_Controller {
 
          $this->load->helper('url');
 
-         $paso['id'] = $idcaso;
-         $paso['titulo'] =  $this->casos_model->devolver_tituloporid($idcaso);
-
          $datosrevision = array(
          'procesos' => $this->casos_model->devolver_procesos($idcaso),
-         //VER MAÑANA: 'subprocesos' => $this->casos_model->devolver_subtipos($idcaso),
+         'subprocesos' => $this->casos_model->devolver_subtipos($idcaso),
+         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+         'id' => $idcaso,
         );
 
-        $this->load->view('revisionprocesosfabricacion.html',$datosrevision,$paso);
+
+        $this->casos_model->actualizarpaso($idcaso,'4');
+
+        $this->load->view('revisionprocesosfabricacion.html',$datosrevision);
 
 
         //$this->load->view('revisionprocesosfabricacion.html',$paso);

@@ -66,9 +66,17 @@ class UsuarioComun extends CI_Controller
       $this->irapaso3fabricacion($idcaso);
     }
 
+    if ($numpaso == 4)
+    {
+      $this->irarevision($idcaso);
+    }
+
+    if ($numpaso == 5)
+    {
+      $this->irafea($idcaso);
+    }
     
   }
-
 
   public function irapaso2componente($idcaso)
   {
@@ -98,6 +106,34 @@ class UsuarioComun extends CI_Controller
     $paso['tiposprocesos'] = $this->fabricacion_model->devolver_todoslosprocesos();
     $paso['numeroproceso'] = "Nuevo proceso.";
     $this->load->view('casofabricacion.html',$paso);
+  }
+
+  public function irarevision($idcaso)
+  {
+    $this->load->helper('url');
+
+    $datosrevision = array(
+         'procesos' => $this->casos_model->devolver_procesos($idcaso),
+         'subprocesos' => $this->casos_model->devolver_subtipos($idcaso),
+         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+         'id' => $idcaso,
+        );
+
+    $this->load->view('revisionprocesosfabricacion.html',$datosrevision);
+  }
+
+  public function irafea($idcaso)
+  {
+    $this->load->helper('url');
+
+      $datosfea = array(
+         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+         'id' => $idcaso,
+        );
+
+    $this->casos_model->actualizarpaso($idcaso,'5');
+    $this->load->view('modulofea.html',$datosfea);
+
   }
 
 }
