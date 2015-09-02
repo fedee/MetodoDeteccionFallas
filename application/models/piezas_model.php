@@ -78,7 +78,7 @@ class Piezas_model extends CI_Model{
       return $idpieza;
    }
 
-   function actualizarimagenescomp1($parapiezasmodel)
+   function actualizarimagenes($parapiezasmodel)
     {
         $data = array(
             'queimagen' => $parapiezasmodel['queimagen'],
@@ -145,6 +145,36 @@ class Piezas_model extends CI_Model{
       $this->db->select('numero_proceso');
       $this->db->where('id_caso', $idcaso); 
       $consulta = $this->db->get('fabricacion_listaprocesos');
+      $cantidad = 0;
+
+      foreach ($consulta->result() as $row)
+      {
+        $cantidad = $cantidad+1;
+      }
+
+      return ($cantidad+1);
+   }
+
+
+   public function guardainfo_ensayos($idcaso,$cantidadimagenes)
+   {
+
+      $this->db->insert('ensayos',array(
+                                          'id_caso'=>$idcaso,
+                                          'numero_ensayo'=>$this->devolver_cantidadensayos($idcaso),
+                                          'nombre'=>$this->input->post('nombreensayo',TRUE),
+                                          'descripcion'=>$this->input->post('descripcionensayo',TRUE),
+                                          'cant_imagenes' =>$cantidadimagenes,
+                                          ));
+
+   }
+
+   public function devolver_cantidadensayos($idcaso)
+   {
+      $this->db->distinct();
+      $this->db->select('numero_ensayo');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('ensayos');
       $cantidad = 0;
 
       foreach ($consulta->result() as $row)

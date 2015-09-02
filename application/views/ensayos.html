@@ -9,16 +9,16 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Completar caso</title>
+    <title>Mis casos</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="http://localhost/codeigniter2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://localhost/cafap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="http://localhost/codeigniter2/css/sb-admin.css" rel="stylesheet">
+    <link href="http://localhost/cafap/css/sb-admin.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="http://localhost/codeigniter2/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://localhost/cafap/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -126,7 +126,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Módulo FEA
+                            Completar caso "<?php echo $titulo?>"
                                                             
                         </h1>
                         <ol class="breadcrumb">
@@ -137,62 +137,90 @@
                                 <i class="fa fa-briefcase"></i>  <a href="<?= site_url().'/usuariocomun/ver_casossubidos'?>">Mis casos</a>
                             </li>
                             <li class="active">
-                                <i class="fa fa-edit"></i> Caso: <?php echo $titulo?>. Módulo FEA.
+                                <i class="fa fa-edit"></i> Caso: <?php echo $titulo?>. Ensayos.
                             </li>
                         </ol>
                     </div>
                 </div>
 
                 <li class="list-group-item">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class='row'>
-                                <div class='col-lg-12'>
-                                    <h4 align='center'><strong>MODULO FEA</strong></h4>
-                                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                                <div class='row'>
+                                     <div class='col-lg-12'>
+                                        <h4 align='center'><strong>ENSAYOS.</strong></h4>
+                                        <h5 align='center'><strong>A continuación puede escribir el nombre y descripción de los ensayos físicos o químicos que haya realizado en la investigación y además puede agregar imágenes ilustrativas o representativas de los mismos.</strong></h5>
+                                     </div></br>
+                                </div></br>
+                            <div class="row">
+                    <div class="col-xs-5 col-sm-5 col-md-10 col-sm-offset-2 col-md-offset-1">
+                        <div class="panel panel-default" >
+                            <div class="panel-heading" align ="center">
+                                <h1 class="panel-title">Nuevo ensayo.</h1>
                             </div>
-                        </div>
-                    </div>
-                </li>
-                            
-                                <?=form_open_multipart(site_url()."/usuariocomun/iraensayos/".$id)?>
-                                <!--<form name="form_ncaso" action="<?= site_url().'/piezas/guardarinfo_casocomponente2/'.$id?>" method="POST"> -->
-                                    
+                            <div class="panel-body">
+                                <?=form_open_multipart(site_url()."/piezas/guardarinfo_ensayos/".$id)?>
+                                    <ul class="list-group">
                                       <li class="list-group-item">
                                         <div class="row">
-                                            <div class="col-lg-5">
-                                                </br>
-                                                <img align="center" src="https://jasf1961.files.wordpress.com/2015/06/biela-fem.jpg" alt="Mountain View" style="width:430px;height:380px;" >
-                                                <h5><strong>Imagen a modo de ejemplo.</strong></h5></br>
+                                            <div class="col-lg-4">
+                                                <h5><strong>Nombre del ensayo:</strong></h5>
                                             </div>
-                                            <div class="col-lg-7">
-                                                <div class="row">
-                                                    <div class="col-lg-8">
-                                                        <h5><strong>Módulo de validación por el método de elementos finitos #MFEA: Dicha rama del software es la encargada de la validación de los diseños, ya sea para nuevos productos, productos con modificaciones en su diseño o modificaciones en las condiciones de carga del componente.
-                                                        </br></br>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        </br>
-                                                        <button type="button" class="btn btn-primary btn-lg btn-block" onClick=" window.open('https://drive.google.com/file/d/0B2s2L4ch6DAidVdNZzVqc25nRjQ/view?usp=sharing')">Ver más</button>
-                                                        </br>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                    La validación del diseño se refiere a la verificación de su resistencia a las tensiones producidas o a las deformaciones inducidas por las cargas, su resistencia a resonar a causas de vibraciones, capacidad de soportar pandeo y su predicción de vida útil a la fatiga; todos estos, fenómenos que pueden ser estudiados  a través de los softwares comerciales actuales dedicados a Cálculos Multi-Físicos por el Método de Elementos Finitos  conocidos como CAE (Computer Aided Engineering o de Ingeniería Asistida por Computadora). 
-                                                    </br> </br> 
-                                                    En este caso se utilizó principalmente SolidWorks Simulation® para la validación de diseños en los casos analizados por el grupo de investigación ya que es la licencia con que cuenta la Facultad de Ingeniería de la Universidad Católica de Córdoba. 
-                                                    Se tomó como referencia para este módulo, materiales de entrenamiento y cursos de capacitación de Solid Works Simulation para guiar al usuario del CAFAP para su uso, pero esto debe tomarse solo a modo de ejemplo ya que  puede utilizar cualquier software comercial del mismo tipo para realizar este análisis por computadora. Algunos ejemplos de softwares similares son: Autodesk Algor®, MSC Nstran/Patran®, Autodesk Inventor Professional®, Catia Simula®, COMSOL Multi-Physics®, Abaqus® y otros.</strong></h5>
-                                                    </div>
-                                               </div>
+                                            <div class="col-lg-8">
+                                                    <input type="text" name="nombreensayo" class="form-control" placeholder="">
                                             </div>
                                         </div>
-                                    </li>  
+                                      </li>
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <h5><strong>Descripción:</strong></h5>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                    <textarea name="descripcionensayo" class="form-control" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-7">
+                                                <h5><strong>Imagen/es de ensayo (3 máx):</strong></h5>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagenensayo1" />
+                                                    </span> 
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagenensayo2" />
+                                                    </span> 
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagenensayo3" />
+                                                    </span>
+                                            </div>
+                                        </div>
+                                      </li>
+                                    </ul>
+                                    </li> 
+
+                                    <div id ='unensayomas'>
+                                      
+                                    </div>
+
                                     </br></br>
                                     <div class="row">
-                                        <div class="col-xs-4 col-md-4">
-                                            <input type="submit"value="Continuar" name="submit_iraensayos" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                                        <div id ='botonsubmit'>
+                                            <div class="col-xs-4 col-md-4">
+                                                <input type="submit"value="Guardar y agregar otro" name="submit_guardarinfoensayos" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                                            </div>
+                                            <div class="col-xs-4 col-md-4">
+                                                <input type="submit"value="Continuar" name="iramacrografia" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                                            </div>
                                         </div>
+                                        
                                     </div>
+                         
                                <?=form_close()?>
+
                                 <hr />
                                 <?php if(validation_errors()!= ""):?>
                                     <div class="alert alert-danger alert-dismissible" role="alert">
@@ -203,7 +231,11 @@
                            
                        </div>
                    </div>
-               </div>
+                        
+                </div>
+
+                </div>
+                
 
             </div>
             <!-- /.container-fluid -->
@@ -213,6 +245,11 @@
 
     </div>
     <!-- /#wrapper -->
+
+    <!-- jQuery Version 1.11.0 -->
+    <!-- jQuery Version 1.11.0 -->
+    <script src="http://localhost/codeigniter2/js/jquery-1.11.0.js"></script>
+    <script src="http://localhost/codeigniter2/js/bootstrap.min.js"></script>
 
 </body>
 

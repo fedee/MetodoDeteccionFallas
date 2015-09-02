@@ -75,6 +75,11 @@ class UsuarioComun extends CI_Controller
     {
       $this->irafea($idcaso);
     }
+
+    if ($numpaso == 6)
+    {
+      $this->iraensayos($idcaso);
+    }
     
   }
 
@@ -133,6 +138,20 @@ class UsuarioComun extends CI_Controller
 
     $this->casos_model->actualizarpaso($idcaso,'5');
     $this->load->view('modulofea.html',$datosfea);
+
+  }
+
+  public function iraensayos($idcaso)
+  {
+    $this->load->helper('url');
+
+      $datosensayo = array(
+         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+         'id' => $idcaso,
+        );
+
+    $this->casos_model->actualizarpaso($idcaso,'6');
+    $this->load->view('ensayos.html',$datosensayo);
 
   }
 

@@ -199,7 +199,7 @@ class Piezas extends CI_Controller {
         $config['width'] = 150;
         $config['height'] = 150;
 
-        $this->piezas_model->actualizarimagenescomp1($parapiezasmodel);  
+        $this->piezas_model->actualizarimagenes($parapiezasmodel);  
 
         $this->load->library('image_lib'); 
         $this->image_lib->initialize($config);
@@ -247,6 +247,71 @@ class Piezas extends CI_Controller {
       }
 
             
+   }
+
+
+   public function guardarinfo_ensayos($idcaso)
+   {
+      $this->load->helper('url');
+      $this->load->helper('form');
+
+      $cantidadimagenes = 0;
+
+      if($this->input->post('submit_guardarinfoensayos'))
+      {
+
+                  for($i=1;$i<=3;$i++)
+                  { 
+                        if($_FILES['imagenensayo'.$i]['name']!=''){
+
+                            $config['upload_path'] = './uploads/';
+                            $config['allowed_types'] = 'gif|jpg|png';
+                            $config['max_size'] = '2000';
+                            $config['max_width'] = '2024';
+                            $config['max_height'] = '2008';
+
+                            $this->load->library('upload', $config);
+                            //SI LA IMAGEN FALLA AL SUBIR MOSTRAMOS EL ERROR EN LA VISTA UPLOAD_VIEW
+                            if (!$this->upload->do_upload('imagenensayo'.$i)) {
+                                   $error = array('error' => $this->upload->display_errors());
+                                   echo $_FILES['imagenensayo'.$i]['name'];
+                                   echo 'Estoy en la iteracion: '.$i;
+                                   echo print_r($error);
+                                   //$this->load->view('upload_view', $error);
+                                } 
+                           else {
+                                //EN OTRO CASO SUBIMOS LA IMAGEN, CREAMOS LA MINIATURA Y HACEMOS 
+                                //ENVÍAMOS LOS DATOS AL MODELO PARA HACER LA INSERCIÓN
+                                    $file_info = $this->upload->data();
+                                    //USAMOS LA FUNCIÓN create_thumbnail Y LE PASAMOS EL NOMBRE DE LA IMAGEN,
+                                    //ASÍ YA TENEMOS LA IMAGEN REDIMENSIONADA
+                                    if($i==1) {$parathumb['queimagen'] = '4'; $cantidadimagenes = $cantidadimagenes + 1;}
+                                    if($i==2) {$parathumb['queimagen'] = '4'; $cantidadimagenes = $cantidadimagenes + 1;}
+                                    if($i==3) {$parathumb['queimagen'] = '4'; $cantidadimagenes = $cantidadimagenes + 1;}
+
+                                    $parathumb['idpieza'] =  $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+                                    $parathumb['filename'] =  $file_info['file_name'];
+
+                                    $this->_create_thumbnail($parathumb);  
+                                    
+                                    $data = array('upload_data' => $this->upload->data());
+                                    $imagen = $file_info['file_name'];    
+                                    $data['imagen'] = $imagen;
+                                    //$this->load->view('imagen_subida_view', $data);
+                           }
+                        }
+                  /*else
+                  {
+                      echo 'Seleccione una foto';
+                  }*/
+                  }
+
+                  $this->piezas_model->guardainfo_ensayos($idcaso,$cantidadimagenes); 
+                  redirect(site_url().'/usuariocomun/iraensayos/'.$idcaso); 
+
+
+
+      }
    }
         
       
