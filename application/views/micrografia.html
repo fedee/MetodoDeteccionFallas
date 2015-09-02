@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Completar caso</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="http://localhost/codeigniter2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="http://localhost/codeigniter2/css/sb-admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://localhost/codeigniter2/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Opciones</a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu message-dropdown">
+                        <li class="message-preview">
+                            <a href="#">
+                                <div class="media">
+                                    <span class="pull-left">
+                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                    </span>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>Fede Sarmiento</strong>
+                                        </h5>
+                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer 4:32 PM</p>
+                                        <p>Mensaje nuevo...</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-footer">
+                            <a href="#">Leer todos los mensajes</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown">
+                        <li>
+                            <a href="#">Notif 1 <span class="label label-default">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Notif 2 <span class="label label-primary">Alert Badge</span></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">Ver todas</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Fede <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Perfil</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Mensajes</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Opciones</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="<?= site_url().'/dashboardusuariocomun'?>"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <a href="<?= site_url().'/usuariocomun/ver_casossubidos'?>" method="POST"><i class="fa fa-fw fa-briefcase"></i> Mis casos</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Completar caso "<?php echo $titulo?>"                                  
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <i class="fa fa-dashboard"></i>  <a href="<?= site_url().'/dashboardusuariocomun'?>">Dashboard</a>
+                            </li>
+                            <li>
+                                <i class="fa fa-briefcase"></i>  <a href="<?= site_url().'/usuariocomun/ver_casossubidos'?>">Mis casos</a>
+                            </li>
+                            <li class="active">
+                                <i class="fa fa-edit"></i> Caso: <?php echo $titulo?>. Micrografía.
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class='row'>
+                                <div class='col-lg-12'>
+                                    <h4 align='center'><strong>MICROGRAFÍA</strong></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                            
+                                <?=form_open_multipart(site_url()."/piezas/guardarinfo_micrografia/".$id)?>
+                                <!--<form name="form_ncaso" action="<?= site_url().'/piezas/guardarinfo_casocomponente2/'.$id?>" method="POST"> -->
+                                    
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-5">
+                                                </br>
+                                                <img align="center" src="http://www.monografias.com/trabajos70/formas-alotrpicas-hierro-combinaciones-carbono/image010.jpg" alt="Mountain View" style="width:430px;height:380px;" >
+                                                <h5><strong>Imagen a modo de ejemplo.</strong></h5></br>
+                                            </div>
+                                            <div class="col-lg-7">
+                                                <div class="row">
+                                                    <div class="col-lg-8">
+                                                        <h5><strong>Aquí puede agregar imágenes con aumento de la zona de rotura en el componente analizado, imágenes con aumento mayor a x20 que denoten las fases y microconstituyentes de las muestras analizadas a través de microscopios.
+                                                        </br></br></strong></h5>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        </br>
+                                                        <button type="button" class="btn btn-primary btn-lg btn-block" onClick=" window.open('https://drive.google.com/file/d/0B5AXHoqHfz3qMFdJWE9ETUlnZUU/view?usp=sharing')">Ver más</button>
+                                                        </br>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="row">
+                                                            <div class="col-lg-1">
+                                                                <h5><strong>Desc:</strong></h5>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <textarea name="descripcionmicro1" class="form-control" rows="3"></textarea>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <span class="btn btn-default btn-file">
+                                                                    <input type="file" name="imagen1" />
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        </br>
+                                                        <div class="row">
+                                                            <div class="col-lg-1">
+                                                                <h5><strong>Desc:</strong></h5>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <textarea name="descripcionmicro2" class="form-control" rows="3"></textarea>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <span class="btn btn-default btn-file">
+                                                                    <input type="file" name="imagen2" />
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        </br>
+                                                        <div class="row">
+                                                            <div class="col-lg-1">
+                                                                <h5><strong>Desc:</strong></h5>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <textarea name="descripcionmicro3" class="form-control" rows="3"></textarea>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <span class="btn btn-default btn-file">
+                                                                    <input type="file" name="imagen3" />
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        </br></br>
+                                                    </div>
+                                               </div>
+                                            </div>
+                                        </div>
+                                    </li>  
+                                    </br></br>
+                                    <div class="row">
+                                        <div class="col-xs-4 col-md-4">
+                                            <input type="submit"value="Continuar" name="submit_guardarinfomicrografia" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                                        </div>
+                                    </div>
+                               <?=form_close()?>
+                                <hr />
+                                <?php if(validation_errors()!= ""):?>
+                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                      <strong>Oh no!</strong><?= validation_errors(); ?>
+                                    </div>
+                                <?php endif;?>   
+                           
+                       </div>
+                   </div>
+               </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+</body>
+
+</html>

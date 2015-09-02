@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Mis casos</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="http://localhost/cafap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="http://localhost/cafap/css/sb-admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://localhost/cafap/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Opciones</a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu message-dropdown">
+                        <li class="message-preview">
+                            <a href="#">
+                                <div class="media">
+                                    <span class="pull-left">
+                                        <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                    </span>
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>Fede Sarmiento</strong>
+                                        </h5>
+                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer 4:32 PM</p>
+                                        <p>Mensaje nuevo...</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-footer">
+                            <a href="#">Leer todos los mensajes</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown">
+                        <li>
+                            <a href="#">Notif 1 <span class="label label-default">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Notif 2 <span class="label label-primary">Alert Badge</span></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">Ver todas</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Fede <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Perfil</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Mensajes</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Opciones</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="<?= site_url().'/dashboardusuariocomun'?>"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <a href="<?= site_url().'/usuariocomun/ver_casossubidos'?>" method="POST"><i class="fa fa-fw fa-briefcase"></i> Mis casos</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Completar caso "<?php echo $titulo?>"
+                                                            
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <i class="fa fa-dashboard"></i>  <a href="<?= site_url().'/dashboardusuariocomun'?>">Dashboard</a>
+                            </li>
+                            <li>
+                                <i class="fa fa-briefcase"></i>  <a href="<?= site_url().'/usuariocomun/ver_casossubidos'?>">Mis casos</a>
+                            </li>
+                            <li class="active">
+                                <i class="fa fa-edit"></i> Caso: <?php echo $titulo?>. Hipótesis.
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <li class="list-group-item">
+                <div class="row">
+                    <div class="col-lg-12">
+                                <div class='row'>
+                                     <div class='col-lg-12'>
+                                        <h4 align='center'><strong>HIPÓTESIS.</strong></h4>
+                                        <div class='row'>
+                                            <div class="col-lg-10">
+                                            <h5 align='center'><strong>Escriba diferentes títulos de las diversas hipótesis para el caso y luego coloque una descripción detallada así como diagramas, imágenes, o esquemas representativos de cada una. Luego valore numéricamente la probabilidad de ocurrencia de la misma, del 1 al 10.</strong></h5>
+                                            </div>
+                                            <div class="col-lg-2">                                    
+                                                <button type="button" class="btn btn-primary btn-lg btn-block" onClick=" window.open('https://drive.google.com/file/d/0B5AXHoqHfz3qekM3eHhyY081TXM/view?usp=sharing')">Ver más</button>
+                                            </div>
+                                        </div>
+                                     </div></br>
+                                </div></br>
+                            <div class="row">
+                    <div class="col-xs-5 col-sm-5 col-md-10 col-sm-offset-2 col-md-offset-1">
+                        <div class="panel panel-default" >
+                            <div class="panel-heading" align ="center">
+                                <h1 class="panel-title">Nueva hipótesis.</h1>
+                            </div>
+                            <div class="panel-body">
+                                <?=form_open_multipart(site_url()."/piezas/guardarinfo_hipotesis/".$id)?>
+                                    <ul class="list-group">
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <h5><strong>Título resumido:</strong></h5>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                    <input type="text" name="titulohipo" class="form-control" placeholder="">
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <h5><strong>Descripción detallada:</strong></h5>
+                                            </div>
+                                            <div class="col-lg-8">
+                                                    <textarea name="descripcionhipo" class="form-control" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li class="list-group-item">
+                                        <div class="row">
+                                            <div class="col-lg-7">
+                                                <h5><strong>Imagen/es, diagramas de hipótesis (3 máx):</strong></h5>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagenhipo1" />
+                                                    </span> 
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagenhipo2" />
+                                                    </span> 
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagenhipo3" />
+                                                    </span>
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li class="list-group-item">
+                                      <div class="row">
+                                        <div class="col-lg-4">
+                                                <h5><strong>Valoración:</strong></h5>
+                                            </div>
+                                        <div class="col-lg-3">
+                                        <select name="valoracionhipo" id="valoracionhipo" class="form-control">
+                                            <option value=<?php echo '1'; ?>>1</option>
+                                            <option value=<?php echo '2'; ?>>2</option>
+                                            <option value=<?php echo '3'; ?>>3</option>
+                                            <option value=<?php echo '4'; ?>>4</option>
+                                            <option value=<?php echo '5'; ?>>5</option>
+                                            <option value=<?php echo '6'; ?>>6</option>
+                                            <option value=<?php echo '7'; ?>>7</option>
+                                            <option value=<?php echo '8'; ?>>8</option>
+                                            <option value=<?php echo '9'; ?>>9</option>
+                                            <option value=<?php echo '10'; ?>>10</option>
+                                        </select>
+                                        </div>
+                                        </div>  
+                                      </li>
+                                    </ul>
+                                    </li> 
+
+                                    <div id ='unensayomas'>
+                                      
+                                    </div>
+
+                                    </br></br>
+                                    <div class="row">
+                                        <div id ='botonsubmit'>
+                                            <div class="col-xs-4 col-md-4">
+                                                <input type="submit"value="Guardar y agregar otra" name="submit_guardarhipotesis" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                                            </div>
+                                            <div class="col-xs-4 col-md-4">
+                                                <input type="submit"value="Continuar" name="iraparetto" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                         
+                               <?=form_close()?>
+
+                                <hr />
+                                <?php if(validation_errors()!= ""):?>
+                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                      <strong>Oh no!</strong><?= validation_errors(); ?>
+                                    </div>
+                                <?php endif;?>   
+                           
+                       </div>
+                   </div>
+                        
+                </div>
+
+                </div>
+                
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery Version 1.11.0 -->
+    <!-- jQuery Version 1.11.0 -->
+    <script src="http://localhost/codeigniter2/js/jquery-1.11.0.js"></script>
+    <script src="http://localhost/codeigniter2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

@@ -80,6 +80,31 @@ class UsuarioComun extends CI_Controller
     {
       $this->iraensayos($idcaso);
     }
+
+    if ($numpaso == 7)
+    {
+      $this->iramacrografia($idcaso);
+    }
+
+    if ($numpaso == 8)
+    {
+      $this->iramicrografia($idcaso);
+    }
+
+    if ($numpaso == 9)
+    {
+      $this->iradiscusion($idcaso);
+    }
+
+    if ($numpaso == 10)
+    {
+      $this->irahipotesis($idcaso);
+    }
+
+    if ($numpaso == 11)
+    {
+      $this->iraparetto($idcaso);
+    }
     
   }
 
@@ -152,6 +177,76 @@ class UsuarioComun extends CI_Controller
 
     $this->casos_model->actualizarpaso($idcaso,'6');
     $this->load->view('ensayos.html',$datosensayo);
+
+  }
+
+  public function iramacrografia($idcaso)
+  {
+    $this->load->helper('url');
+
+      $datosmacro = array(
+         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+         'id' => $idcaso,
+        );
+
+    $this->casos_model->actualizarpaso($idcaso,'7');
+    $this->load->view('macrografia.html',$datosmacro);
+
+  }
+
+  public function iramicrografia($idcaso)
+  {
+    $this->load->helper('url');
+
+      $datosmicro = array(
+         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+         'id' => $idcaso,
+        );
+
+    $this->casos_model->actualizarpaso($idcaso,'8');
+    $this->load->view('micrografia.html',$datosmicro);
+
+  }
+
+  public function iradiscusion($idcaso)
+  {
+    $this->load->helper('url');
+
+      $datosdisc = array(
+         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+         'id' => $idcaso,
+        );
+
+    $this->casos_model->actualizarpaso($idcaso,'9');
+    $this->load->view('discusion.html',$datosdisc);
+
+  }
+
+  public function irahipotesis($idcaso)
+  {
+    $this->load->helper('url');
+
+      $datoshipo = array(
+         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+         'id' => $idcaso,
+        );
+
+    $this->casos_model->actualizarpaso($idcaso,'10');
+    $this->load->view('hipotesis.html',$datoshipo);
+
+  }
+
+  public function iraparetto($idcaso)
+  {
+    $this->load->helper('url');
+
+      $datosparetto = array(
+         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+         'id' => $idcaso,
+        );
+
+    $this->casos_model->actualizarpaso($idcaso,'11');
+    $this->load->view('paretto.html',$datosparetto);
 
   }
 

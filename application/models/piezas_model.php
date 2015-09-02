@@ -185,5 +185,65 @@ class Piezas_model extends CI_Model{
       return ($cantidad+1);
    }
 
+   public function guardainfo_macrografia($idcaso,$iddescripcion)
+   {
+      $this->db->insert('macrografia',array(
+                                          'id_caso'=>$idcaso,
+                                          'id_descripcion'=>$iddescripcion,
+                                          'descripcion'=>$this->input->post('descripcionmacro'.$iddescripcion,TRUE),
+                                          'tipo_fractura'=>$this->input->post('fractura',TRUE),
+                                          ));
+
+   }
+
+   public function guardainfo_micrografia($idcaso,$iddescripcion)
+   {
+      $this->db->insert('micrografia',array(
+                                          'id_caso'=>$idcaso,
+                                          'id_descripcion'=>$iddescripcion,
+                                          'descripcion'=>$this->input->post('descripcionmicro'.$iddescripcion,TRUE),
+                                          ));
+
+   }
+
+   public function guardainfo_discusion($idcaso)
+   {
+      $this->db->insert('discusion',array(
+                                          'id_caso'=>$idcaso,
+                                          'discusion'=>$this->input->post('comentariogeneral',TRUE),
+                                          ));
+
+   }
+
+   public function guardainfo_hipotesis($idcaso,$cantidadimagenes)
+   {
+
+      $this->db->insert('hipotesis',array(
+                                          'id_caso'=>$idcaso,
+                                          'numero_hipotesis'=>$this->devolver_cantidadhipotesis($idcaso),
+                                          'titulo'=>$this->input->post('titulohipo',TRUE),
+                                          'descripcion'=>$this->input->post('descripcionhipo',TRUE),
+                                          'valoracion'=>$this->input->post('valoracionhipo',TRUE),
+                                          'cant_imagenes' =>$cantidadimagenes,
+                                          ));
+
+   }
+
+   public function devolver_cantidadhipotesis($idcaso)
+   {
+      $this->db->distinct();
+      $this->db->select('numero_hipotesis');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('hipotesis');
+      $cantidad = 0;
+
+      foreach ($consulta->result() as $row)
+      {
+        $cantidad = $cantidad+1;
+      }
+
+      return ($cantidad+1);
+   }
+
 }
 ?>
