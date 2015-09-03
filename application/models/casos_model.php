@@ -275,5 +275,38 @@ class Casos_model extends CI_Model{
       return $nombre;
    }
 
+   public function devolver_tituloparaparetto($idcaso)
+   {
+
+      $this->db->select('titulo');
+      $this->db->select('valoracion');
+      $this->db->where('id_caso', $idcaso); 
+      $this->db->order_by('valoracion', 'desc');
+      $consulta = $this->db->get('hipotesis');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->titulo;
+      }
+      return $datos;
+   }
+
+   public function devolver_valoracionesparaparetto($idcaso)
+   {
+
+      $this->db->select('valoracion');
+      $this->db->where('id_caso', $idcaso); 
+      $this->db->order_by('valoracion', 'desc');
+      $consulta = $this->db->get('hipotesis');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->valoracion;
+      }
+      return $datos;
+   }
+
 }
 ?>

@@ -245,5 +245,13 @@ class Piezas_model extends CI_Model{
       return ($cantidad+1);
    }
 
+   public function devolver_cantidadhipotesisparetto($idcaso)
+   {
+      $this->db->like('id_caso', $idcaso);
+      $this->db->from('hipotesis');
+      $cantidad = $this->db->count_all_results();
+      return $cantidad;
+   }
+
 }
 ?>
