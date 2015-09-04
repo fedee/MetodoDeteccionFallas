@@ -106,6 +106,16 @@ class UsuarioComun extends CI_Controller
     {
       $this->iraparetto($idcaso);
     }
+
+    if ($numpaso == 12)
+    {
+      $this->irasugerenciasdefallo($idcaso);
+    }
+
+    if ($numpaso == 13)
+    {
+      $this->iraconclusionesgenerales($idcaso);
+    }
     
   }
 
@@ -300,6 +310,34 @@ class UsuarioComun extends CI_Controller
                     device: 'iPhone 5',
                     geekbench: 1571
                 }]"*/
+
+  }
+
+  public function irasugerenciasdefallo($idcaso)
+  {
+    $this->load->helper('url');
+
+      $datossugerencias = array(
+         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+         'id' => $idcaso,
+        );
+
+    $this->casos_model->actualizarpaso($idcaso,'12');
+    $this->load->view('sugerenciasdefallo.html',$datossugerencias);
+
+  }
+
+  public function iraconclusionesgenerales($idcaso)
+  {
+    $this->load->helper('url');
+
+      $datosconclusiones = array(
+         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+         'id' => $idcaso,
+        );
+
+    $this->casos_model->actualizarpaso($idcaso,'13');
+    $this->load->view('conclusionesgenerales.html',$datosconclusiones);
 
   }
 

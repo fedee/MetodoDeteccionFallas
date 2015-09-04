@@ -64,8 +64,6 @@ class Piezas extends CI_Controller {
          $this->form_validation->set_rules('codigoint','Código interno de la pieza','required');
          $this->form_validation->set_rules('cantpiezas','Cantidad de piezas','required');
          $this->form_validation->set_rules('usopieza','Uso de la pieza','required');
-         $this->form_validation->set_rules('maqomec','Máquina o mecanismo donde se encuentra montada la pieza','required');
-         $this->form_validation->set_rules('especmontaje','Especificaciones del montaje','required');
          $this->form_validation->set_rules('siguiendonorma','Especificar si la pieza fue montada siguiendo la norma del fabricante o no','required');
         
          $this->form_validation->set_message('required','El campo %s es obligatorio.');
@@ -76,7 +74,7 @@ class Piezas extends CI_Controller {
             $this->piezas_model->guardainfo_casocomponente1($idcaso);
             
 
-                  for($i=1;$i<=5;$i++)
+                  for($i=1;$i<=7;$i++)
                   { 
                         if($_FILES['imagen'.$i]['name']!=''){
 
@@ -105,6 +103,8 @@ class Piezas extends CI_Controller {
                                     if($i==2) $parathumb['queimagen'] = '2';
                                     if($i==3) $parathumb['queimagen'] = '2';
                                     if($i==4) $parathumb['queimagen'] = '2';
+                                    if($i==6) $parathumb['queimagen'] = '8';
+                                    if($i==7) $parathumb['queimagen'] = '9';
                                     if($i==5) $parathumb['queimagen'] = '3';
 
                                     $parathumb['idpieza'] =  $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
@@ -519,6 +519,44 @@ class Piezas extends CI_Controller {
       {
 
           redirect(site_url().'/usuariocomun/iraparetto/'.$idcaso); 
+
+      }
+   }
+
+   public function irasugerenciasdefallo($idcaso)
+   {
+      $this->load->helper('url');
+
+      if($this->input->post('submit_irasugerenciasdefallo'))
+      {     
+            
+            redirect(site_url().'/usuariocomun/irasugerenciasdefallo/'.$idcaso);
+
+      }
+   }
+
+   public function iraconclusionesgenerales($idcaso)
+   {
+      $this->load->helper('url');
+
+      if($this->input->post('submit_iraconclusionesgenerales'))
+      {     
+            
+            redirect(site_url().'/usuariocomun/iraconclusionesgenerales/'.$idcaso);
+
+      }
+   }
+
+   public function guardarconclusion($idcaso)
+   {
+      $this->load->helper('url');
+
+      if($this->input->post('submit_guardarconclusion'))
+      {     
+            $this->piezas_model->guardainfo_conclusion($idcaso);
+            
+            //Cambiar luego la linea de abajo por generar el reporte, volver al panel de mis casos y setear el estado a finalizado.
+            redirect(site_url().'/usuariocomun/iraconclusionesgenerales/'.$idcaso);
 
       }
    }

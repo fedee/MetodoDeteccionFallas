@@ -26,8 +26,6 @@ class Piezas_model extends CI_Model{
                'codinterno'=>$this->input->post('codigoint',TRUE),
                'cantidadfalladas'=>$this->input->post('cantpiezas',TRUE),
                'usopieza'=>$this->input->post('usopieza',TRUE),
-               'maquinamontada'=>$this->input->post('maqomec',TRUE),
-               'espmontaje'=>$this->input->post('especmontaje',TRUE),
                'montadabien'=>$this->input->post('siguiendonorma',TRUE),
             );
 
@@ -98,10 +96,12 @@ class Piezas_model extends CI_Model{
 
       $cantidad_procesos = $this->devolver_cantidadprocesos($idcaso);
 
+      $this->guardarinfo_proveedores($idcaso,$cantidad_procesos);
+
       $proceso = $valores[0];
       $subtipo = $valores[1];
 
-      for($i = 2; $i<($numeroatr-1); $i++)
+      for($i = 7; $i<($numeroatr-1); $i++)
       {
           if($valores[$i] != "")
           {
@@ -126,16 +126,41 @@ class Piezas_model extends CI_Model{
 
       }
 
-      /*echo $tags[$i];
-        echo ": ";
-        echo $valores[$i];
-        echo ", es Padre: ";
-        echo $espadre;
-        echo "</br>";*/
+      /*$numeroatr = count($_POST);
+      $tags = array_keys($_POST);
+      $valores = array_values($_POST);
+
+      for($i = 0; $i<($numeroatr); $i++)
+      {
+          echo $tags[$i];
+          echo ": ";
+          echo $valores[$i];
+          //echo ", es Padre: ";
+          //echo $espadre;
+          echo "</br>";
+      }*/
+
+       
 
       //Para cuando haga el panel de edición, puedo fijarme el nombre de los atributos en "atributos" para relacionar las tablas con
       //la de precargados, y de ahi precargar los selectores que hagan falta via comparación de IDs. Revisar los nombres porque puede 
       //llegar a haber conflictos con nombres iguales de atributos. Si todos son distintos va a andar perfecto.
+
+   }
+
+
+    public function guardarinfo_proveedores($idcaso,$numproceso)
+   {
+      
+      $this->db->insert('proveedorprocesos',array(
+                        'id_caso'=>$idcaso,
+                        'numero_proceso'=>$numproceso,
+                        'empresa'=> $this->input->post('empresaproveedor',TRUE),
+                        'responsable'=> $this->input->post('responsableproveedor',TRUE),
+                        'correoelectronico'=> $this->input->post('correoproveedor',TRUE),
+                        'telefono' => $this->input->post('telefonoproveedor',TRUE),
+                        'direccion' => $this->input->post('direccionproveedor',TRUE),
+                       ));
 
    }
 
@@ -251,6 +276,15 @@ class Piezas_model extends CI_Model{
       $this->db->from('hipotesis');
       $cantidad = $this->db->count_all_results();
       return $cantidad;
+   }
+
+   public function guardainfo_conclusion($idcaso)
+   {
+      $this->db->insert('conclusionusuario',array(
+                                          'id_caso'=>$idcaso,
+                                          'conclusion'=>$this->input->post('conclusiongeneral',TRUE),
+                                          ));
+
    }
 
 }
