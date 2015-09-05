@@ -87,6 +87,17 @@ class Piezas_model extends CI_Model{
         $this->db->insert('imagenes', $data);
     }
 
+    function guardarimgparetto($tituloimg,$idcaso)
+    {
+        $data = array(
+            'queimagen' => "10",
+            'urlimagen' => $tituloimg,
+            'id_pieza' => $this->devolver_idpiezaporidcaso($idcaso)
+        );
+        
+        $this->db->insert('imagenes', $data);
+    }
+
 
     public function guardainfo_casofabricacion($idcaso)
    {

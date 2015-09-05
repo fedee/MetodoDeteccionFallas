@@ -249,69 +249,15 @@ class UsuarioComun extends CI_Controller
 
   public function iraparetto($idcaso)
   {
+    
     $this->load->helper('url');
 
-    $datosparagrafico = $this->devolver_datosparaparetto($idcaso);
-
-      //$datosparagrafico = json_encode($datosparagrafico);
-
-      $datosparetto = array(
-         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
-         'id' => $idcaso,
-         'datosgrafico' => $datosparagrafico,
-        );
-
-    $this->casos_model->actualizarpaso($idcaso,'11');
-    $this->load->view('paretto.html',$datosparetto);
+    redirect(site_url().'/graficosparetto/construir_paretto/'.$idcaso);
+    
 
   }
 
-  public function devolver_datosparaparetto($idcaso)
-  {
-    $cantidadcasos = $this->piezas_model->devolver_cantidadhipotesisparetto($idcaso);
-    $tituloshipotesis = $this->casos_model->devolver_tituloparaparetto($idcaso);
-    $valoracioneshipotesis = $this->casos_model->devolver_valoracionesparaparetto($idcaso);
-
-    $iniciojson="[";
-    $cuerpojson="";
-    $finjson="";
-
-    for($i=0 ; $i<$cantidadcasos-1; $i++)
-    {
-      $cuerpojson= $cuerpojson."{ hipotesis: '".$tituloshipotesis[$i]."', valoracion: ".$valoracioneshipotesis[$i]." },";
-    } 
-
-    $finjson="{ hipotesis: '".$tituloshipotesis[$cantidadcasos-1]."', valoracion: ".$valoracioneshipotesis[$cantidadcasos-1]." }  ]";
-
-    $jsonentero = $iniciojson.$cuerpojson.$finjson;
-
-    //estructura del JSON: [{l:'v', l:v},{l:'v', l:v},{l:'v', l:v}]
-
-    return $jsonentero;
-
-      /*"[{
-              device: 'probandoo',
-              geekbench: 136
-           }, 
-           {
-               device: 'Creo que es por esto',
-               geekbench: 137
-           }, 
-           {
-                    device: 'iPhone 3GS',
-                    geekbench: 275
-                }, {
-                    device: 'iPhone 4',
-                    geekbench: 380
-                }, {
-                    device: 'iPhone 4S',
-                    geekbench: 655
-                }, {
-                    device: 'iPhone 5',
-                    geekbench: 1571
-                }]"*/
-
-  }
+  
 
   public function irasugerenciasdefallo($idcaso)
   {
