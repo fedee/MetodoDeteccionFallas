@@ -6,9 +6,9 @@ class GenerarGraficos
 {
     public function __construct() // or any other method
     {
-        require_once 'C:\xampp\htdocs\codeigniter2\application\libraries\pChart\pData.class'; //manipula el array de los datos
-        require_once 'C:\xampp\htdocs\codeigniter2\application\libraries\pChart\pData.class'; //maneja la cache
-        require_once 'C:\xampp\htdocs\codeigniter2\application\libraries\pChart\pData.class'; //maneja los graficos
+        require_once 'C:\xampp\htdocs\cafap\application\libraries\pChart\pData.class'; //manipula el array de los datos
+        require_once 'C:\xampp\htdocs\cafap\application\libraries\pChart\pData.class'; //maneja la cache
+        require_once 'C:\xampp\htdocs\cafap\application\libraries\pChart\pData.class'; //maneja los graficos
     }
     function pData(){
         return new pData();    

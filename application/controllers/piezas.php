@@ -561,7 +561,7 @@ class Piezas extends CI_Controller {
 
       }*/
 
-      redirect(site_url().'/reportepdf/crearpdf/'); 
+      redirect(site_url().'/reportepdf/crearpdf/'.$idcaso); 
 
      
    }

@@ -12,13 +12,13 @@
     <title>Completar caso</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="http://localhost/codeigniter2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://localhost/cafap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="http://localhost/codeigniter2/css/sb-admin.css" rel="stylesheet">
+    <link href="http://localhost/cafap/css/sb-admin.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="http://localhost/codeigniter2/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://localhost/cafap/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -147,7 +147,7 @@
                     <div class="col-xs-5 col-sm-5 col-md-10 col-sm-offset-2 col-md-offset-1">
                         <div class="panel panel-default" >
                             <div class="panel-heading" align ="center">
-                                <h1 class="panel-title">Paso 2: Decripción del componente. Parte 2.</h1>
+                                <h1 class="panel-title">Paso 2: Descripción del componente. Parte 2.</h1>
                             </div>
                             <div class="panel-body">
                                 <?=form_open_multipart(site_url()."/piezas/guardarinfo_casocomponente2/".$id)?>
@@ -450,8 +450,8 @@
     <!-- /#wrapper -->
 
     <!-- jQuery Version 1.11.0 -->
-    <script src="http://localhost/codeigniter2/js/jquery-1.11.0.js"></script>
-    <script src="http://localhost/codeigniter2/js/bootstrap.min.js"></script>
+    <script src="http://localhost/cafap/js/jquery-1.11.0.js"></script>
+    <script src="http://localhost/cafap/js/bootstrap.min.js"></script>
 
     <script type="text/javascript"> 
 
@@ -462,7 +462,7 @@
 
         $.ajax({
           type: "POST",
-          url: '/codeigniter2/index.php/material/getsubmateriales',
+          url: '/cafap/index.php/material/getsubmateriales',
           data: params,
           success: function(data)
           {
@@ -480,7 +480,7 @@
 
         $.ajax({
           type: "POST",
-          url: '/codeigniter2/index.php/material/getmaterialesespecificos',
+          url: '/cafap/index.php/material/getmaterialesespecificos',
           data: params,
           success: function(data)
           {
@@ -497,7 +497,7 @@
 
         $.ajax({
           type: "POST",
-          url: '/codeigniter2/index.php/material/getmaterialesppropiedades',
+          url: '/cafap/index.php/material/getmaterialesppropiedades',
           data: params,
           success: function(data)
           {

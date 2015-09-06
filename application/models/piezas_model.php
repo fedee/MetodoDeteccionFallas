@@ -59,6 +59,8 @@ class Piezas_model extends CI_Model{
                'trayectoria'=>$this->input->post('trayectoria',TRUE),
                'unidadveloc'=>$this->input->post('unidadveloc',TRUE),
                'valveloc'=>$this->input->post('valveloc',TRUE),
+               'elemsusp'=>$this->input->post('elemsusp',TRUE),
+               'valsusp'=>$this->input->post('valsusp',TRUE),
                'modifcond'=>$this->input->post('modifcond',TRUE),
                'modificaciones'=>$this->input->post('modificaciones',TRUE),
             );
@@ -296,6 +298,61 @@ class Piezas_model extends CI_Model{
                                           'conclusion'=>$this->input->post('conclusiongeneral',TRUE),
                                           ));
 
+   }
+
+   public function devolver_todosobrelapieza($idcaso)
+   {
+      $consulta = $this->db->get_where('pieza',array('id_caso'=>$idcaso));
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos['fallo_multiplesoc'] = $row->fallo_multiplesoc;
+        $datos['ttrabajo_tiempo'] = $row->ttrabajo_tiempo;
+        $datos['ttrabajocant'] = $row->ttrabajo_cantidad;
+        $datos['vutil_tiempo'] = $row->vutil_tiempo;
+        $datos['vutil_cantidad'] = $row->vutil_cantidad;
+        $datos['fase_ciclovida'] = $row->fase_ciclovida;
+        $datos['nombregen'] = $row->nombregen;
+        $datos['codinterno'] = $row->codinterno;
+        $datos['cantidadfalladas'] = $row->cantidadfalladas;
+        $datos['usopieza'] = $row->usopieza;
+        $datos['montadabien'] = $row->montadabien;
+        $datos['material'] = $row->material;
+        $datos['submaterial'] = $row->submaterial;
+        $datos['especifico'] = $row->especifico;
+        $datos['descdetallada'] = $row->descdetallada;
+        $datos['tipocargas'] = $row->tipocargas;
+        $datos['umedidacargas'] = $row->umedidacargas;
+        $datos['cantcargas'] = $row->cantcargas;
+        $datos['tiposujeciones'] = $row->tiposujeciones;
+        $datos['condtermicas'] = $row->condtermicas;
+        $datos['utempcondtermicas'] = $row->utempcondtermicas;
+        $datos['cantidadtermica'] = $row->cantidadtermica;
+        $datos['tipopresiones'] = $row->tipopresiones;
+        $datos['distribpresiones'] = $row->distribpresiones;
+        $datos['umedidapres'] = $row->umedidapres;
+        $datos['valpresion'] = $row->valpresion;
+        $datos['veloctrab'] = $row->veloctrab;
+        $datos['trayectoria'] = $row->trayectoria;
+        $datos['unidadveloc'] = $row->unidadveloc;
+        $datos['valveloc'] = $row->valveloc;
+        $datos['elemsusp'] = $row->elemsusp;
+        $datos['valsusp'] = $row->valsusp;
+        $datos['modifcond'] = $row->modifcond;
+        $datos['modificaciones'] = $row->modificaciones;
+      }
+      return $datos;
+   }
+
+   public function devolver_todaslasurlimagenespieza($idpieza)
+   {
+      $consulta = $this->db->get_where('imagenes',array(
+                                                         'id_pieza'=>$idpieza,
+                                                       ));
+   if ($consulta->num_rows() > 0) {
+      $consulta = $consulta->result_array();
+      return $consulta;
+   }      
    }
 
 }

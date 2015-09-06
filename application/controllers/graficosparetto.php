@@ -8,9 +8,9 @@
         {
             parent::__construct();
             $this->load->library("generargraficos");
-            require_once 'C:\xampp\htdocs\codeigniter2\application\libraries\pChart\pData.class'; //manipula el array de los datos
-            require_once 'C:\xampp\htdocs\codeigniter2\application\libraries\pChart\pCache.class'; //maneja la cache
-            require_once 'C:\xampp\htdocs\codeigniter2\application\libraries\pChart\pChart.class'; //maneja los graficos
+            require_once 'C:\xampp\htdocs\cafap\application\libraries\pChart\pData.class'; //manipula el array de los datos
+            require_once 'C:\xampp\htdocs\cafap\application\libraries\pChart\pCache.class'; //maneja la cache
+            require_once 'C:\xampp\htdocs\cafap\application\libraries\pChart\pChart.class'; //maneja los graficos
             $this->load->model('usuarios_model');
             $this->load->model('casos_model');
             $this->load->model('piezas_model');
@@ -52,7 +52,7 @@
             $DataSet->SetSerieName("".$datosimggrafico['titulos'][$i]."","Serie".$num);
          }
            
-         $font_folder = 'C:\xampp\htdocs\codeigniter2\application\libraries\Fonts';
+         $font_folder = 'C:\xampp\htdocs\cafap\application\libraries\Fonts';
           
          // Initialise the graph  
          $Test = new pChart(1000,530);  
@@ -98,7 +98,7 @@
          $Test->drawLegend(893,37,$DataSet->GetDataDescription(),255,255,255);  
          $Test->setFontProperties($font_folder."/tahoma.ttf",10);   
          $Test->drawTitle(50,22,"Diagrama de Paretto",50,50,50,985);  
-         $Test->Render('C:\xampp\htdocs\codeigniter2\uploads\paretto-'.$idcaso.'.png');
+         $Test->Render('C:\xampp\htdocs\cafap\uploads\paretto-'.$idcaso.'.png');
 
          $tituloimg = 'paretto-'.$idcaso.'.png';
 
@@ -109,7 +109,7 @@
 
 
 
-         //$this->casos_model->actualizarpaso($idcaso,'11');
+         $this->casos_model->actualizarpaso($idcaso,'11');
          $this->load->view('paretto.html',$datosparetto);
 
         } 

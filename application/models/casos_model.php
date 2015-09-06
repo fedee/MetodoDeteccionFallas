@@ -16,6 +16,44 @@ class Casos_model extends CI_Model{
       return $datos;
    }
 
+   public function devolver_tituloydescporidcaso($idcaso)
+   {
+      $consulta = $this->db->get_where('casos',array('id'=>$idcaso));
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos['titulo'] = $row->titulo;
+        $datos['descripcion'] = $row->descripcion;
+      }
+      return $datos;
+   }
+
+   public function devolver_nombreusuarioporidcaso($idcaso)
+   {
+      $consulta = $this->db->get_where('casos',array('id'=>$idcaso));
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $idusuario = $row->id_usuario;
+      }
+
+      $nombreusuario = $this->devolver_nombreusuarioporid($idusuario);
+
+      return $nombreusuario;
+   }
+
+   public function devolver_nombreusuarioporid($idusuario)
+   {
+      $consulta = $this->db->get_where('usuarios',array('id'=>$idusuario));
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos['nombre'] = $row->nombre;
+        $datos['apellido'] = $row->apellido;
+      }
+      return $datos;
+   }
+
    public function devolver_descripcioncaso()
    {
       $consulta = $this->db->get_where('casos',array('id_asignado'=>'0'));

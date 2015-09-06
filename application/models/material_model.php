@@ -47,6 +47,14 @@ class Material_model extends CI_Model {
    }      
    }
 
+   public function devolver_nombrematsubesp($id,$tabla)
+   {
+      $consulta = $this->db->get_where($tabla,array('id'=>$id));
+      $row = $consulta->row(1);
+      $nombre = $row->nombre;
+      return $nombre;
+   }
+
 }
 
 ?>
