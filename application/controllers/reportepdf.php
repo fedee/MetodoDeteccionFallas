@@ -315,7 +315,190 @@ class ReportePDF extends CI_Controller {
 
     $pdf->AddPage();
 
-    $procesosfab = '<h3>BLOQUE 3: Procesos de fabricacón</h3>
+    //Procesos de fabricación
+
+    $procesostitulohtml = '<h3>BLOQUE 3: Procesos de fabricacón aplicados a la pieza</h3><br/>';
+
+    $pdf->writeHTML($procesostitulohtml, true, false, true, false, '');
+
+    $cantidadprocesos = $this->piezas_model->devolver_cantidadprocesos($idcaso);
+    $cantidadprocesos = $cantidadprocesos - 1;
+    $nombresprocesos = $this->casos_model->devolver_procesos($idcaso);
+    $nombressubtipos = $this->casos_model->devolver_subtipos($idcaso);
+
+
+    for($i=0; $i<$cantidadprocesos; $i++)
+    {
+        $datosproveedor = $this->piezas_model->devolver_todosobreelproveedor($idcaso,$i+1);
+
+        $proveedorhtml = '<h3>Proceso '.($i+1).': '.$nombresprocesos[$i].'. Subtipo: '.$nombressubtipos[$i].'</h3>
+             <table border="1" cellpadding="2" cellspacing="2" align="center">
+                 <tr nobr="true">
+                     <th colspan="5"><b>Datos del proveedor</b></th>
+                 </tr>
+                 <tr nobr="true">
+                     <td><i>Empresa</i></td>
+                     <td><i>Responsable</i></td>
+                     <td><i>Correo electrónico</i></td>
+                     <td><i>Teléfono</i></td>
+                     <td><i>Dirección</i></td>
+                 </tr>
+                 <tr nobr="true">
+                     <td>'.$datosproveedor['empresa'].'</td>
+                     <td>'.$datosproveedor['responsable'].'</td>
+                     <td>'.$datosproveedor['correoelectronico'].'</td>
+                     <td>'.$datosproveedor['telefono'].'</td>
+                     <td>'.$datosproveedor['direccion'].'</td>
+                 </tr>
+             </table><br/>';
+
+        $pdf->writeHTML($proveedorhtml, true, false, true, false, '');
+
+        //Parametros generales
+        $cantidadparamsgenerales = $this->piezas_model->devolver_cantidadprocesosgenerales($idcaso,$i+1);
+
+        $cantidadderows = (float)$cantidadparamsgenerales/5;
+        $cantidadderowsentero = intval($cantidadparamsgenerales/5);
+        if($cantidadderows != $cantidadderowsentero) $cantidadderows = $cantidadderowsentero+1;
+
+        $paramgeneraleshtml1 = '
+              <table border="1" cellpadding="2" cellspacing="2" align="center">
+                 <tr nobr="true">
+                     <th colspan="5"><b>Parámetros generales del proceso. Cantidad: '.$cantidadparamsgenerales.'</b></th>
+                 </tr>';
+
+        $paramgeneraleshtml2 = '';
+
+        //Devuelvo todos los nombres de los parametros generales para mostrar en el proceso, y voy a necesitar el id del proceso en
+        //cuestion para consultar en la tabla atributos.
+        $nombresparametrosgen = $this->casos_model->devolver_nombresparametrosgen($idcaso,$i+1);
+        $idprocesoinvolucrado = $this->casos_model->devolver_idprocesopornombre($nombresprocesos[$i]);
+        $valoresparametrosgen = $this->casos_model->devolver_valoresparametrosgen($idcaso,$i+1);
+
+        $numerocolumnas = 5;
+        $atributosrestantes = $cantidadparamsgenerales;
+        $indiceatributoamostrar = 0;
+
+        for($j=0; $j<$cantidadderows; $j++)
+        {
+            $paramgeneraleshtml2 = $paramgeneraleshtml2.'<tr nobr="true">';
+
+            for($k=0; $k<$numerocolumnas;$k++)
+            {
+                $datosatributo = $this->piezas_model->devolver_datosatributo($nombresparametrosgen[$indiceatributoamostrar],$idprocesoinvolucrado);
+
+                $paramgeneraleshtml2 = $paramgeneraleshtml2.'<td><i>'.$datosatributo['leyenda'].'</i><br/><i><b>';
+
+                //en esta parte va simplemente la variable que voy a mostrar de valor concatenada al html anterior
+                if($datosatributo['tipo_campo'] == "1")
+                {
+                    if($valoresparametrosgen[$indiceatributoamostrar]== "0") $valoresparametrosgen[$indiceatributoamostrar] = "No";
+                    if($valoresparametrosgen[$indiceatributoamostrar]== "1") $valoresparametrosgen[$indiceatributoamostrar] = "Si";   
+                }
+
+                if($datosatributo['tipo_campo'] == "2")
+                {
+                    $valoresparametrosgen[$indiceatributoamostrar] = $this->casos_model->devolver_nompreprecargadoporid($valoresparametrosgen[$indiceatributoamostrar]);
+                }               
+
+                $paramgeneraleshtml2 = $paramgeneraleshtml2.$valoresparametrosgen[$indiceatributoamostrar];
+
+
+                $paramgeneraleshtml2 = $paramgeneraleshtml2.'</b></i></td>';
+
+                if($atributosrestantes<5)$numerocolumnas = $atributosrestantes;
+
+                $indiceatributoamostrar = $indiceatributoamostrar + 1;
+            }
+            
+            $paramgeneraleshtml2 = $paramgeneraleshtml2.'</tr>';
+
+            $atributosrestantes = $atributosrestantes-5;
+            
+        }
+
+        $paramgeneraleshtml2 = $paramgeneraleshtml2.'</table><br/>';
+
+        $pdf->writeHTML($paramgeneraleshtml1.$paramgeneraleshtml2, true, false, true, false, '');
+
+
+        //Parametros especificos
+
+        if($nombressubtipos[$i] != "Ninguno")
+        {
+            $cantidadparamsespecificos = $this->piezas_model->devolver_cantidadprocesosespecificos($idcaso,$i+1);
+
+            $cantidadderows = (float)$cantidadparamsespecificos/5;
+            $cantidadderowsentero = intval($cantidadparamsespecificos/5);
+            if($cantidadderows != $cantidadderowsentero) $cantidadderows = $cantidadderowsentero+1;
+
+            $paramespecificoshtml1 = '
+                  <table border="1" cellpadding="2" cellspacing="2" align="center">
+                     <tr nobr="true">
+                         <th colspan="5"><b>Parámetros específicos del proceso. Cantidad: '.$cantidadparamsespecificos.'</b></th>
+                     </tr>';
+
+            $paramespecificoshtml2 = '';
+
+            //Devuelvo todos los nombres de los parametros especificos para mostrar en el proceso, y voy a necesitar el id del proceso en
+            //cuestion para consultar en la tabla atributos.
+            $nombresparametrosesp = $this->casos_model->devolver_nombresparametrosesp($idcaso,$i+1);
+            $idprocesoinvolucrado = $this->casos_model->devolver_idprocesopornombre($nombresprocesos[$i]);
+            $valoresparametrosesp = $this->casos_model->devolver_valoresparametrosesp($idcaso,$i+1);
+
+            $numerocolumnas = 5;
+            $atributosrestantes = $cantidadparamsespecificos;
+            $indiceatributoamostrar = 0;
+
+            for($j=0; $j<$cantidadderows; $j++)
+            {
+                $paramespecificoshtml2 = $paramespecificoshtml2.'<tr nobr="true">';
+
+                for($k=0; $k<$numerocolumnas;$k++)
+                {
+                    $datosatributo = $this->piezas_model->devolver_datosatributo($nombresparametrosesp[$indiceatributoamostrar],$idprocesoinvolucrado);
+
+                    $paramespecificoshtml2 = $paramespecificoshtml2.'<td><i>'.$datosatributo['leyenda'].'</i><br/><i><b>';
+
+                    //en esta parte va simplemente la variable que voy a mostrar de valor concatenada al html anterior
+                    if($datosatributo['tipo_campo'] == "1")
+                    {
+                        if($valoresparametrosesp[$indiceatributoamostrar]== "0") $valoresparametrosesp[$indiceatributoamostrar] = "No";
+                        if($valoresparametrosesp[$indiceatributoamostrar]== "1") $valoresparametrosesp[$indiceatributoamostrar] = "Si";   
+                    }
+
+                    if($datosatributo['tipo_campo'] == "2")
+                    {
+                        $valoresparametrosesp[$indiceatributoamostrar] = $this->casos_model->devolver_nompreprecargadoporid($valoresparametrosesp[$indiceatributoamostrar]);
+                    }               
+
+                    $paramespecificoshtml2 = $paramespecificoshtml2.$valoresparametrosesp[$indiceatributoamostrar];
+
+
+                    $paramespecificoshtml2 = $paramespecificoshtml2.'</b></i></td>';
+
+                    if($atributosrestantes<5)$numerocolumnas = $atributosrestantes;
+
+                    $indiceatributoamostrar = $indiceatributoamostrar + 1;
+                }
+                
+                $paramespecificoshtml2 = $paramespecificoshtml2.'</tr>';
+
+                $atributosrestantes = $atributosrestantes-5;
+                
+            }
+
+            $paramespecificoshtml2 = $paramespecificoshtml2.'</table><br/>';
+
+            $pdf->writeHTML($paramespecificoshtml1.$paramespecificoshtml2, true, false, true, false, '');
+
+        }
+
+        $pdf->AddPage();
+
+    }
+
+    $introhtml = '<br/><h3>BLOQUE 4: No me acuerdo</h3>
             <ol>                
                 <li><i>¿El mismo modelo ha fallado en múltipes ocasiones? </i><b>'.$todosobrelapieza['fallo_multiplesoc'].'.</b></li>
                 <li><i>Tiempo de trabajo que estuvo sometida la pieza antes de la rotura:</i>
@@ -325,7 +508,9 @@ class ReportePDF extends CI_Controller {
                 <li><i>Faso del ciclo de vida en donde se produjo la falla: </i><b>'.$todosobrelapieza['fase_ciclovida'].'.</b></li>   
             </ol>';
 
-    $pdf->writeHTML($procesosfab, true, false, true, false, '');
+    $pdf->writeHTML($introhtml, true, false, true, false, '');
+
+    
 
 
     

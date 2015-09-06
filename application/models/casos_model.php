@@ -346,5 +346,93 @@ class Casos_model extends CI_Model{
       return $datos;
    }
 
+   public function devolver_nombresparametrosgen($idcaso,$numeroproceso)
+   {
+
+      $consulta = $this->db->get_where('fabricacion_listaprocesos',array(
+                                                         'id_caso'=>$idcaso,
+                                                         'numero_proceso'=>$numeroproceso,
+                                                       ));
+      
+      $datos = array(); 
+
+      foreach ($consulta->result() as $row)
+      {
+        if($row->es_general == 1) $datos[] = $row->param_nombre;
+      }
+
+      return $datos;
+   }
+
+   public function devolver_nombresparametrosesp($idcaso,$numeroproceso)
+   {
+
+      $consulta = $this->db->get_where('fabricacion_listaprocesos',array(
+                                                         'id_caso'=>$idcaso,
+                                                         'numero_proceso'=>$numeroproceso,
+                                                       ));
+      
+      $datos = array(); 
+
+      foreach ($consulta->result() as $row)
+      {
+        if($row->es_general == 0) $datos[] = $row->param_nombre;
+      }
+
+      return $datos;
+   }
+
+   public function devolver_idprocesopornombre($nombreproceso)
+   {
+      $consulta = $this->db->get_where('procesosfab_generales',array('nombre'=>$nombreproceso));
+      $row = $consulta->row(1);
+      $id = $row->id;
+      return $id;
+   }
+
+   public function devolver_valoresparametrosgen($idcaso,$numeroproceso)
+   {
+
+      $consulta = $this->db->get_where('fabricacion_listaprocesos',array(
+                                                         'id_caso'=>$idcaso,
+                                                         'numero_proceso'=>$numeroproceso,
+                                                       ));
+      
+      $datos = array(); 
+
+      foreach ($consulta->result() as $row)
+      {
+        if($row->es_general == 1) $datos[] = $row->param_valor;
+      }
+
+      return $datos;
+   }
+
+   public function devolver_valoresparametrosesp($idcaso,$numeroproceso)
+   {
+
+      $consulta = $this->db->get_where('fabricacion_listaprocesos',array(
+                                                         'id_caso'=>$idcaso,
+                                                         'numero_proceso'=>$numeroproceso,
+                                                       ));
+      
+      $datos = array(); 
+
+      foreach ($consulta->result() as $row)
+      {
+        if($row->es_general == 0) $datos[] = $row->param_valor;
+      }
+
+      return $datos;
+   }
+
+   public function devolver_nompreprecargadoporid($idprecargado)
+   {
+      $consulta = $this->db->get_where('precargados',array('id'=>$idprecargado));
+      $row = $consulta->row(1);
+      $nombre = $row->nombre_atributo;
+      return $nombre;
+   }
+
 }
 ?>

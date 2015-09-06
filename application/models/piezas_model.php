@@ -123,8 +123,13 @@ class Piezas_model extends CI_Model{
               $espadre = $row->parent_id;
 
               if($espadre != 0){
+                $espadre = 0;
+              }
+              else
+              {
                 $espadre = 1;
               }
+
 
               $this->db->insert('fabricacion_listaprocesos',array(
                                               'id_caso'=>$idcaso,
@@ -353,6 +358,76 @@ class Piezas_model extends CI_Model{
       $consulta = $consulta->result_array();
       return $consulta;
    }      
+   }
+
+   public function devolver_todosobreelproveedor($idcaso,$numeroproceso)
+   {
+      $consulta = $this->db->get_where('proveedorprocesos',array(
+                                                         'id_caso'=>$idcaso,
+                                                         'numero_proceso'=>$numeroproceso,
+                                                       ));
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos['empresa'] = $row->empresa;
+        $datos['responsable'] = $row->responsable;
+        $datos['correoelectronico'] = $row->correoelectronico;
+        $datos['telefono'] = $row->telefono;
+        $datos['direccion'] = $row->direccion;
+        
+      }
+      return $datos;  
+   }
+
+
+   public function devolver_cantidadprocesosgenerales($idcaso,$numeroproceso)
+   {
+      $consulta = $this->db->get_where('fabricacion_listaprocesos',array(
+                                                         'id_caso'=>$idcaso,
+                                                         'numero_proceso'=>$numeroproceso,
+                                                       ));
+      $cantidad = 0;
+
+      foreach ($consulta->result() as $row)
+      {
+        if($row->es_general == 1) $cantidad = $cantidad + 1;
+      }
+
+      return ($cantidad);
+   }
+
+   public function devolver_cantidadprocesosespecificos($idcaso,$numeroproceso)
+   {
+      $consulta = $this->db->get_where('fabricacion_listaprocesos',array(
+                                                         'id_caso'=>$idcaso,
+                                                         'numero_proceso'=>$numeroproceso,
+                                                       ));
+      $cantidad = 0;
+
+      foreach ($consulta->result() as $row)
+      {
+        if($row->es_general == 0) $cantidad = $cantidad + 1;
+      }
+
+      return ($cantidad);
+   }
+
+
+   public function devolver_datosatributo($atributo,$idproceso)
+   {
+      $consulta = $this->db->get_where('atributos',array(
+                                                         'atributo'=>$atributo,
+                                                         'id_proceso'=>$idproceso,
+                                                       ));
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos['leyenda'] = $row->leyenda;
+        $datos['tipo_campo'] = $row->tipo_campo;
+        $datos['id'] = $row->id;
+        
+      }
+      return $datos;  
    }
 
 }

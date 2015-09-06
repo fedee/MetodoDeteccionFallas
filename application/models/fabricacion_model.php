@@ -83,9 +83,12 @@ class Fabricacion_model extends CI_Model {
 
    public function devolver_cantidadcampossubtipo($idsubtipo)
    {
-      $consulta = $this->db->like('id_subtipo', $idsubtipo);
-      $this->db->from('atributos');
-      return $this->db->count_all_results();
+
+      $consulta = $this->db->get_where('atributos',array(
+                                                         'id_subtipo'=>$idsubtipo,
+                                                       ));
+      
+      return $consulta->num_rows();
    }
 
    public function devolver_atributosespecificos($idsubtipo)
@@ -107,6 +110,7 @@ class Fabricacion_model extends CI_Model {
       $nombre = $row->nombre_atributo;
       return $nombre;
    }
+
 
 }
 

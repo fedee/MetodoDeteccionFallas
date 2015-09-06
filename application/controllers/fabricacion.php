@@ -133,7 +133,7 @@ class Fabricacion extends CI_Controller {
                                      echo "<select name='"; echo $atributos[$var]['atributo']; echo"' class='form-control'>";
                                      for ($k=0; $k<$cantidadprecargados; $k++)
                                      {   
-                                         echo "<option value="; echo $k; echo ">"; echo $this->fabricacion_model->devolver_precargadoporid($aprecargar[$k]['opcion']); echo"</option>";
+                                         echo "<option value="; echo $aprecargar[$k]['opcion']; echo ">"; echo $this->fabricacion_model->devolver_precargadoporid($aprecargar[$k]['opcion']); echo"</option>";
                                      }
                                      echo "</select>";
                                      break;
@@ -174,7 +174,7 @@ class Fabricacion extends CI_Controller {
          else
          {
 
-          $cantidadcampos = $this->fabricacion_model->devolver_cantidadcampossubtipo($idsubtipo);
+         $cantidadcampos = $this->fabricacion_model->devolver_cantidadcampossubtipo($idsubtipo);
 
          $atributos = $this->fabricacion_model->devolver_atributosespecificos($idsubtipo);
 
@@ -222,7 +222,7 @@ class Fabricacion extends CI_Controller {
                                    echo "<select name='"; echo $atributos[$var]['atributo']; echo"' class='form-control'>";
                                    for ($k=0; $k<$cantidadprecargados; $k++)
                                    {
-                                       echo "<option value="; echo $k; echo ">"; echo $this->fabricacion_model->devolver_precargadoporid($aprecargar[$k]['opcion']); echo"</option>";
+                                       echo "<option value="; echo $aprecargar[$k]['opcion']; echo ">"; echo $this->fabricacion_model->devolver_precargadoporid($aprecargar[$k]['opcion']); echo"</option>";
                                    }
                                    echo "</select>";
                                    break;
