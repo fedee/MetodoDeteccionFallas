@@ -552,16 +552,18 @@ class Piezas extends CI_Controller {
    {
       $this->load->helper('url');
 
-      /*if($this->input->post('submit_guardarconclusion'))
+      if($this->input->post('submit_guardarconclusion'))
       {     
             $this->piezas_model->guardainfo_conclusion($idcaso);
             
             //Cambiar luego la linea de abajo por generar el reporte, volver al panel de mis casos y setear el estado a finalizado.
-            redirect(site_url().'/usuariocomun/iraconclusionesgenerales/'.$idcaso);
+            //redirect(site_url().'/usuariocomun/iraconclusionesgenerales/'.$idcaso);
 
-      }*/
+      }
 
-      redirect(site_url().'/reportepdf/crearpdf/'.$idcaso); 
+      $soyusuario = 1;
+      
+      redirect(site_url().'/reportepdf/crearpdf/'.$idcaso.'/'.$soyusuario); 
 
      
    }

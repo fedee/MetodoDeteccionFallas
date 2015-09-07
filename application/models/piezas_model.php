@@ -430,5 +430,172 @@ class Piezas_model extends CI_Model{
       return $datos;  
    }
 
+
+    public function devolver_todosobreensayos($idcaso)
+   {
+      $consulta = $this->db->get_where('ensayos',array(
+                                                         'id_caso'=>$idcaso,
+                                                       ));
+      if ($consulta->num_rows() > 0) {
+         $consulta = $consulta->result_array();
+         return $consulta;
+      }
+   }
+
+   public function devolver_cantidadimagenesdeensayos($idpieza)
+   {
+      $consulta = $this->db->get_where('imagenes',array(
+                                                         'id_pieza'=>$idpieza,
+                                                         'queimagen'=>'4',
+                                                       ));
+      $cantidad = 0;
+
+      foreach ($consulta->result() as $row)
+      {
+        $cantidad = $cantidad + 1;
+      }
+
+      return ($cantidad);
+   }
+
+   public function devolver_todosobreimgdeensayos($idpieza)
+   {
+      $consulta = $this->db->get_where('imagenes',array(
+                                                         'id_pieza'=>$idpieza,
+                                                         'queimagen'=>'4',
+                                                       ));
+   if ($consulta->num_rows() > 0) {
+      $consulta = $consulta->result_array();
+      return $consulta;
+   }      
+   }
+
+   public function devolver_todosobremacrografia($idcaso)
+   {
+      $consulta = $this->db->get_where('macrografia',array(
+                                                         'id_caso'=>$idcaso,
+                                                       ));
+      if ($consulta->num_rows() > 0) {
+         $consulta = $consulta->result_array();
+         return $consulta;
+      }
+   }
+
+   public function devolver_cantidaddescmacrografia($idcaso)
+   {
+      $consulta = $this->db->get_where('macrografia',array(
+                                                         'id_caso'=>$idcaso,
+                                                       ));
+      $cantidad = 0;
+
+      foreach ($consulta->result() as $row)
+      {
+        $cantidad = $cantidad + 1;
+      }
+
+      return ($cantidad);
+   }
+
+   public function devolver_todosobreimgmacrografia($idpieza)
+   {
+      $consulta = $this->db->get_where('imagenes',array(
+                                                         'id_pieza'=>$idpieza,
+                                                         'queimagen'=>'5',
+                                                       ));
+   if ($consulta->num_rows() > 0) {
+      $consulta = $consulta->result_array();
+      return $consulta;
+   }      
+   }
+
+   public function devolver_todosobremicrografia($idcaso)
+   {
+      $consulta = $this->db->get_where('micrografia',array(
+                                                         'id_caso'=>$idcaso,
+                                                       ));
+      if ($consulta->num_rows() > 0) {
+         $consulta = $consulta->result_array();
+         return $consulta;
+      }
+   }
+
+   public function devolver_cantidaddescmicrografia($idcaso)
+   {
+      $consulta = $this->db->get_where('micrografia',array(
+                                                         'id_caso'=>$idcaso,
+                                                       ));
+      $cantidad = 0;
+
+      foreach ($consulta->result() as $row)
+      {
+        $cantidad = $cantidad + 1;
+      }
+
+      return ($cantidad);
+   }
+
+   public function devolver_todosobreimgmicrografia($idpieza)
+   {
+      $consulta = $this->db->get_where('imagenes',array(
+                                                         'id_pieza'=>$idpieza,
+                                                         'queimagen'=>'6',
+                                                       ));
+   if ($consulta->num_rows() > 0) {
+      $consulta = $consulta->result_array();
+      return $consulta;
+   }      
+   }
+
+   public function devolver_todosobrehipotesis($idcaso)
+   {
+      $consulta = $this->db->get_where('hipotesis',array(
+                                                         'id_caso'=>$idcaso,
+                                                       ));
+      if ($consulta->num_rows() > 0) {
+         $consulta = $consulta->result_array();
+         return $consulta;
+      }
+   }
+
+   public function devolver_cantidadimagenesdehipotesis($idpieza)
+   {
+      $consulta = $this->db->get_where('imagenes',array(
+                                                         'id_pieza'=>$idpieza,
+                                                         'queimagen'=>'7',
+                                                       ));
+      $cantidad = 0;
+
+      foreach ($consulta->result() as $row)
+      {
+        $cantidad = $cantidad + 1;
+      }
+
+      return ($cantidad);
+   }
+
+   public function devolver_todosobreimgdehipotesis($idpieza)
+   {
+      $consulta = $this->db->get_where('imagenes',array(
+                                                         'id_pieza'=>$idpieza,
+                                                         'queimagen'=>'7',
+                                                       ));
+   if ($consulta->num_rows() > 0) {
+      $consulta = $consulta->result_array();
+      return $consulta;
+   }      
+   }
+
+   public function devolver_urldeparetoparareporte($idpieza)
+   {
+     $consulta = $this->db->get_where('imagenes',array(
+                                                         'id_pieza'=>$idpieza,
+                                                         'queimagen'=>'10',
+                                                       ));
+      $row = $consulta->row(1);
+      $url = $row->urlimagen;
+      return $url;
+   }
+
+
 }
 ?>

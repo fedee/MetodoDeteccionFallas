@@ -434,5 +434,21 @@ class Casos_model extends CI_Model{
       return $nombre;
    }
 
+   public function devolver_discusionporidcaso($idcaso)
+   {
+      $consulta = $this->db->get_where('discusion',array('id_caso'=>$idcaso));
+      $row = $consulta->row(1);
+      $disc = $row->discusion;
+      return $disc;
+   }
+
+   public function devolver_conclusionporidcaso($idcaso)
+   {
+      $consulta = $this->db->get_where('conclusionusuario',array('id_caso'=>$idcaso));
+      $row = $consulta->row(1);
+      $conc = $row->conclusion;
+      return $conc;
+   }
+
 }
 ?>

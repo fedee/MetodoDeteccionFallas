@@ -11,7 +11,7 @@ class ReportePDF extends CI_Controller {
         $this->load->model('fabricacion_model');
     }
  
-    public function crearpdf($idcaso) {
+    public function crearpdf($idcaso,$esusuariocomun) {
 
     // create new PDF document
     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);    
@@ -498,20 +498,213 @@ class ReportePDF extends CI_Controller {
 
     }
 
-    $introhtml = '<br/><h3>BLOQUE 4: No me acuerdo</h3>
-            <ol>                
-                <li><i>¿El mismo modelo ha fallado en múltipes ocasiones? </i><b>'.$todosobrelapieza['fallo_multiplesoc'].'.</b></li>
-                <li><i>Tiempo de trabajo que estuvo sometida la pieza antes de la rotura:</i>
-                       <b>'.$todosobrelapieza['ttrabajocant'].' '.$todosobrelapieza['ttrabajo_tiempo'].'.</b></li>
-                <li><i>Vida útil de la pieza (según fabricante), o vida esperada:</i>
-                <b>'.$todosobrelapieza['vutil_cantidad'].' '.$todosobrelapieza['vutil_tiempo'].'.</li>
-                <li><i>Faso del ciclo de vida en donde se produjo la falla: </i><b>'.$todosobrelapieza['fase_ciclovida'].'.</b></li>   
-            </ol>';
+    //Ensayos
 
-    $pdf->writeHTML($introhtml, true, false, true, false, '');
+    $cantidadensayos = ($this->piezas_model->devolver_cantidadensayos($idcaso))-1;
+    $todosobreensayos = $this->piezas_model->devolver_todosobreensayos($idcaso);
 
+    $cantidadimagenesdeensayo = $this->piezas_model->devolver_cantidadimagenesdeensayos($idpieza);
+    $todosobreimgensayos = $this->piezas_model->devolver_todosobreimgdeensayos($idpieza);
+
+    $titulobloqueensayoshtml = '<h3>BLOQUE 4: Ensayos</h3><br/>';
+    $pdf->writeHTML($titulobloqueensayoshtml, true, false, true, false, '');
+
+    $inicio = 0;
+    $final = 0;
+
+    for($i=0;$i<$cantidadensayos;$i++)
+    {
+        $ensayoshtml = '';
+        $ensayoshtml = '<h3>Ensayo número '.($i+1).': '.$todosobreensayos[$i]['nombre'].'</h3>
+             <span style="text-align:justify;">'.$todosobreensayos[$i]['descripcion'].'</span>';
+
+        if($todosobreensayos[$i]['cant_imagenes']!=0)
+        {
+            $final = $final + $todosobreensayos[$i]['cant_imagenes'];
+
+            $ensayoshtml = $ensayoshtml.'<br/><br/><b>Imágenes del ensayo.</b>';
+            $pdf->writeHTML($ensayoshtml, true, false, true, false, '');
+
+            for($inicio;$inicio<$final;$inicio++)
+            {
+                $pdf->Image('http://localhost/cafap/uploads/'.$todosobreimgensayos[$inicio]['urlimagen'], '', '', 155, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+
+                $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                                <br/><br/><br/>';
+
+                $pdf->writeHTML($espacio, true, false, true, false, '');
+
+            }
+            
+            $inicio = 0;
+            $inicio = $inicio + $final;  
+
+        }
+        else $pdf->writeHTML($ensayoshtml, true, false, true, false, '');
+
+    }
+
+    $pdf->AddPage();
+
+
+    //Macrografía
+
+    $titulobloquemacrografiahtml = '<h3>BLOQUE 5: Macrografía</h3><br/><b>Imágenes de la macrografía.';
+    $pdf->writeHTML($titulobloquemacrografiahtml, true, false, true, false, '');
+
+    $cantidadmacrografias = $this->piezas_model->devolver_cantidaddescmacrografia($idcaso);
+    $todosobremacrografia = $this->piezas_model->devolver_todosobremacrografia($idcaso);
+    $todosobreimgmacrografia = $this->piezas_model->devolver_todosobreimgmacrografia($idpieza);
+
+    if($todosobremacrografia[0]['tipo_fractura']==0) $todosobremacrografia[0]['tipo_fractura'] = 'Frágil';
+    if($todosobremacrografia[0]['tipo_fractura']==1) $todosobremacrografia[0]['tipo_fractura'] = 'Dúctil';
+    if($todosobremacrografia[0]['tipo_fractura']==2) $todosobremacrografia[0]['tipo_fractura'] = 'Mixta';
+
+    $fracturapredom = 'Fractura predominante: '.$todosobremacrografia[0]['tipo_fractura'].'</b><br/>';
+    $pdf->writeHTML($fracturapredom, true, false, true, false, '');
+
+    $macrografiahtml = '';
+
+    for($i=0; $i<$cantidadmacrografias;$i++)
+    {
+        $pdf->Image('http://localhost/cafap/uploads/'.$todosobreimgmacrografia[$i]['urlimagen'], '', '', 155, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+
+        $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                                <br/><br/>';
+
+        $pdf->writeHTML($espacio, true, false, true, false, '');
+
+        $macrografiahtml = '<b>Descripción: </b>'.$todosobremacrografia[$i]['descripcion'].'<br/>';
+
+        $pdf->writeHTML($macrografiahtml, true, false, true, false, '');
+    }
+
+
+    $pdf->AddPage();
+
+
+    //Micrografía
+
+    $titulobloquemicrografiahtml = '<h3>BLOQUE 6: Micrografía</h3><br/><b>Imágenes de la micrografía.</b><br/>';
+    $pdf->writeHTML($titulobloquemicrografiahtml, true, false, true, false, '');
+
+    $cantidadmicrografias = $this->piezas_model->devolver_cantidaddescmicrografia($idcaso);
+    $todosobremicrografia = $this->piezas_model->devolver_todosobremicrografia($idcaso);
+    $todosobreimgmicrografia = $this->piezas_model->devolver_todosobreimgmicrografia($idpieza);
+
+    $micrografiahtml = '';
+
+    for($i=0; $i<$cantidadmicrografias;$i++)
+    {
+        $pdf->Image('http://localhost/cafap/uploads/'.$todosobreimgmicrografia[$i]['urlimagen'], '', '', 155, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+
+        $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                                <br/><br/>';
+
+        $pdf->writeHTML($espacio, true, false, true, false, '');
+
+        $micrografiahtml = '<b>Descripción: </b>'.$todosobremicrografia[$i]['descripcion'].'<br/>';
+
+        $pdf->writeHTML($micrografiahtml, true, false, true, false, '');
+    }
+
+    $pdf->AddPage();
+
+
+    //Discusión
+
+    $discusion = $this->casos_model->devolver_discusionporidcaso($idcaso);
+
+    $discusionhtml = '<h3>BLOQUE 7: Discusión</h3>
+    <span style="text-align:justify;">'.$discusion.'</span><br/><br/><br/>';
+
+    $pdf->writeHTML($discusionhtml, true, false, true, false, '');
+
+
+    //Hipotesis
+
+    $cantidadhipotesis = ($this->piezas_model->devolver_cantidadhipotesis($idcaso))-1;
+    $todosobrehipotesis = $this->piezas_model->devolver_todosobrehipotesis($idcaso);
+
+    $cantidadimagenesdehipotesis = $this->piezas_model->devolver_cantidadimagenesdehipotesis($idpieza);
+    $todosobreimghipotesis = $this->piezas_model->devolver_todosobreimgdehipotesis($idpieza);
+
+    $titulobloquehipotesishtml = '<h3>BLOQUE 8: Hipótesis del usuario</h3><br/>';
+    $pdf->writeHTML($titulobloquehipotesishtml, true, false, true, false, '');
+
+    $inicio = 0;
+    $final = 0;
+
+    for($i=0;$i<$cantidadhipotesis;$i++)
+    {
+        $hipotesishtml = '';
+        $hipotesishtml = '<h3>Hipótesis número '.($i+1).': '.$todosobrehipotesis[$i]['titulo'].'. Valoración: '.$todosobrehipotesis[$i]['valoracion'].'</h3>
+             <span style="text-align:justify;">'.$todosobrehipotesis[$i]['descripcion'].'</span>';
+
+        if($todosobrehipotesis[$i]['cant_imagenes']!=0)
+        {
+            $final = $final + $todosobrehipotesis[$i]['cant_imagenes'];
+
+            $hipotesishtml = $hipotesishtml.'<br/><br/><b>Imágenes de la hipótesis.</b>';
+            $pdf->writeHTML($hipotesishtml, true, false, true, false, '');
+
+            for($inicio;$inicio<$final;$inicio++)
+            {
+                $pdf->Image('http://localhost/cafap/uploads/'.$todosobreimghipotesis[$inicio]['urlimagen'], '', '', 155, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+
+                $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                                <br/><br/><br/>';
+
+                $pdf->writeHTML($espacio, true, false, true, false, '');
+
+            }
+            
+            $inicio = 0;
+            $inicio = $inicio + $final;  
+
+        }
+        else $pdf->writeHTML($hipotesishtmlhtml, true, false, true, false, '');
+
+    }
+
+    $pdf->AddPage();
+
+    //Diagrama de Pareto
+
+    $urldepareto = $this->piezas_model->devolver_urldeparetoparareporte($idpieza);
+
+    $paretohtml = '<h3>Diagrama de Pareto para las hipótesis del caso</h3><br/><br/>';
+
+    $pdf->writeHTML($paretohtml, true, false, true, false, '');
+
+    $pdf->Image('http://localhost/cafap/uploads/'.$urldepareto, '', '', 180, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+
+    $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                                <br/><br/><br/><br/><br/>';
+
+    $pdf->writeHTML($espacio, true, false, true, false, '');
+
+
+    //Conclusiones generales
+
+    $conclusion = $this->casos_model->devolver_conclusionporidcaso($idcaso);
+
+    $conclusionhtml = '<h3>BLOQUE 9: Conclusión</h3>
+    <span style="text-align:justify;">'.$conclusion.'</span>';
+
+    $pdf->writeHTML($conclusionhtml, true, false, true, false, '');
+
+
+    $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>';
+
+    $pdf->writeHTML($espacio, true, false, true, false, '');
+
+    //Agradecimiento
+
+    $agradecimiento = '<h2 align="center">¡Muchas gracias por utilizar CAFAP!</h2>';
+
+    $pdf->writeHTML($agradecimiento, true, false, true, false, '');
     
-
 
     
  
@@ -519,7 +712,9 @@ class ReportePDF extends CI_Controller {
  
     // Close and output PDF document
     // This method has several options, check the source code documentation for more information.
-     $pdf->Output('example_001.pdf', 'I');    
+     $pdf->Output('Caso de '.$datosusuario['nombre'].' '.$datosusuario['apellido'].'.pdf', 'D');    
+
+     if($esusuariocomun == 1) redirect(site_url().'/usuariocomun/iraconclusionesgenerales/'.$idcaso); //cambiar para volver al inicio
  
     //============================================================+
     // END OF FILE

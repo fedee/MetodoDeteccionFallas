@@ -56,7 +56,7 @@
           
          // Initialise the graph  
          $Test = new pChart(1000,530);  
-         $Test->setFontProperties($font_folder."/tahoma.ttf",8); 
+         $Test->setFontProperties($font_folder."/tahoma.ttf",10); 
          $Test->setGraphArea(50,30,980,500);  
          $Test->drawFilledRoundedRectangle(7,7,1093,623,5,240,240,240);  
          $Test->drawRoundedRectangle(5,5,695,225,5,230,230,230);  
@@ -87,17 +87,17 @@
          $Test->drawGrid(4,TRUE,230,230,230,50);  
           
          // Draw the 0 line  
-         $Test->setFontProperties($font_folder."/tahoma.ttf",6);   
+         $Test->setFontProperties($font_folder."/tahoma.ttf",12);   
          $Test->drawTreshold(0,143,55,72,TRUE,TRUE);  
           
          // Draw the bar graph  
          $Test->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),TRUE);  
           
          // Finish the graph  
-         $Test->setFontProperties($font_folder."/tahoma.ttf",8);  
-         $Test->drawLegend(893,37,$DataSet->GetDataDescription(),255,255,255);  
-         $Test->setFontProperties($font_folder."/tahoma.ttf",10);   
-         $Test->drawTitle(50,22,"Diagrama de Paretto",50,50,50,985);  
+         $Test->setFontProperties($font_folder."/tahoma.ttf",12);  
+         $Test->drawLegend(725,37,$DataSet->GetDataDescription(),255,255,255);  
+         $Test->setFontProperties($font_folder."/tahoma.ttf",13);   
+         $Test->drawTitle(50,22,"Diagrama de Pareto",50,50,50,985);  
          $Test->Render('C:\xampp\htdocs\cafap\uploads\paretto-'.$idcaso.'.png');
 
          $tituloimg = 'paretto-'.$idcaso.'.png';
