@@ -50,6 +50,19 @@ class Piezas extends CI_Controller {
          }
 
       }
+
+      if($this->input->post('submit_editartitydesc'))
+      {
+
+        $caso['todoslosdatos'] = $this->casos_model->devolver_tituloydescporidcaso($idcaso);
+        $caso['todoslosdatos']['id'] = $idcaso;
+        $caso['todoslosdatos']['mostrarhasta'] = 0;
+
+        $this->load->view('edicionusuario.html',$caso);
+
+      }
+
+      
    }
 
 
@@ -141,6 +154,30 @@ class Piezas extends CI_Controller {
          }
       
       }
+
+      if($this->input->post('submit_editarintroduccion'))
+      {
+
+        $caso['todoslosdatos'] = $this->piezas_model->devolver_todosobrelapieza($idcaso);
+        $caso['todoslosdatos']['titulo'] = $this->casos_model->devolver_titulocasoparaedicion($idcaso);
+        $caso['todoslosdatos']['descripcion'] = $this->casos_model->devolver_descripcioncasoparaedicion($idcaso);
+        $caso['todoslosdatos']['id'] = $idcaso;
+        $caso['todoslosdatos']['opcionescheck'] = array(
+                                                         '1',
+                                                         '0',
+                                                       );
+        $caso['todoslosdatos']['opcionesselector4opciones'] = array(
+                                                                    '0',
+                                                                    '1',
+                                                                    '2',
+                                                                    '3',
+                                                                     );
+        $caso['todoslosdatos']['mostrarhasta'] = 1;
+
+        $this->load->view('edicionusuario.html',$caso);   
+      }
+
+      
    }
 
 
@@ -181,6 +218,34 @@ class Piezas extends CI_Controller {
          }
       
       }
+
+
+      if($this->input->post('submit_editarcasocomponente1'))
+      {
+
+        $caso['todoslosdatos'] = $this->piezas_model->devolver_todosobrelapieza($idcaso);
+        $caso['todoslosdatos']['titulo'] = $this->casos_model->devolver_titulocasoparaedicion($idcaso);
+        $caso['todoslosdatos']['descripcion'] = $this->casos_model->devolver_descripcioncasoparaedicion($idcaso);
+        $caso['todoslosdatos']['id'] = $idcaso;
+        $caso['todoslosdatos']['opcionescheck'] = array(
+                                                         '1',
+                                                         '0',
+                                                       );
+        $caso['todoslosdatos']['opcionesselector4opciones'] = array(
+                                                                    '0',
+                                                                    '1',
+                                                                    '2',
+                                                                    '3',
+                                                                     );
+        $caso['todoslosdatos']['mostrarhasta'] = 2;
+
+        $idpieza = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+        $caso['todosobreimagenes'] = $this->piezas_model->devolver_todaslasurlimagenespieza($idpieza);
+
+        $this->load->view('edicionusuario.html',$caso);   
+      }
+
+      
    }
 
    function _create_thumbnail($parathumb){
@@ -569,6 +634,50 @@ class Piezas extends CI_Controller {
    }
 
 
+   public function eliminarimgyvolveraedicion($idcaso,$idimagen,$volverenedicionhasta)
+   {
+      $this->load->helper('url');
+      $this->load->helper('form');
+
+
+      if($volverenedicionhasta == 2)
+      {
+        $this->eliminarurlimagenporid($idimagen);
+
+        $caso['todoslosdatos'] = $this->piezas_model->devolver_todosobrelapieza($idcaso);
+        $caso['todoslosdatos']['titulo'] = $this->casos_model->devolver_titulocasoparaedicion($idcaso);
+        $caso['todoslosdatos']['descripcion'] = $this->casos_model->devolver_descripcioncasoparaedicion($idcaso);
+        $caso['todoslosdatos']['id'] = $idcaso;
+        $caso['todoslosdatos']['opcionescheck'] = array(
+                                                         '1',
+                                                         '0',
+                                                       );
+        $caso['todoslosdatos']['opcionesselector4opciones'] = array(
+                                                                    '0',
+                                                                    '1',
+                                                                    '2',
+                                                                    '3',
+                                                                     );
+        $caso['todoslosdatos']['mostrarhasta'] = 2;
+
+        $idpieza = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+        $caso['todosobreimagenes'] = $this->piezas_model->devolver_todaslasurlimagenespieza($idpieza);
+
+        $this->load->view('edicionusuario.html',$caso);   
+      }
+
+      
+   }
+
+
+   public function eliminarurlimagenporid($idimagen)
+   {
+      $this->load->helper('url');
+      $this->load->helper('form');
+
+      $this->db->delete('imagenes', array('id' => $idimagen));
+
+   }
         
       
       

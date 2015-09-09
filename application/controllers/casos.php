@@ -43,7 +43,9 @@ class Casos extends CI_Controller {
          if($this->form_validation->run() != FALSE)
          {
             $this->casos_model->add_nuevocaso();
-            redirect(site_url().'/usuariocomun/ver_casossubidos'); 
+
+
+            redirect(site_url().'/usuariocomun/iraintroduccion/'); 
          }
          else
          {

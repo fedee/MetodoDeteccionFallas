@@ -7,7 +7,11 @@ class Casos_model extends CI_Model{
 
    public function devolver_titulocaso()
    {
-      $consulta = $this->db->get_where('casos',array('id_asignado'=>'0'));
+      $idusuario = $this->session->userdata('id');
+
+      $consulta = $this->db->get_where('casos',array(
+                                                         'id_usuario'=>$idusuario,
+                                                       ));
       $datos = array(); 
       foreach ($consulta->result() as $row)
       {
@@ -27,6 +31,7 @@ class Casos_model extends CI_Model{
       }
       return $datos;
    }
+
 
    public function devolver_nombreusuarioporidcaso($idcaso)
    {
@@ -67,13 +72,16 @@ class Casos_model extends CI_Model{
 
    public function devolver_idcaso()
    {
-      $consulta = $this->db->get_where('casos',array('id_asignado'=>'0'));
-      $datos = array(); 
-      foreach ($consulta->result() as $row)
-      {
-        $datos[] = $row->id;
-      }
-      return $datos;
+      $idusuario = $this->session->userdata('id');
+
+      $this->db->select('id');
+      $this->db->where('id_usuario', $idusuario); 
+      $this->db->order_by('id', 'desc');
+      $consulta = $this->db->get('casos');
+
+      $row = $consulta->row(0);
+      $idcaso = $row->id;
+      return $idcaso;
    }
 
     public function devolver_fecharegistrocaso()
@@ -448,6 +456,73 @@ class Casos_model extends CI_Model{
       $row = $consulta->row(1);
       $conc = $row->conclusion;
       return $conc;
+   }
+
+
+   public function editartituloydescripcion($idcaso)
+   {
+      $data = array(
+               'titulo'=>$this->input->post('titulo',TRUE),
+               'descripcion'=>$this->input->post('descripcion',TRUE),
+            );
+
+      $this->db->where('id', $idcaso);
+      $this->db->update('casos', $data); 
+   }
+
+   public function devolver_titulocasoparaedicion($idcaso)
+   {
+     $consulta = $this->db->get_where('casos',array(
+                                                         'id'=>$idcaso,
+                                                       ));
+      $row = $consulta->row(1);
+      $tit = $row->titulo;
+      return $tit;
+   }
+
+   public function devolver_descripcioncasoparaedicion($idcaso)
+   {
+     $consulta = $this->db->get_where('casos',array(
+                                                         'id'=>$idcaso,
+                                                       ));
+      $row = $consulta->row(1);
+      $desc = $row->descripcion;
+      return $desc;
+   }
+
+   public function editarintroduccion($idcaso)
+   {
+      $data = array(
+               'fallo_multiplesoc'=>$this->input->post('fallo',TRUE),
+               'ttrabajo_tiempo'=>$this->input->post('ttrabajo',TRUE),
+               'ttrabajo_cantidad'=>$this->input->post('ctrabajo',TRUE),
+               'vutil_tiempo'=>$this->input->post('tvidautil',TRUE),
+               'vutil_cantidad'=>$this->input->post('cvidautil',TRUE),
+               'fase_ciclovida'=>$this->input->post('faseciclo',TRUE),
+            );
+
+      $this->db->where('id_caso', $idcaso);
+      $this->db->update('pieza', $data); 
+   }
+
+   public function editarcomponente1($idcaso)
+   {
+      $data = array(
+               'fallo_multiplesoc'=>$this->input->post('fallo',TRUE),
+               'ttrabajo_tiempo'=>$this->input->post('ttrabajo',TRUE),
+               'ttrabajo_cantidad'=>$this->input->post('ctrabajo',TRUE),
+               'vutil_tiempo'=>$this->input->post('tvidautil',TRUE),
+               'vutil_cantidad'=>$this->input->post('cvidautil',TRUE),
+               'fase_ciclovida'=>$this->input->post('faseciclo',TRUE),
+               'nombregen'=>$this->input->post('nombregen',TRUE),
+               'codinterno'=>$this->input->post('codigoint',TRUE),
+               'cantidadfalladas'=>$this->input->post('cantpiezas',TRUE),
+               'usopieza'=>$this->input->post('usopieza',TRUE),
+               'montadabien'=>$this->input->post('siguiendonorma',TRUE),
+            );
+
+      $this->db->where('id_caso', $idcaso);
+      $this->db->update('pieza', $data); 
    }
 
 }

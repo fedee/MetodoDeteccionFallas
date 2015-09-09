@@ -250,10 +250,10 @@ class ReportePDF extends CI_Controller {
 
             $pdf->writeHTML($imagenplano, true, false, true, false, '');
 
-            $pdf->Image('http://localhost/cafap/uploads/'.$dat['urlimagen'], '', '', 175, 112, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+            $pdf->Image('http://localhost/cafap/uploads/'.$dat['urlimagen'], '', '', 175, 110, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
 
             $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                        <br/><br/><br/><br/><br/>';
+                        <br/><br/><br/><br/>';
 
             $pdf->writeHTML($espacio, true, false, true, false, '');
          }
@@ -263,10 +263,10 @@ class ReportePDF extends CI_Controller {
 
             $pdf->writeHTML($imagenplano, true, false, true, false, '');
 
-            $pdf->Image('http://localhost/cafap/uploads/'.$dat['urlimagen'], '', '', 175, 112, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+            $pdf->Image('http://localhost/cafap/uploads/'.$dat['urlimagen'], '', '', 175, 110, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
 
             $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                        <br/><br/><br/><br/><br/><br/>';
+                        <br/><br/><br/><br/><br/>';
 
             $pdf->writeHTML($espacio, true, false, true, false, '');
          }
@@ -276,10 +276,10 @@ class ReportePDF extends CI_Controller {
 
             $pdf->writeHTML($imagenplano, true, false, true, false, '');
 
-            $pdf->Image('http://localhost/cafap/uploads/'.$dat['urlimagen'], '', '', 175, 112, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+            $pdf->Image('http://localhost/cafap/uploads/'.$dat['urlimagen'], '', '', 175, 110, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
 
             $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                        <br/><br/><br/><br/><br/><br/>';
+                        <br/><br/><br/><br/><br/>';
 
             $pdf->writeHTML($espacio, true, false, true, false, '');
          }
@@ -289,10 +289,10 @@ class ReportePDF extends CI_Controller {
 
             $pdf->writeHTML($imagenplano, true, false, true, false, '');
 
-            $pdf->Image('http://localhost/cafap/uploads/'.$dat['urlimagen'], '', '', 175, 112, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+            $pdf->Image('http://localhost/cafap/uploads/'.$dat['urlimagen'], '', '', 175, 110, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
 
             $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                        <br/><br/><br/><br/><br/><br/>';
+                        <br/><br/><br/><br/><br/>';
 
             $pdf->writeHTML($espacio, true, false, true, false, '');
          }
@@ -302,10 +302,10 @@ class ReportePDF extends CI_Controller {
 
             $pdf->writeHTML($imagenplano, true, false, true, false, '');
 
-            $pdf->Image('http://localhost/cafap/uploads/'.$dat['urlimagen'], '', '', 175, 112, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+            $pdf->Image('http://localhost/cafap/uploads/'.$dat['urlimagen'], '', '', 175, 110, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
 
             $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                        <br/><br/><br/><br/><br/><br/>';
+                        <br/><br/><br/><br/><br/>';
 
             $pdf->writeHTML($espacio, true, false, true, false, '');
          }
@@ -663,7 +663,7 @@ class ReportePDF extends CI_Controller {
             $inicio = $inicio + $final;  
 
         }
-        else $pdf->writeHTML($hipotesishtmlhtml, true, false, true, false, '');
+        else $pdf->writeHTML($hipotesishtml, true, false, true, false, '');
 
     }
 
@@ -722,6 +722,4 @@ class ReportePDF extends CI_Controller {
     }
 }
  
-/* End of file c_test.php */
-/* Location: ./application/controllers/c_test.php */
 ?>

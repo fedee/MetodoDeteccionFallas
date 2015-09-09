@@ -349,6 +349,7 @@ class Piezas_model extends CI_Model{
       return $datos;
    }
 
+
    public function devolver_todaslasurlimagenespieza($idpieza)
    {
       $consulta = $this->db->get_where('imagenes',array(

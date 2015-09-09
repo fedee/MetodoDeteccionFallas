@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Completar caso</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="http://localhost/cafap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="http://localhost/cafap/css/sb-admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://localhost/cafap/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Opciones</a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu message-dropdown">
+                        <li class="message-preview">
+                            <a href="#">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h5 class="media-heading"><strong>Fede Sarmiento</strong>
+                                        </h5>
+                                        <p class="small text-muted"><i class="fa fa-clock-o"></i> Ayer 4:32 PM</p>
+                                        <p>Mensaje nuevo...</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="message-footer">
+                            <a href="#">Leer todos los mensajes</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                    <ul class="dropdown-menu alert-dropdown">
+                        <li>
+                            <a href="#">Notif 1 <span class="label label-default">Alert Badge</span></a>
+                        </li>
+                        <li>
+                            <a href="#">Notif 2 <span class="label label-primary">Alert Badge</span></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">Ver todas</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> Fede <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Perfil</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Mensajes</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Opciones</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                    <li>
+                        <a href="<?= site_url().'/dashboardusuariocomun'?>"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <a href="<?= site_url().'/usuariocomun/ver_casossubidos'?>" method="POST"><i class="fa fa-fw fa-briefcase"></i> Mis casos</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Panel de edición
+                                                            
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li>
+                                <i class="fa fa-dashboard"></i>  <a href="<?= site_url().'/dashboardusuariocomun'?>">Dashboard</a>
+                            </li>
+                            <li>
+                                <i class="fa fa-briefcase"></i>  <a href="<?= site_url().'/usuariocomun/ver_casossubidos'?>">Mis casos</a>
+                            </li>
+                            <li class="active">
+                                <i class="fa fa-edit"></i> Caso: <?php echo $todoslosdatos['titulo']?>. Edición de datos cargados.
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <?=form_open_multipart(site_url()."/usuariocomun/guardaredicion/".$todoslosdatos['id']."/".$todoslosdatos['mostrarhasta'])?>
+
+                <!--Si vengo del paso 0: ver tit y desc-->
+                <?php if ($todoslosdatos['mostrarhasta'] == 0): ?>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class='row'>
+                                    <div class='col-lg-12'>
+                                        <h4 align='center'><strong>TÍTULO Y DESCRIPCIÓN</strong></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <h4><strong>Título del caso: </strong></h4>
+                            </div>
+                            <div class="col-lg-10">
+                                <input type="text" name="titulo" value= "<?php echo $todoslosdatos['titulo']?>" class="form-control input-lg" tabindex="1">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <h4><strong>Descripción del caso: </strong></h4>
+                            </div>
+                             <div class="col-lg-10">
+                                    <textarea class="form-control" name="descripcion" rows="3" tabindex="2"><?php echo $todoslosdatos['descripcion']?></textarea>
+                            </div>
+                        </div>
+                    </li>  
+                    </br></br>
+                    <div class="row">
+                        <div class="col-xs-4 col-md-4">
+                            <input type="submit"value="Guardar y volver al caso" name="submit_guardartodalaedicion" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+
+                <!--Si vengo del paso 1: tit y desc + introduccion-->
+                <?php if ($todoslosdatos['mostrarhasta'] == 1): ?>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class='row'>
+                                    <div class='col-lg-12'>
+                                        <h4 align='center'><strong>TÍTULO Y DESCRIPCIÓN</strong></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <h4><strong>Título del caso: </strong></h4>
+                            </div>
+                            <div class="col-lg-10">
+                                <input type="text" name="titulo" value= "<?php echo $todoslosdatos['titulo']?>" class="form-control input-lg" tabindex="1">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <h4><strong>Descripción del caso: </strong></h4>
+                            </div>
+                             <div class="col-lg-10">
+                                    <textarea class="form-control" name="descripcion" rows="3" tabindex="2"><?php echo $todoslosdatos['descripcion']?></textarea>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class='row'>
+                                    <div class='col-lg-12'>
+                                        <h4 align='center'><strong>INTRODUCCIÓN</strong></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <h4><strong>¿El mismo modelo ha fallado en múltipes ocasiones?</strong></h4>
+                            </div>
+                            <div class="col-lg-4">
+                                <?php foreach($todoslosdatos['opcionescheck'] as $opc):?>
+                                    <?php if ($opc == 1): ?>
+                                        <?php if ($todoslosdatos['fallo_multiplesoc'] == 1): ?>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="fallo" id="fallo" value=<?= $opc; ?> checked> Si
+                                            </label>
+                                        <?php else: ?>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="fallo" id="fallo" value=<?= $opc; ?>> Si
+                                            </label>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                      <?php if ($todoslosdatos['fallo_multiplesoc'] == 0): ?>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="fallo" id="fallo" value=<?= $opc; ?> checked> No
+                                            </label>
+                                        <?php else: ?>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="fallo" id="fallo" value=<?= $opc; ?>> No
+                                            </label>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>  
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                          <div class="row">
+                                <div class="col-lg-8">
+                                    <h4><strong>¿A cuánto tiempo de trabajo estuvo sometida la pieza antes de que se produzca la rotura?</strong></h4>
+                                </div>
+                                <div class="col-lg-2">
+                                    <select name="ttrabajo" id="ttrabajo" class="form-control">
+                                        <?php foreach($todoslosdatos['opcionesselector4opciones'] as $opc):?>
+                                            <?php if ($opc == 0): ?>
+                                                <?php if ($todoslosdatos['ttrabajo_tiempo'] == 0): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Años</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Años</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 1): ?>
+                                                <?php if ($todoslosdatos['ttrabajo_tiempo'] == 1): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Meses</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Meses</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 2): ?>
+                                                <?php if ($todoslosdatos['ttrabajo_tiempo'] == 2): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Días</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Días</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 3): ?>
+                                                <?php if ($todoslosdatos['ttrabajo_tiempo'] == 3): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Horas</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Horas</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="text" name="ctrabajo" class="form-control" value= "<?php echo $todoslosdatos['ttrabajocant']?>">
+                                </div>
+                          </div>  
+                    </li>
+                    <li class="list-group-item">
+                          <div class="row">
+                                <div class="col-lg-8">
+                                    <h4><strong>Especifique la vida útil de la pieza (según fabricante), o vida esperada.</strong></h4>
+                                </div>
+                                <div class="col-lg-2">
+                                    <select name="tvidautil" id="tvidautil" class="form-control">
+                                        <?php foreach($todoslosdatos['opcionesselector4opciones'] as $opc):?>
+                                            <?php if ($opc == 0): ?>
+                                                <?php if ($todoslosdatos['vutil_tiempo'] == 0): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Años</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Años</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 1): ?>
+                                                <?php if ($todoslosdatos['vutil_tiempo'] == 1): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Meses</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Meses</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 2): ?>
+                                                <?php if ($todoslosdatos['vutil_tiempo'] == 2): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Días</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Días</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 3): ?>
+                                                <?php if ($todoslosdatos['vutil_tiempo'] == 3): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Horas</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Horas</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="text" name="cvidautil" class="form-control" value= "<?php echo $todoslosdatos['vutil_cantidad']?>"> 
+                                </div>
+                          </div>
+                      </li>
+                      <li class="list-group-item">
+                        <div class="row">
+                                <div class="col-lg-8">
+                                    <h4><strong>¿En qué fase del ciclo de vida del producto se dió la falla?</strong></h4>
+                                </div>
+                                <div class="col-lg-4">
+                                    <select name="faseciclo" id="faseciclo" class="form-control">
+                                        <?php foreach($todoslosdatos['opcionesselector4opciones'] as $opc):?>
+                                            <?php if ($opc == 0): ?>
+                                                <?php if ($todoslosdatos['fase_ciclovida'] == 0): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Mantenimiento</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Mantenimiento</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 1): ?>
+                                                <?php if ($todoslosdatos['fase_ciclovida'] == 1): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Servicio</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Servicio</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 2): ?>
+                                                <?php if ($todoslosdatos['fase_ciclovida'] == 2): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Periodo de prueba</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Periodo de prueba</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 3): ?>
+                                                <?php if ($todoslosdatos['fase_ciclovida'] == 3): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Prototipo</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Prototipo</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                          </div>
+                    </li>                 
+                    </br></br>
+                    <div class="row">
+                        <div class="col-xs-4 col-md-4">
+                            <input type="submit"value="Guardar y volver al caso" name="submit_guardartodalaedicion" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+
+                <!--Si vengo del paso 2: tit y desc, intro, caso componente 1-->
+                <?php if ($todoslosdatos['mostrarhasta'] == 2): ?>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class='row'>
+                                    <div class='col-lg-12'>
+                                        <h4 align='center'><strong>TÍTULO Y DESCRIPCIÓN</strong></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <h4><strong>Título del caso: </strong></h4>
+                            </div>
+                            <div class="col-lg-10">
+                                <input type="text" name="titulo" value= "<?php echo $todoslosdatos['titulo']?>" class="form-control input-lg" tabindex="1">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <h4><strong>Descripción del caso: </strong></h4>
+                            </div>
+                             <div class="col-lg-10">
+                                    <textarea class="form-control" name="descripcion" rows="3" tabindex="2"><?php echo $todoslosdatos['descripcion']?></textarea>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class='row'>
+                                    <div class='col-lg-12'>
+                                        <h4 align='center'><strong>INTRODUCCIÓN</strong></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <h4><strong>¿El mismo modelo ha fallado en múltipes ocasiones?</strong></h4>
+                            </div>
+                            <div class="col-lg-4">
+                                <?php foreach($todoslosdatos['opcionescheck'] as $opc):?>
+                                    <?php if ($opc == 1): ?>
+                                        <?php if ($todoslosdatos['fallo_multiplesoc'] == 1): ?>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="fallo" id="fallo" value=<?= $opc; ?> checked> Si
+                                            </label>
+                                        <?php else: ?>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="fallo" id="fallo" value=<?= $opc; ?>> Si
+                                            </label>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                      <?php if ($todoslosdatos['fallo_multiplesoc'] == 0): ?>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="fallo" id="fallo" value=<?= $opc; ?> checked> No
+                                            </label>
+                                        <?php else: ?>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="fallo" id="fallo" value=<?= $opc; ?>> No
+                                            </label>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>  
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                          <div class="row">
+                                <div class="col-lg-8">
+                                    <h4><strong>¿A cuánto tiempo de trabajo estuvo sometida la pieza antes de que se produzca la rotura?</strong></h4>
+                                </div>
+                                <div class="col-lg-2">
+                                    <select name="ttrabajo" id="ttrabajo" class="form-control">
+                                        <?php foreach($todoslosdatos['opcionesselector4opciones'] as $opc):?>
+                                            <?php if ($opc == 0): ?>
+                                                <?php if ($todoslosdatos['ttrabajo_tiempo'] == 0): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Años</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Años</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 1): ?>
+                                                <?php if ($todoslosdatos['ttrabajo_tiempo'] == 1): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Meses</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Meses</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 2): ?>
+                                                <?php if ($todoslosdatos['ttrabajo_tiempo'] == 2): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Días</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Días</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 3): ?>
+                                                <?php if ($todoslosdatos['ttrabajo_tiempo'] == 3): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Horas</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Horas</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="text" name="ctrabajo" class="form-control" value= "<?php echo $todoslosdatos['ttrabajocant']?>">
+                                </div>
+                          </div>  
+                    </li>
+                    <li class="list-group-item">
+                          <div class="row">
+                                <div class="col-lg-8">
+                                    <h4><strong>Especifique la vida útil de la pieza (según fabricante), o vida esperada.</strong></h4>
+                                </div>
+                                <div class="col-lg-2">
+                                    <select name="tvidautil" id="tvidautil" class="form-control">
+                                        <?php foreach($todoslosdatos['opcionesselector4opciones'] as $opc):?>
+                                            <?php if ($opc == 0): ?>
+                                                <?php if ($todoslosdatos['vutil_tiempo'] == 0): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Años</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Años</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 1): ?>
+                                                <?php if ($todoslosdatos['vutil_tiempo'] == 1): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Meses</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Meses</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 2): ?>
+                                                <?php if ($todoslosdatos['vutil_tiempo'] == 2): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Días</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Días</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 3): ?>
+                                                <?php if ($todoslosdatos['vutil_tiempo'] == 3): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Horas</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Horas</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="col-lg-2">
+                                    <input type="text" name="cvidautil" class="form-control" value= "<?php echo $todoslosdatos['vutil_cantidad']?>"> 
+                                </div>
+                          </div>
+                      </li>
+                      <li class="list-group-item">
+                        <div class="row">
+                                <div class="col-lg-8">
+                                    <h4><strong>¿En qué fase del ciclo de vida del producto se dió la falla?</strong></h4>
+                                </div>
+                                <div class="col-lg-4">
+                                    <select name="faseciclo" id="faseciclo" class="form-control">
+                                        <?php foreach($todoslosdatos['opcionesselector4opciones'] as $opc):?>
+                                            <?php if ($opc == 0): ?>
+                                                <?php if ($todoslosdatos['fase_ciclovida'] == 0): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Mantenimiento</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Mantenimiento</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 1): ?>
+                                                <?php if ($todoslosdatos['fase_ciclovida'] == 1): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Servicio</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Servicio</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 2): ?>
+                                                <?php if ($todoslosdatos['fase_ciclovida'] == 2): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Periodo de prueba</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Periodo de prueba</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                            <?php if ($opc == 3): ?>
+                                                <?php if ($todoslosdatos['fase_ciclovida'] == 3): ?>
+                                                    <option value=<?= $opc; ?> selected = "selected">Prototipo</option>
+                                                <?php else: ?>
+                                                    <option value=<?= $opc; ?>>Prototipo</option>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                          </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class='row'>
+                                    <div class='col-lg-12'>
+                                        <h4 align='center'><strong>DESCRIPCIÓN DEL COMPONENTE, PARTE 1</strong></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                          <div class="row">
+                                <div class="col-lg-7">
+                                    <h4><strong>Nombre genérico de la pieza o conjunto que presenta la falla:</strong></h4>
+                                </div>
+                                <div class="col-lg-5">
+                                    <input type="text" name="nombregen" class="form-control" value= "<?php echo $todoslosdatos['nombregen']?>">
+                                </div>
+                          </div>  
+                    </li>
+                    <li class="list-group-item">
+                          <div class="row">
+                                <div class="col-lg-7">
+                                    <h4><strong>Nombre o código interno de la pieza o conjunto:</strong></h4>
+                                </div>
+                                <div class="col-lg-5">
+                                    <input type="text" name="codigoint" class="form-control" value= "<?php echo $todoslosdatos['codinterno']?>">
+                                </div>
+                          </div>  
+                    </li>
+                    <li class="list-group-item">
+                          <div class="row">
+                                <div class="col-lg-7">
+                                    <h4><strong>Cantidad de piezas que presentan la falla:</strong></h4>
+                                </div>
+                                <div class="col-lg-5">
+                                    <input type="text" name="cantpiezas" class="form-control" value= "<?php echo $todoslosdatos['cantidadfalladas']?>">
+                                </div>
+                          </div>  
+                    </li>
+                    <li class="list-group-item">
+                          <div class="row">
+                                <div class="col-lg-7">
+                                    <h4><strong>Uso de la pieza (uso específico del componente, o forma de uso habitual):</strong></h4>
+                                </div>
+                                <div class="col-lg-5">
+                                    <input type="text" name="usopieza" class="form-control" value= "<?php echo $todoslosdatos['usopieza']?>">
+                                </div>
+                          </div>  
+                    </li>
+                      <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <h4><strong>¿La pieza fue montada y utilizada siguiendo las especificaciones técnicas recomendadas por el fabricante o normas relativas al componente?</strong></h4>
+                            </div>
+                            <div class="col-lg-4">
+                                <?php foreach($todoslosdatos['opcionescheck'] as $opc):?>
+                                    <?php if ($opc == 1): ?>
+                                        <?php if ($todoslosdatos['montadabien'] == 1): ?>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="siguiendonorma" id="siguiendonorma" value=<?= $opc; ?> checked> Si
+                                            </label>
+                                        <?php else: ?>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="siguiendonorma" id="siguiendonorma" value=<?= $opc; ?>> Si
+                                            </label>
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                      <?php if ($todoslosdatos['montadabien'] == 0): ?>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="siguiendonorma" id="siguiendonorma" value=<?= $opc; ?> checked> No
+                                            </label>
+                                        <?php else: ?>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="siguiendonorma" id="siguiendonorma" value=<?= $opc; ?>> No
+                                            </label>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>  
+                            </div>
+                        </div>
+                    </li>  
+                    <?php $plano = $maq = $espec = $mont = $buenestado = 0; ?>
+                    <?php if (is_array($todosobreimagenes) || is_object($todosobreimagenes)) : ?>
+                        <?php foreach($todosobreimagenes as $img):?>
+                            <?php if ($img['queimagen'] == 1): ?>
+                                <li class="list-group-item">
+                                      <div class="row">
+                                            <div class="col-lg-6">
+                                                <h4><strong>Imagen del plano de la pieza</strong></h4>
+                                            </div>      
+                                      </div>  
+                                      <div class="row">
+                                          <div class="col-lg-8"> 
+                                                <img align="center" src='http://localhost/cafap/uploads/<?= $img['urlimagen']; ?>' alt="Mountain View" style="width:745px;height:550px;" >
+                                                <h3 align="center"><a href="<?= site_url().'/piezas/eliminarimgyvolveraedicion/'.$todoslosdatos['id'].'/'.$img['id'].'/'.$todoslosdatos['mostrarhasta']?>"><span class="label label-danger">Eliminar</span></a></h3>
+                                          </div>
+                                          <input type="file" name="imagen1" style="display: none;"/>
+                                      </div>
+                                </li>
+                                <?php $plano = 1; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <?php if ($plano != 1): ?>
+                                <li class="list-group-item">
+                                      <div class="row">
+                                            <div class="col-lg-6">
+                                                <h4><strong>Sin imagen del plano de la pieza.</strong></h4>
+                                            </div>      
+                                      </div>  
+                                      <div class="row">
+                                            <div class="col-lg-6">
+                                                <span class="btn btn-default btn-file">
+                                                    <input type="file" name="imagen1" />
+                                                </span>
+                                            </div> 
+                                      </div>  
+                                </li>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <li class="list-group-item">
+                              <div class="row">
+                                    <div class="col-lg-6">
+                                        <h4><strong>Sin imagen del plano de la pieza.</strong></h4>
+                                    </div>      
+                              </div>  
+                              <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="btn btn-default btn-file">
+                                            <input type="file" name="imagen1" />
+                                        </span>
+                                    </div> 
+                              </div>  
+                        </li>
+                    <?php endif; ?>
+                    <?php if (is_array($todosobreimagenes) || is_object($todosobreimagenes)) : ?>
+                        <?php foreach($todosobreimagenes as $img):?>
+                            <?php if ($img['queimagen'] == 8): ?>
+                                <li class="list-group-item">
+                                      <div class="row">
+                                            <div class="col-lg-6">
+                                                <h4><strong>Máquina o mecanismo donde se encuentra montada</strong></h4>
+                                            </div>      
+                                      </div>  
+                                      <div class="row">
+                                          <div class="col-lg-8">
+                                                <img align="center" src='http://localhost/cafap/uploads/<?= $img['urlimagen']; ?>' alt="Mountain View" style="width:745px;height:550px;" >
+                                                <h3 align="center"><a href="<?= site_url().'/piezas/eliminarimgyvolveraedicion/'.$todoslosdatos['id'].'/'.$img['id'].'/'.$todoslosdatos['mostrarhasta']?>"><span class="label label-danger">Eliminar</span></a></h3>
+                                          </div>
+                                          <input type="file" name="imagen2" style="display: none;"/>
+                                      </div> 
+                                </li>
+                                <?php $maq = 1; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <?php if ($maq != 1): ?>
+                                <li class="list-group-item">
+                                      <div class="row">
+                                            <div class="col-lg-6">
+                                                <h4><strong>Sin imagen de la máquina o mecanismo donde se encuentra montada la pieza.</strong></h4>
+                                            </div>      
+                                      </div>  
+                                      <div class="row">
+                                            <div class="col-lg-6">
+                                                <span class="btn btn-default btn-file">
+                                                    <input type="file" name="imagen2" />
+                                                </span>
+                                            </div> 
+                                      </div>  
+                                </li>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <li class="list-group-item">
+                              <div class="row">
+                                    <div class="col-lg-6">
+                                        <h4><strong>Sin imagen de la máquina o mecanismo donde se encuentra montada la pieza.</strong></h4>
+                                    </div>      
+                              </div>  
+                              <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="btn btn-default btn-file">
+                                            <input type="file" name="imagen2" />
+                                        </span>
+                                    </div> 
+                              </div>  
+                        </li>
+                    <?php endif; ?>
+                    <?php if (is_array($todosobreimagenes) || is_object($todosobreimagenes)) : ?>
+                        <?php foreach($todosobreimagenes as $img):?>
+                            <?php if ($img['queimagen'] == 9): ?>
+                                <li class="list-group-item">
+                                      <div class="row">
+                                            <div class="col-lg-6">
+                                                <h4><strong>Especificaciones del montaje</strong></h4>
+                                            </div>      
+                                      </div>  
+                                      <div class="row">
+                                          <div class="col-lg-8">
+                                                <img align="center" src='http://localhost/cafap/uploads/<?= $img['urlimagen']; ?>' alt="Mountain View" style="width:745px;height:550px;" >
+                                                <h3 align="center"><a href="<?= site_url().'/piezas/eliminarimgyvolveraedicion/'.$todoslosdatos['id'].'/'.$img['id'].'/'.$todoslosdatos['mostrarhasta']?>"><span class="label label-danger">Eliminar</span></a></h3>
+                                          </div>
+                                          <input type="file" name="imagen3" style="display: none;"/>
+                                      </div>  
+                                </li>
+                                <?php $espec = 1; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>    
+                        <?php if ($espec != 1): ?>
+                                <li class="list-group-item">
+                                      <div class="row">
+                                            <div class="col-lg-6">
+                                                <h4><strong>Sin imagen las especificaciones del montaje de la pieza.</strong></h4>
+                                            </div>      
+                                      </div>  
+                                      <div class="row">
+                                            <div class="col-lg-6">
+                                                <span class="btn btn-default btn-file">
+                                                    <input type="file" name="imagen3" />
+                                                </span>
+                                            </div> 
+                                      </div>  
+                                </li>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <li class="list-group-item">
+                              <div class="row">
+                                    <div class="col-lg-6">
+                                        <h4><strong>Sin imagen las especificaciones del montaje de la pieza.</strong></h4>
+                                    </div>      
+                              </div>  
+                              <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="btn btn-default btn-file">
+                                            <input type="file" name="imagen3" />
+                                        </span>
+                                    </div> 
+                              </div>  
+                        </li>
+                    <?php endif; ?>
+                    <?php if (is_array($todosobreimagenes) || is_object($todosobreimagenes)) : ?>
+                        <?php foreach($todosobreimagenes as $img):?>
+                            <?php if ($img['queimagen'] == 3): ?>
+                                <li class="list-group-item">
+                                      <div class="row">
+                                            <div class="col-lg-6">
+                                                <h4><strong>Esquema de montaje y funcionamiento de la pieza</strong></h4>
+                                            </div>      
+                                      </div>  
+                                      <div class="row">
+                                          <div class="col-lg-8">
+                                                <img align="center" src='http://localhost/cafap/uploads/<?= $img['urlimagen']; ?>' alt="Mountain View" style="width:745px;height:550px;" >
+                                                <h3 align="center"><a href="<?= site_url().'/piezas/eliminarimgyvolveraedicion/'.$todoslosdatos['id'].'/'.$img['id'].'/'.$todoslosdatos['mostrarhasta']?>"><span class="label label-danger">Eliminar</span></a></h3>
+                                          </div>
+                                          <input type="file" name="imagen4" style="display: none;"/>
+                                      </div>
+                                </li>
+                                <?php $mont = 1; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <?php if ($mont != 1): ?>
+                                <li class="list-group-item">
+                                      <div class="row">
+                                            <div class="col-lg-6">
+                                                <h4><strong>Sin imagen del esquema de montaje de la pieza.</strong></h4>
+                                            </div>      
+                                      </div>  
+                                      <div class="row">
+                                            <div class="col-lg-6">
+                                                <span class="btn btn-default btn-file">
+                                                    <input type="file" name="imagen4" />
+                                                </span>
+                                            </div> 
+                                      </div>  
+                                </li>
+                        <?php endif; ?>  
+                    <?php else: ?>   
+                        <li class="list-group-item">
+                              <div class="row">
+                                    <div class="col-lg-6">
+                                        <h4><strong>Sin imagen del esquema de montaje de la pieza.</strong></h4>
+                                    </div>      
+                              </div>  
+                              <div class="row">
+                                    <div class="col-lg-6">
+                                        <span class="btn btn-default btn-file">
+                                            <input type="file" name="imagen4" />
+                                        </span>
+                                    </div> 
+                              </div>  
+                        </li>
+                    <?php endif; ?>  
+                    <?php if (is_array($todosobreimagenes) || is_object($todosobreimagenes)) : ?>
+                        <?php foreach($todosobreimagenes as $img):?>
+                            <?php if ($img['queimagen'] == 2): ?>
+                                <?php $buenestado = $buenestado+ 1; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                        <?php if ($buenestado == 0): ?>
+                                <li class="list-group-item">
+                                      <div class="row">
+                                        <div class="col-lg-7">
+                                            <h4><strong>Sin imágenes de la pieza en buen estado</strong></h4>
+                                        </div>
+                                       </div> 
+                                        <div class="row">
+                                            <div class="col-lg-5">
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagen5" />
+                                                    </span> 
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagen6" />
+                                                    </span> 
+                                                    <span class="btn btn-default btn-file">
+                                                        <input type="file" name="imagen7" />
+                                                    </span>
+                                            </div>
+                                        </div>
+                                </li>
+                        <?php endif; ?>
+                        <?php if ($buenestado == 1): ?>
+                                <?php foreach($todosobreimagenes as $img):?>
+                                    <?php if ($img['queimagen'] == 2): ?>
+                                        <li class="list-group-item">
+                                              <div class="row">
+                                                    <div class="col-lg-7">
+                                                        <h4><strong>Imagen de la pieza en buen estado</strong></h4>
+                                                    </div>
+                                                    <div class="col-lg-5">
+                                                        <h4><strong>Agregar más imágenes</strong></h4>
+                                                    </div>      
+                                              </div>  
+                                              <div class="row">
+                                                  <div class="col-lg-7">
+                                                        <img align="center" src='http://localhost/cafap/uploads/<?= $img['urlimagen']; ?>' alt="Mountain View" style="width:645px;height:450px;" >
+                                                        <h3 align="center"><a href="<?= site_url().'/piezas/eliminarimgyvolveraedicion/'.$todoslosdatos['id'].'/'.$img['id'].'/'.$todoslosdatos['mostrarhasta']?>"><span class="label label-danger">Eliminar</span></a></h3>
+                                                  </div>
+                                                  <div class="col-lg-5">
+                                                        <span class="btn btn-default btn-file">
+                                                            <input type="file" name="imagen5" />
+                                                        </span>
+                                                        <span class="btn btn-default btn-file">
+                                                            <input type="file" name="imagen6" />
+                                                        </span> 
+                                                        <input type="file" name="imagen7" style="display: none;"/>
+                                                  </div>
+                                              </div>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                        <?php endif; ?>
+                        <?php if ($buenestado == 2): ?>
+                                <li class="list-group-item">
+                                      <div class="row">
+                                            <div class="col-lg-7">
+                                                <h4><strong>Imágenes de la pieza en buen estado</strong></h4>
+                                            </div>    
+                                      </div>  
+                                      <div class="row">
+                                          <?php foreach($todosobreimagenes as $img):?>
+                                              <?php if ($img['queimagen'] == 2): ?>
+                                                  <div class="col-lg-5">
+                                                        <img align="center" src='http://localhost/cafap/uploads/<?= $img['urlimagen']; ?>' alt="Mountain View" style="width:460px;height:370px;" >
+                                                        <h3 align="center"><a href="<?= site_url().'/piezas/eliminarimgyvolveraedicion/'.$todoslosdatos['id'].'/'.$img['id'].'/'.$todoslosdatos['mostrarhasta']?>"><span class="label label-danger">Eliminar</span></a></h3>
+                                                  </div>
+                                              <?php endif; ?>
+                                          <?php endforeach; ?>
+                                      </div>
+                                      <div class="row">
+                                            <div class="col-lg-7">
+                                                <h4><strong>Agregar otra imagen</strong></h4>
+                                            </div>    
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-lg-5">
+                                                <span class="btn btn-default btn-file">
+                                                    <input type="file" name="imagen5" />
+                                                </span>
+                                                <input type="file" name="imagen6" style="display: none;"/>
+                                                <input type="file" name="imagen7" style="display: none;"/>
+                                          </div>
+                                      </div>
+                                </li>
+                        <?php endif; ?>   
+                        <?php if ($buenestado == 3): ?>
+                                <li class="list-group-item">
+                                      <div class="row">
+                                            <div class="col-lg-7">
+                                                <h4><strong>Imágenes de la pieza en buen estado</strong></h4>
+                                            </div>    
+                                      </div>  
+                                      <div class="row">
+                                          <?php foreach($todosobreimagenes as $img):?>
+                                              <?php if ($img['queimagen'] == 2): ?>
+                                                  <div class="col-lg-4">
+                                                        <img align="center" src='http://localhost/cafap/uploads/<?= $img['urlimagen']; ?>' alt="Mountain View" style="width:360px;height:270px;" >
+                                                        <h3 align="center"><a href="<?= site_url().'/piezas/eliminarimgyvolveraedicion/'.$todoslosdatos['id'].'/'.$img['id'].'/'.$todoslosdatos['mostrarhasta']?>"><span class="label label-danger">Eliminar</span></a></h3>
+                                                  </div>
+                                              <?php endif; ?>
+                                          <?php endforeach; ?>
+                                      </div>
+                                      <input type="file" name="imagen5" style="display: none;"/>
+                                      <input type="file" name="imagen6" style="display: none;"/>
+                                      <input type="file" name="imagen7" style="display: none;"/>
+                                </li>
+                        <?php endif; ?> 
+                    <?php else: ?>    
+                        <li class="list-group-item">
+                              <div class="row">
+                                <div class="col-lg-7">
+                                    <h4><strong>Sin imágenes de la pieza en buen estado</strong></h4>
+                                </div>
+                               </div> 
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                            <span class="btn btn-default btn-file">
+                                                <input type="file" name="imagen5" />
+                                            </span> 
+                                            <span class="btn btn-default btn-file">
+                                                <input type="file" name="imagen6" />
+                                            </span> 
+                                            <span class="btn btn-default btn-file">
+                                                <input type="file" name="imagen7" />
+                                            </span>
+                                    </div>
+                                </div>
+                        </li>
+                    <?php endif; ?> 
+                    </br></br>
+                    <div class="row">
+                        <div class="col-xs-4 col-md-4">
+                            <input type="submit"value="Guardar y volver al caso" name="submit_guardartodalaedicion" class="btn btn-primary btn-block btn-lg" tabindex="7">
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+
+                <?=form_close()?>
+
+
+                    <hr />
+                           
+                               
+            </div>
+        </div>
+    </div>
+
+    </div>
+            <!-- /.container-fluid -->
+
+    </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+</body>
+
+</html>
