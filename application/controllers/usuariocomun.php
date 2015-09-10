@@ -176,15 +176,79 @@ class UsuarioComun extends CI_Controller
 
   public function irafea($idcaso)
   {
-    $this->load->helper('url');
+    if($this->input->post('submit_irafea'))
+      {
 
-      $datosfea = array(
-         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
-         'id' => $idcaso,
-        );
+        $this->load->helper('url');
 
-    $this->casos_model->actualizarpaso($idcaso,'5');
-    $this->load->view('modulofea.html',$datosfea);
+        $datosfea = array(
+           'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+           'id' => $idcaso,
+          );
+
+       $this->casos_model->actualizarpaso($idcaso,'5');
+       $this->load->view('modulofea.html',$datosfea);
+      
+      }
+
+    if($this->input->post('submit_editarfabricacion'))
+      {
+
+          $this->load->helper('url');
+          $this->load->helper('form');
+          $caso['todoslosdatos'] = $this->piezas_model->devolver_todosobrelapieza($idcaso);
+          $caso['todoslosdatos']['titulo'] = $this->casos_model->devolver_titulocasoparaedicion($idcaso);
+          $caso['todoslosdatos']['descripcion'] = $this->casos_model->devolver_descripcioncasoparaedicion($idcaso);
+          $caso['todoslosdatos']['id'] = $idcaso;
+          $caso['todoslosdatos']['opcionescheck'] = array(
+                                                           '1',
+                                                           '0',
+                                                         );
+          $caso['todoslosdatos']['opcionesselector3opciones'] = array(
+                                                                      '0',
+                                                                      '1',
+                                                                      '2',
+                                                                       );
+          $caso['todoslosdatos']['opcionesselector4opciones'] = array(
+                                                                      '0',
+                                                                      '1',
+                                                                      '2',
+                                                                      '3',
+                                                                       );
+          $caso['todoslosdatos']['opcionesselector6opciones'] = array(
+                                                                      '0',
+                                                                      '1',
+                                                                      '2',
+                                                                      '3',
+                                                                      '4',
+                                                                      '5',
+                                                                       );
+          $caso['todoslosdatos']['opcionesselector7opciones'] = array(
+                                                                      '0',
+                                                                      '1',
+                                                                      '2',
+                                                                      '3',
+                                                                      '4',
+                                                                      '5',
+                                                                      '6',
+                                                                       );
+          $caso['todoslosdatos']['mostrarhasta'] = 4;
+
+          $idpieza = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+          $caso['todosobreimagenes'] = $this->piezas_model->devolver_todaslasurlimagenespieza($idpieza);
+          $caso['materiales'] = $this->material_model->devolver_todoslosmateriales();
+          $caso['submateriales'] = $this->material_model->devolver_todoslossubmateriales();
+          $caso['especificos'] = $this->material_model->devolver_todoslosmaterialesesp();
+
+
+          $caso['todoslosdatos']['procesosparatabla'] = $this->casos_model->devolver_procesos($idcaso);
+          $caso['todoslosdatos']['subprocesosparatabla'] = $this->casos_model->devolver_subtipos($idcaso);
+          $caso['todoslosdatos']['nrosprocesosparatabla'] = $this->casos_model->devolver_numeroprocesoparatabla($idcaso);
+
+          $this->load->view('edicionusuario.html',$caso);
+      
+      }
+    
 
   }
 
@@ -320,6 +384,60 @@ class UsuarioComun extends CI_Controller
     {
       $this->casos_model->editartituloydescripcion($idcaso);
       $this->casos_model->editarcomponente1($idcaso);
+
+      for($i=1;$i<=7;$i++)
+                  { 
+                        if($_FILES['imagen'.$i]['name']!=''){
+
+                            $config['upload_path'] = './uploads/';
+                            $config['allowed_types'] = 'gif|jpg|png';
+                            $config['max_size'] = '2000';
+                            $config['max_width'] = '2024';
+                            $config['max_height'] = '2008';
+
+                            $this->load->library('upload', $config);
+                            //SI LA IMAGEN FALLA AL SUBIR MOSTRAMOS EL ERROR EN LA VISTA UPLOAD_VIEW
+                            if (!$this->upload->do_upload('imagen'.$i)) {
+                                   $error = array('error' => $this->upload->display_errors());
+                                   echo $_FILES['imagen'.$i]['name'];
+                                   echo 'Estoy en la iteracion: '.$i;
+                                   echo print_r($error);
+                                   //$this->load->view('upload_view', $error);
+                                } 
+                           else {
+                                //EN OTRO CASO SUBIMOS LA IMAGEN, CREAMOS LA MINIATURA Y HACEMOS 
+                                //ENVÍAMOS LOS DATOS AL MODELO PARA HACER LA INSERCIÓN
+                                    $file_info = $this->upload->data();
+                                    //USAMOS LA FUNCIÓN create_thumbnail Y LE PASAMOS EL NOMBRE DE LA IMAGEN,
+                                    //ASÍ YA TENEMOS LA IMAGEN REDIMENSIONADA
+                                    if($i==1) $parathumb['queimagen'] = '1';
+                                    if($i==2) $parathumb['queimagen'] = '8';
+                                    if($i==3) $parathumb['queimagen'] = '9';
+                                    if($i==4) $parathumb['queimagen'] = '3';
+                                    if($i==5) $parathumb['queimagen'] = '2';
+                                    if($i==6) $parathumb['queimagen'] = '2';
+                                    if($i==7) $parathumb['queimagen'] = '2';
+
+                                    $parathumb['idpieza'] =  $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+                                    $parathumb['filename'] =  $file_info['file_name'];
+
+                                    $this->_create_thumbnail($parathumb);  
+                                    
+                                    $data = array('upload_data' => $this->upload->data());
+                                    $imagen = $file_info['file_name'];    
+                                    $data['imagen'] = $imagen;
+                                    //$this->load->view('imagen_subida_view', $data);
+                           }
+                        }
+                  }//fin for
+
+      $this->completar_caso($idcaso);
+    }
+
+    if($guardarhasta==3 || $guardarhasta==4)
+    {
+      $this->casos_model->editartituloydescripcion($idcaso);
+      $this->casos_model->editarcomponente2($idcaso);
 
       for($i=1;$i<=7;$i++)
                   { 

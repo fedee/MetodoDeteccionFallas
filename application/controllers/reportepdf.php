@@ -9,6 +9,7 @@ class ReportePDF extends CI_Controller {
         $this->load->model('piezas_model');
         $this->load->model('material_model');
         $this->load->model('fabricacion_model');
+        $this->load->helper('url');
     }
  
     public function crearpdf($idcaso,$esusuariocomun) {
@@ -715,6 +716,254 @@ class ReportePDF extends CI_Controller {
      $pdf->Output('Caso de '.$datosusuario['nombre'].' '.$datosusuario['apellido'].'.pdf', 'D');    
 
      if($esusuariocomun == 1) redirect(site_url().'/usuariocomun/iraconclusionesgenerales/'.$idcaso); //cambiar para volver al inicio
+ 
+    //============================================================+
+    // END OF FILE
+    //============================================================+
+    }
+
+
+
+
+    public function verprocesodesdeedicion($idcaso,$numeroproceso) {
+
+    // create new PDF document
+    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);    
+ 
+    // set document information
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('Federico Sarmiento');
+    $pdf->SetTitle('Reporte de caso');
+    $pdf->SetSubject('Reporte CAFAP');
+    $pdf->SetKeywords('PDF, CAFAP, UCC, ingeniería');   
+ 
+    //Nombre Usuario
+    $datosusuario = $this->casos_model->devolver_nombreusuarioporidcaso($idcaso);
+    // set default header data
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.$datosusuario['nombre'].' '.$datosusuario['apellido'].'.', PDF_HEADER_STRING, array(0,0,0), array(0,0,0));
+    $pdf->setFooterData(array(0,64,0), array(0,0,0)); 
+ 
+    // set header and footer fonts
+    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));  
+ 
+    // set default monospaced font
+    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED); 
+ 
+    // set margins
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);    
+ 
+    // set auto page breaks
+    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM); 
+ 
+    // set image scale factor
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);  
+ 
+    // set some language-dependent strings (optional)
+    if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+        require_once(dirname(__FILE__).'/lang/eng.php');
+        $pdf->setLanguageArray($l);
+    }   
+ 
+    // ---------------------------------------------------------    
+ 
+    // set default font subsetting mode
+    $pdf->setFontSubsetting(true);   
+ 
+    // Set font
+    // dejavusans is a UTF-8 Unicode font, if you only need to
+    // print standard ASCII chars, you can use core fonts like
+    // helvetica or times to reduce file size.
+    $pdf->SetFont('dejavusans', '', 10, '', true);   
+ 
+    // Add a page
+    // This method has several options, check the source code documentation for more information.
+    $pdf->AddPage(); 
+ 
+    //Título y descripción del caso
+    $tituloydesccaso = $this->casos_model->devolver_tituloydescporidcaso($idcaso);
+
+    //Todo lo necesario para el bloque de introducción y el bloque de componente
+    $todosobrelapieza = $this->piezas_model->devolver_todosobrelapieza($idcaso);
+
+    $idpieza = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+
+    $datosproveedor = $this->piezas_model->devolver_todosobreelproveedor($idcaso,$numeroproceso);
+
+    $idprocesoinv = $this->casos_model->devolver_idprocesopoidcasoynumeroproceso($idcaso,$numeroproceso);
+    $idsubprocesoinv = $this->casos_model->devolver_idsubprocesopoidcasoynumeroproceso($idcaso,$numeroproceso);
+    $nombresubprocesoinv = $this->casos_model->devolver_nombresubtipoporidparaedicion($idsubprocesoinv);
+    $nombreprocesoinv = $this->casos_model->devolver_nombreprocesoporid($idprocesoinv);
+
+    $proveedorhtml = '<h3>Proceso '.($numeroproceso).' aplicado a la pieza: '.$nombreprocesoinv.'. Subtipo: '.$nombresubprocesoinv.'</h3>
+         <table border="1" cellpadding="2" cellspacing="2" align="center">
+             <tr nobr="true">
+                 <th colspan="5"><b>Datos del proveedor</b></th>
+             </tr>
+             <tr nobr="true">
+                 <td><i>Empresa</i></td>
+                 <td><i>Responsable</i></td>
+                 <td><i>Correo electrónico</i></td>
+                 <td><i>Teléfono</i></td>
+                 <td><i>Dirección</i></td>
+             </tr>
+             <tr nobr="true">
+                 <td>'.$datosproveedor['empresa'].'</td>
+                 <td>'.$datosproveedor['responsable'].'</td>
+                 <td>'.$datosproveedor['correoelectronico'].'</td>
+                 <td>'.$datosproveedor['telefono'].'</td>
+                 <td>'.$datosproveedor['direccion'].'</td>
+             </tr>
+         </table><br/>';
+
+    $pdf->writeHTML($proveedorhtml, true, false, true, false, '');
+
+    //Parametros generales
+    $cantidadparamsgenerales = $this->piezas_model->devolver_cantidadprocesosgenerales($idcaso,$numeroproceso);
+
+    $cantidadderows = (float)$cantidadparamsgenerales/5;
+    $cantidadderowsentero = intval($cantidadparamsgenerales/5);
+    if($cantidadderows != $cantidadderowsentero) $cantidadderows = $cantidadderowsentero+1;
+
+    $paramgeneraleshtml1 = '
+          <table border="1" cellpadding="2" cellspacing="2" align="center">
+             <tr nobr="true">
+                 <th colspan="5"><b>Parámetros generales del proceso. Cantidad: '.$cantidadparamsgenerales.'</b></th>
+             </tr>';
+
+    $paramgeneraleshtml2 = '';
+
+    //Devuelvo todos los nombres de los parametros generales para mostrar en el proceso, y voy a necesitar el id del proceso en
+    //cuestion para consultar en la tabla atributos.
+    $nombresparametrosgen = $this->casos_model->devolver_nombresparametrosgen($idcaso,$numeroproceso);
+    $valoresparametrosgen = $this->casos_model->devolver_valoresparametrosgen($idcaso,$numeroproceso);
+
+    $numerocolumnas = 5;
+    $atributosrestantes = $cantidadparamsgenerales;
+    $indiceatributoamostrar = 0;
+
+    for($j=0; $j<$cantidadderows; $j++)
+    {
+        $paramgeneraleshtml2 = $paramgeneraleshtml2.'<tr nobr="true">';
+
+        for($k=0; $k<$numerocolumnas;$k++)
+        {
+            $datosatributo = $this->piezas_model->devolver_datosatributo($nombresparametrosgen[$indiceatributoamostrar],$idprocesoinv);
+
+            $paramgeneraleshtml2 = $paramgeneraleshtml2.'<td><i>'.$datosatributo['leyenda'].'</i><br/><i><b>';
+
+            //en esta parte va simplemente la variable que voy a mostrar de valor concatenada al html anterior
+            if($datosatributo['tipo_campo'] == "1")
+            {
+                if($valoresparametrosgen[$indiceatributoamostrar]== "0") $valoresparametrosgen[$indiceatributoamostrar] = "No";
+                if($valoresparametrosgen[$indiceatributoamostrar]== "1") $valoresparametrosgen[$indiceatributoamostrar] = "Si";   
+            }
+
+            if($datosatributo['tipo_campo'] == "2")
+            {
+                $valoresparametrosgen[$indiceatributoamostrar] = $this->casos_model->devolver_nompreprecargadoporid($valoresparametrosgen[$indiceatributoamostrar]);
+            }               
+
+            $paramgeneraleshtml2 = $paramgeneraleshtml2.$valoresparametrosgen[$indiceatributoamostrar];
+
+
+            $paramgeneraleshtml2 = $paramgeneraleshtml2.'</b></i></td>';
+
+            if($atributosrestantes<5)$numerocolumnas = $atributosrestantes;
+
+            $indiceatributoamostrar = $indiceatributoamostrar + 1;
+        }
+        
+        $paramgeneraleshtml2 = $paramgeneraleshtml2.'</tr>';
+
+        $atributosrestantes = $atributosrestantes-5;
+        
+    }
+
+    $paramgeneraleshtml2 = $paramgeneraleshtml2.'</table><br/>';
+
+    $pdf->writeHTML($paramgeneraleshtml1.$paramgeneraleshtml2, true, false, true, false, '');
+
+
+    //Parametros especificos
+
+    if($nombresubprocesoinv != "Ninguno")
+    {
+        $cantidadparamsespecificos = $this->piezas_model->devolver_cantidadprocesosespecificos($idcaso,$numeroproceso);
+
+        $cantidadderows = (float)$cantidadparamsespecificos/5;
+        $cantidadderowsentero = intval($cantidadparamsespecificos/5);
+        if($cantidadderows != $cantidadderowsentero) $cantidadderows = $cantidadderowsentero+1;
+
+        $paramespecificoshtml1 = '
+              <table border="1" cellpadding="2" cellspacing="2" align="center">
+                 <tr nobr="true">
+                     <th colspan="5"><b>Parámetros específicos del proceso. Cantidad: '.$cantidadparamsespecificos.'</b></th>
+                 </tr>';
+
+        $paramespecificoshtml2 = '';
+
+        //Devuelvo todos los nombres de los parametros especificos para mostrar en el proceso, y voy a necesitar el id del proceso en
+        //cuestion para consultar en la tabla atributos.
+        $nombresparametrosesp = $this->casos_model->devolver_nombresparametrosesp($idcaso,$numeroproceso);
+        $valoresparametrosesp = $this->casos_model->devolver_valoresparametrosesp($idcaso,$numeroproceso);
+
+        $numerocolumnas = 5;
+        $atributosrestantes = $cantidadparamsespecificos;
+        $indiceatributoamostrar = 0;
+
+        for($j=0; $j<$cantidadderows; $j++)
+        {
+            $paramespecificoshtml2 = $paramespecificoshtml2.'<tr nobr="true">';
+
+            for($k=0; $k<$numerocolumnas;$k++)
+            {
+                $datosatributo = $this->piezas_model->devolver_datosatributo($nombresparametrosesp[$indiceatributoamostrar],$idprocesoinv);
+
+                $paramespecificoshtml2 = $paramespecificoshtml2.'<td><i>'.$datosatributo['leyenda'].'</i><br/><i><b>';
+
+                //en esta parte va simplemente la variable que voy a mostrar de valor concatenada al html anterior
+                if($datosatributo['tipo_campo'] == "1")
+                {
+                    if($valoresparametrosesp[$indiceatributoamostrar]== "0") $valoresparametrosesp[$indiceatributoamostrar] = "No";
+                    if($valoresparametrosesp[$indiceatributoamostrar]== "1") $valoresparametrosesp[$indiceatributoamostrar] = "Si";   
+                }
+
+                if($datosatributo['tipo_campo'] == "2")
+                {
+                    $valoresparametrosesp[$indiceatributoamostrar] = $this->casos_model->devolver_nompreprecargadoporid($valoresparametrosesp[$indiceatributoamostrar]);
+                }               
+
+                $paramespecificoshtml2 = $paramespecificoshtml2.$valoresparametrosesp[$indiceatributoamostrar];
+
+
+                $paramespecificoshtml2 = $paramespecificoshtml2.'</b></i></td>';
+
+                if($atributosrestantes<5)$numerocolumnas = $atributosrestantes;
+
+                $indiceatributoamostrar = $indiceatributoamostrar + 1;
+            }
+            
+            $paramespecificoshtml2 = $paramespecificoshtml2.'</tr>';
+
+            $atributosrestantes = $atributosrestantes-5;
+            
+        }
+
+        $paramespecificoshtml2 = $paramespecificoshtml2.'</table><br/><br/>';
+
+        $pdf->writeHTML($paramespecificoshtml1.$paramespecificoshtml2, true, false, true, false, '');
+
+    }
+
+ 
+    // Close and output PDF document
+    // This method has several options, check the source code documentation for more information.
+     $pdf->Output('Proceso de '.$datosusuario['nombre'].' '.$datosusuario['apellido'].'.pdf', 'D');    
+
+     //cambiar para volver al inicio
  
     //============================================================+
     // END OF FILE

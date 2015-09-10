@@ -9,6 +9,7 @@ class Piezas extends CI_Controller {
       $this->load->model('casos_model');
       $this->load->model('piezas_model');
       $this->load->model('fabricacion_model');
+      $this->load->model('material_model');
 
    }
 
@@ -184,7 +185,7 @@ class Piezas extends CI_Controller {
    public function guardarinfo_casocomponente2($idcaso)
    {
       $this->load->helper('url');
-       $this->load->helper('form');
+      $this->load->helper('form');
 
       if($this->input->post('submit_comp2'))
       {
@@ -306,12 +307,61 @@ class Piezas extends CI_Controller {
         $this->casos_model->actualizarpaso($idcaso,'4');
 
         $this->load->view('revisionprocesosfabricacion.html',$datosrevision);
-
-
-        //$this->load->view('revisionprocesosfabricacion.html',$paso);
        
       }
 
+      if($this->input->post('submit_editarcasocomponente2'))
+      {
+          $this->load->helper('url');
+          $this->load->helper('form');
+          
+          $caso['todoslosdatos'] = $this->piezas_model->devolver_todosobrelapieza($idcaso);
+          $caso['todoslosdatos']['titulo'] = $this->casos_model->devolver_titulocasoparaedicion($idcaso);
+          $caso['todoslosdatos']['descripcion'] = $this->casos_model->devolver_descripcioncasoparaedicion($idcaso);
+          $caso['todoslosdatos']['id'] = $idcaso;
+          $caso['todoslosdatos']['opcionescheck'] = array(
+                                                           '1',
+                                                           '0',
+                                                         );
+          $caso['todoslosdatos']['opcionesselector3opciones'] = array(
+                                                                      '0',
+                                                                      '1',
+                                                                      '2',
+                                                                       );
+          $caso['todoslosdatos']['opcionesselector4opciones'] = array(
+                                                                      '0',
+                                                                      '1',
+                                                                      '2',
+                                                                      '3',
+                                                                       );
+          $caso['todoslosdatos']['opcionesselector6opciones'] = array(
+                                                                      '0',
+                                                                      '1',
+                                                                      '2',
+                                                                      '3',
+                                                                      '4',
+                                                                      '5',
+                                                                       );
+          $caso['todoslosdatos']['opcionesselector7opciones'] = array(
+                                                                      '0',
+                                                                      '1',
+                                                                      '2',
+                                                                      '3',
+                                                                      '4',
+                                                                      '5',
+                                                                      '6',
+                                                                       );
+          $caso['todoslosdatos']['mostrarhasta'] = 3;
+
+          $idpieza = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+          $caso['todosobreimagenes'] = $this->piezas_model->devolver_todaslasurlimagenespieza($idpieza);
+          $caso['materiales'] = $this->material_model->devolver_todoslosmateriales();
+          $caso['submateriales'] = $this->material_model->devolver_todoslossubmateriales();
+          $caso['especificos'] = $this->material_model->devolver_todoslosmaterialesesp();
+
+          $this->load->view('edicionusuario.html',$caso);
+       
+      }
             
    }
 
@@ -666,6 +716,54 @@ class Piezas extends CI_Controller {
         $this->load->view('edicionusuario.html',$caso);   
       }
 
+
+      if($volverenedicionhasta == 3)
+      {
+        $this->eliminarurlimagenporid($idimagen);
+
+        $caso['todoslosdatos'] = $this->piezas_model->devolver_todosobrelapieza($idcaso);
+        $caso['todoslosdatos']['titulo'] = $this->casos_model->devolver_titulocasoparaedicion($idcaso);
+        $caso['todoslosdatos']['descripcion'] = $this->casos_model->devolver_descripcioncasoparaedicion($idcaso);
+        $caso['todoslosdatos']['id'] = $idcaso;
+        $caso['todoslosdatos']['opcionescheck'] = array(
+                                                         '1',
+                                                         '0',
+                                                       );
+        $caso['todoslosdatos']['opcionesselector4opciones'] = array(
+                                                                    '0',
+                                                                    '1',
+                                                                    '2',
+                                                                    '3',
+                                                                     );
+        $caso['todoslosdatos']['opcionesselector6opciones'] = array(
+                                                                    '0',
+                                                                    '1',
+                                                                    '2',
+                                                                    '3',
+                                                                    '4',
+                                                                    '5',
+                                                                     );
+        $caso['todoslosdatos']['opcionesselector7opciones'] = array(
+                                                                    '0',
+                                                                    '1',
+                                                                    '2',
+                                                                    '3',
+                                                                    '4',
+                                                                    '5',
+                                                                    '6',
+                                                                     );
+        $caso['todoslosdatos']['mostrarhasta'] = 3;
+
+        $idpieza = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+        $caso['todosobreimagenes'] = $this->piezas_model->devolver_todaslasurlimagenespieza($idpieza);
+        $caso['materiales'] = $this->material_model->devolver_todoslosmateriales();
+        $caso['submateriales'] = $this->material_model->devolver_todoslossubmateriales();
+        $caso['especificos'] = $this->material_model->devolver_todoslosmaterialesesp();
+
+        $this->load->view('edicionusuario.html',$caso);  
+
+      }
+
       
    }
 
@@ -677,6 +775,105 @@ class Piezas extends CI_Controller {
 
       $this->db->delete('imagenes', array('id' => $idimagen));
 
+   }
+
+   public function eliminarprocesoporidcasoynro($idcaso,$nroproceso)
+   {
+      $this->load->helper('url');
+      $this->load->helper('form');
+
+      $this->db->delete('fabricacion_listaprocesos', array( 'id_caso'=>$idcaso,
+                                                             'numero_proceso'=>$nroproceso,
+                                                            ));
+
+   }
+
+
+   public function eliminarprocesoyvolveraedicion($idcaso,$numeroproceso,$volverenedicionhasta)
+   {
+      $this->load->helper('url');
+      $this->load->helper('form');
+
+      if($volverenedicionhasta == 4)
+      {
+        $this->eliminarprocesoporidcasoynro($idcaso,$numeroproceso);
+
+        $caso['todoslosdatos'] = $this->piezas_model->devolver_todosobrelapieza($idcaso);
+        $caso['todoslosdatos']['titulo'] = $this->casos_model->devolver_titulocasoparaedicion($idcaso);
+        $caso['todoslosdatos']['descripcion'] = $this->casos_model->devolver_descripcioncasoparaedicion($idcaso);
+        $caso['todoslosdatos']['id'] = $idcaso;
+        $caso['todoslosdatos']['opcionescheck'] = array(
+                                                         '1',
+                                                         '0',
+                                                       );
+        $caso['todoslosdatos']['opcionesselector4opciones'] = array(
+                                                                    '0',
+                                                                    '1',
+                                                                    '2',
+                                                                    '3',
+                                                                     );
+        $caso['todoslosdatos']['opcionesselector6opciones'] = array(
+                                                                    '0',
+                                                                    '1',
+                                                                    '2',
+                                                                    '3',
+                                                                    '4',
+                                                                    '5',
+                                                                     );
+        $caso['todoslosdatos']['opcionesselector7opciones'] = array(
+                                                                    '0',
+                                                                    '1',
+                                                                    '2',
+                                                                    '3',
+                                                                    '4',
+                                                                    '5',
+                                                                    '6',
+                                                                     );
+        $caso['todoslosdatos']['mostrarhasta'] = 4;
+
+        $idpieza = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+        $caso['todosobreimagenes'] = $this->piezas_model->devolver_todaslasurlimagenespieza($idpieza);
+        $caso['materiales'] = $this->material_model->devolver_todoslosmateriales();
+        $caso['submateriales'] = $this->material_model->devolver_todoslossubmateriales();
+        $caso['especificos'] = $this->material_model->devolver_todoslosmaterialesesp();
+        $caso['todoslosdatos']['procesosparatabla'] = $this->casos_model->devolver_procesos($idcaso);
+        $caso['todoslosdatos']['subprocesosparatabla'] = $this->casos_model->devolver_subtipos($idcaso);
+        $caso['todoslosdatos']['nrosprocesosparatabla'] = $this->casos_model->devolver_numeroprocesoparatabla($idcaso);
+
+        $this->load->view('edicionusuario.html',$caso);  
+
+      }
+
+      
+   }
+
+
+   public function verprocesodefabricaciondesdeedicion($idcaso,$numeroproceso)
+   {
+
+      $this->load->helper('url');
+      $this->load->helper('form');
+      
+      $caso['todoslosdatos']['titulo'] = $this->casos_model->devolver_titulocasoparaedicion($idcaso);
+      $caso['todoslosdatos']['id'] = $idcaso;
+      $caso['todoslosdatos']['mostrarhasta'] = 4;
+      $caso['todoslosdatos']['numeroproceso'] = $numeroproceso;
+      $caso['datosproveedor'] = $this->piezas_model->devolver_todosobreelproveedor($idcaso,$numeroproceso);
+      $caso['cantidadparamsgenerales'] = $this->piezas_model->devolver_cantidadprocesosgenerales($idcaso,$numeroproceso);
+
+
+      $cantidadderows = (float)$caso['cantidadparamsgenerales']/5;
+      $cantidadderowsentero = intval($caso['cantidadparamsgenerales']/5);
+      if($cantidadderows != $cantidadderowsentero) $cantidadderows = $cantidadderowsentero+1;
+
+      $caso['cantidadderows'] = $cantidadderows;
+
+      $caso['nombresparametrosgen'] = $this->casos_model->devolver_nombresparametrosgen($idcaso,$numeroproceso);
+      $caso['idprocesoinvolucrado'] = $this->casos_model->devolver_idprocesopoidcasoynumeroproceso($idcaso,$numeroproceso);
+      $caso['valoresparametrosgen'] = $this->casos_model->devolver_valoresparametrosgen($idcaso,$numeroproceso);
+
+      redirect(site_url().'/reportepdf/verprocesodesdeedicion/'.$idcaso.'/'.$numeroproceso);     
+            
    }
         
       

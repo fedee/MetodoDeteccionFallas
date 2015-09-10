@@ -14,6 +14,21 @@ class Material_model extends CI_Model {
       return $datos->result_array();
    }
 
+   public function devolver_todoslossubmateriales()
+   {
+
+      $datos = $this->db->get('submaterial');
+      return $datos->result_array();
+   }
+
+   public function devolver_todoslosmaterialesesp()
+   {
+
+      $datos = $this->db->get('material_especifico');
+      return $datos->result_array();
+   }
+
+
    public function devolver_submaterialesporidmaterial($idmaterial)
    {
       $consulta = $this->db->get_where('submaterial',array(
@@ -22,7 +37,7 @@ class Material_model extends CI_Model {
 	if ($consulta->num_rows() > 0) {
 		$consulta = $consulta->result_array();
 		return $consulta;
-	}      
+	  }      
    }
 
    public function devolver_matespporidsubmaterial($idsubmaterial)

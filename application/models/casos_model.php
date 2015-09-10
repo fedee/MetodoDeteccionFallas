@@ -281,6 +281,22 @@ class Casos_model extends CI_Model{
       return $datos;
    }
 
+   public function devolver_numeroprocesoparatabla($idcaso)
+   {
+
+      $this->db->distinct();
+      $this->db->select('numero_proceso');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('fabricacion_listaprocesos');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->numero_proceso;
+      }
+      return $datos;
+   }
+
    public function devolver_nombreprocesoporid($idproceso)
    {
       $consulta = $this->db->get_where('procesosfab_generales',array('id'=>$idproceso));
@@ -319,6 +335,22 @@ class Casos_model extends CI_Model{
       $row = $consulta->row(1);
       $nombre = $row->nombre;
       return $nombre;
+   }
+
+   public function devolver_nombresubtipoporidparaedicion($idsub)
+   {
+      if($idsub == 0)
+           {
+             return "Ninguno";
+           }
+        else
+           {
+            $consulta = $this->db->get_where('procesosfab_especificos',array('id'=>$idsub));
+            $row = $consulta->row(1);
+            $nombre = $row->nombre;
+            return $nombre;
+           }
+      
    }
 
    public function devolver_tituloparaparetto($idcaso)
@@ -395,6 +427,28 @@ class Casos_model extends CI_Model{
       $consulta = $this->db->get_where('procesosfab_generales',array('nombre'=>$nombreproceso));
       $row = $consulta->row(1);
       $id = $row->id;
+      return $id;
+   }
+
+   public function devolver_idprocesopoidcasoynumeroproceso($idcaso,$numeroproceso)
+   {
+      $consulta = $this->db->get_where('fabricacion_listaprocesos',array(
+                                                         'id_caso'=>$idcaso,
+                                                         'numero_proceso'=>$numeroproceso,
+                                                       ));
+      $row = $consulta->row(1);
+      $id = $row->proceso;
+      return $id;
+   }
+
+   public function devolver_idsubprocesopoidcasoynumeroproceso($idcaso,$numeroproceso)
+   {
+      $consulta = $this->db->get_where('fabricacion_listaprocesos',array(
+                                                         'id_caso'=>$idcaso,
+                                                         'numero_proceso'=>$numeroproceso,
+                                                       ));
+      $row = $consulta->row(1);
+      $id = $row->subtipo;
       return $id;
    }
 
@@ -519,6 +573,49 @@ class Casos_model extends CI_Model{
                'cantidadfalladas'=>$this->input->post('cantpiezas',TRUE),
                'usopieza'=>$this->input->post('usopieza',TRUE),
                'montadabien'=>$this->input->post('siguiendonorma',TRUE),
+            );
+
+      $this->db->where('id_caso', $idcaso);
+      $this->db->update('pieza', $data); 
+   }
+
+   public function editarcomponente2($idcaso)
+   {
+      $data = array(
+               'fallo_multiplesoc'=>$this->input->post('fallo',TRUE),
+               'ttrabajo_tiempo'=>$this->input->post('ttrabajo',TRUE),
+               'ttrabajo_cantidad'=>$this->input->post('ctrabajo',TRUE),
+               'vutil_tiempo'=>$this->input->post('tvidautil',TRUE),
+               'vutil_cantidad'=>$this->input->post('cvidautil',TRUE),
+               'fase_ciclovida'=>$this->input->post('faseciclo',TRUE),
+               'nombregen'=>$this->input->post('nombregen',TRUE),
+               'codinterno'=>$this->input->post('codigoint',TRUE),
+               'cantidadfalladas'=>$this->input->post('cantpiezas',TRUE),
+               'usopieza'=>$this->input->post('usopieza',TRUE),
+               'montadabien'=>$this->input->post('siguiendonorma',TRUE),
+               'material'=>$this->input->post('material',TRUE),
+               'submaterial'=>$this->input->post('submat',TRUE),
+               'especifico'=>$this->input->post('matesp',TRUE),
+               'descdetallada'=>$this->input->post('descdetallada',TRUE),
+               'tipocargas'=>$this->input->post('tipocargas',TRUE),
+               'umedidacargas'=>$this->input->post('umedida',TRUE),
+               'cantcargas'=>$this->input->post('cantidad',TRUE),
+               'tiposujeciones'=>$this->input->post('tiposujeciones',TRUE),
+               'condtermicas'=>$this->input->post('condtermicas',TRUE),
+               'utempcondtermicas'=>$this->input->post('utemp',TRUE),
+               'cantidadtermica'=>$this->input->post('cantidadtermica',TRUE),
+               'tipopresiones'=>$this->input->post('tipopresiones',TRUE),
+               'distribpresiones'=>$this->input->post('distrib',TRUE),
+               'umedidapres'=>$this->input->post('umedidapres',TRUE),
+               'valpresion'=>$this->input->post('valpresion',TRUE),
+               'veloctrab'=>$this->input->post('veloctrab',TRUE),
+               'trayectoria'=>$this->input->post('trayectoria',TRUE),
+               'unidadveloc'=>$this->input->post('unidadveloc',TRUE),
+               'valveloc'=>$this->input->post('valveloc',TRUE),
+               'elemsusp'=>$this->input->post('elemsusp',TRUE),
+               'valsusp'=>$this->input->post('valsusp',TRUE),
+               'modifcond'=>$this->input->post('modifcond',TRUE),
+               'modificaciones'=>$this->input->post('modificaciones',TRUE),
             );
 
       $this->db->where('id_caso', $idcaso);
