@@ -605,6 +605,32 @@ class Casos_model extends CI_Model{
       return $datos;
    }
 
+   public function devolver_descripcionmicro($idcaso)
+   {
+
+      $this->db->select('descripcion');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('micrografia');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->descripcion;
+      }
+      return $datos;
+   }
+
+   public function devolver_discusionparaedicion($idcaso)
+   {
+      $consulta = $this->db->get_where('discusion',array(
+                                                         'id_caso'=>$idcaso,
+                                                       ));
+      $row = $consulta->row(1);
+      $disc = $row->discusion;
+      return $disc;
+
+   }
+
    public function devolver_numerosensayos($idcaso)
    {
 
@@ -696,6 +722,16 @@ class Casos_model extends CI_Model{
 
       $this->db->where('id_caso', $idcaso);
       $this->db->update('pieza', $data); 
+   }
+
+   public function editardiscusion($idcaso)
+   {
+      $data = array(
+               'discusion'=>$this->input->post('comentariogeneral',TRUE),
+            );
+
+      $this->db->where('id_caso', $idcaso);
+      $this->db->update('discusion', $data); 
    }
 
 }

@@ -84,7 +84,7 @@ class UsuarioComun extends CI_Controller
 
     if ($numpaso == 7)
     {
-      $this->iramodulomacrografia($idcaso);
+      $this->iramacrografia($idcaso);
     }
 
     if ($numpaso == 8)
@@ -386,7 +386,7 @@ class UsuarioComun extends CI_Controller
 
   }
 
-  public function iramodulomacrografia($idcaso)
+  public function iramacrografiadesdeedicion($idcaso)
   {
     $this->load->helper('url');
 
@@ -395,7 +395,6 @@ class UsuarioComun extends CI_Controller
          'id' => $idcaso,
         );
 
-    $this->casos_model->actualizarpaso($idcaso,'7');
     $this->load->view('macrografia.html',$datosmacro);
 
   }
@@ -413,6 +412,21 @@ class UsuarioComun extends CI_Controller
     $this->load->view('micrografia.html',$datosmicro);
 
   }
+
+  public function iramicrografiadesdeedicion($idcaso)
+  {
+    $this->load->helper('url');
+
+      $datosmicro = array(
+         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+         'id' => $idcaso,
+        );
+
+    $this->load->view('micrografia.html',$datosmicro);
+
+  }
+
+
 
   public function iradiscusion($idcaso)
   {
@@ -667,6 +681,115 @@ class UsuarioComun extends CI_Controller
     {
       $this->casos_model->editartituloydescripcion($idcaso);
       $this->casos_model->editarcomponente2($idcaso);
+
+      for($i=1;$i<=7;$i++)
+                  { 
+                        if($_FILES['imagen'.$i]['name']!=''){
+
+                            $config['upload_path'] = './uploads/';
+                            $config['allowed_types'] = 'gif|jpg|png';
+                            $config['max_size'] = '2000';
+                            $config['max_width'] = '2024';
+                            $config['max_height'] = '2008';
+
+                            $this->load->library('upload', $config);
+                            //SI LA IMAGEN FALLA AL SUBIR MOSTRAMOS EL ERROR EN LA VISTA UPLOAD_VIEW
+                            if (!$this->upload->do_upload('imagen'.$i)) {
+                                   $error = array('error' => $this->upload->display_errors());
+                                   echo $_FILES['imagen'.$i]['name'];
+                                   echo 'Estoy en la iteracion: '.$i;
+                                   echo print_r($error);
+                                   //$this->load->view('upload_view', $error);
+                                } 
+                           else {
+                                //EN OTRO CASO SUBIMOS LA IMAGEN, CREAMOS LA MINIATURA Y HACEMOS 
+                                //ENVÍAMOS LOS DATOS AL MODELO PARA HACER LA INSERCIÓN
+                                    $file_info = $this->upload->data();
+                                    //USAMOS LA FUNCIÓN create_thumbnail Y LE PASAMOS EL NOMBRE DE LA IMAGEN,
+                                    //ASÍ YA TENEMOS LA IMAGEN REDIMENSIONADA
+                                    if($i==1) $parathumb['queimagen'] = '1';
+                                    if($i==2) $parathumb['queimagen'] = '8';
+                                    if($i==3) $parathumb['queimagen'] = '9';
+                                    if($i==4) $parathumb['queimagen'] = '3';
+                                    if($i==5) $parathumb['queimagen'] = '2';
+                                    if($i==6) $parathumb['queimagen'] = '2';
+                                    if($i==7) $parathumb['queimagen'] = '2';
+
+                                    $parathumb['idpieza'] =  $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+                                    $parathumb['filename'] =  $file_info['file_name'];
+
+                                    $this->_create_thumbnail($parathumb);  
+                                    
+                                    $data = array('upload_data' => $this->upload->data());
+                                    $imagen = $file_info['file_name'];    
+                                    $data['imagen'] = $imagen;
+                                    //$this->load->view('imagen_subida_view', $data);
+                           }
+                        }
+                  }//fin for
+
+      $this->completar_caso($idcaso);
+    }
+
+    if($guardarhasta==7)
+    {
+      $this->casos_model->editartituloydescripcion($idcaso);
+      $this->casos_model->editarcomponente2($idcaso);
+
+      for($i=1;$i<=7;$i++)
+                  { 
+                        if($_FILES['imagen'.$i]['name']!=''){
+
+                            $config['upload_path'] = './uploads/';
+                            $config['allowed_types'] = 'gif|jpg|png';
+                            $config['max_size'] = '2000';
+                            $config['max_width'] = '2024';
+                            $config['max_height'] = '2008';
+
+                            $this->load->library('upload', $config);
+                            //SI LA IMAGEN FALLA AL SUBIR MOSTRAMOS EL ERROR EN LA VISTA UPLOAD_VIEW
+                            if (!$this->upload->do_upload('imagen'.$i)) {
+                                   $error = array('error' => $this->upload->display_errors());
+                                   echo $_FILES['imagen'.$i]['name'];
+                                   echo 'Estoy en la iteracion: '.$i;
+                                   echo print_r($error);
+                                   //$this->load->view('upload_view', $error);
+                                } 
+                           else {
+                                //EN OTRO CASO SUBIMOS LA IMAGEN, CREAMOS LA MINIATURA Y HACEMOS 
+                                //ENVÍAMOS LOS DATOS AL MODELO PARA HACER LA INSERCIÓN
+                                    $file_info = $this->upload->data();
+                                    //USAMOS LA FUNCIÓN create_thumbnail Y LE PASAMOS EL NOMBRE DE LA IMAGEN,
+                                    //ASÍ YA TENEMOS LA IMAGEN REDIMENSIONADA
+                                    if($i==1) $parathumb['queimagen'] = '1';
+                                    if($i==2) $parathumb['queimagen'] = '8';
+                                    if($i==3) $parathumb['queimagen'] = '9';
+                                    if($i==4) $parathumb['queimagen'] = '3';
+                                    if($i==5) $parathumb['queimagen'] = '2';
+                                    if($i==6) $parathumb['queimagen'] = '2';
+                                    if($i==7) $parathumb['queimagen'] = '2';
+
+                                    $parathumb['idpieza'] =  $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+                                    $parathumb['filename'] =  $file_info['file_name'];
+
+                                    $this->_create_thumbnail($parathumb);  
+                                    
+                                    $data = array('upload_data' => $this->upload->data());
+                                    $imagen = $file_info['file_name'];    
+                                    $data['imagen'] = $imagen;
+                                    //$this->load->view('imagen_subida_view', $data);
+                           }
+                        }
+                  }//fin for
+
+      $this->completar_caso($idcaso);
+    }
+
+    if($guardarhasta==8)
+    {
+      $this->casos_model->editartituloydescripcion($idcaso);
+      $this->casos_model->editarcomponente2($idcaso);
+      $this->casos_model->editardiscusion($idcaso);
 
       for($i=1;$i<=7;$i++)
                   { 
