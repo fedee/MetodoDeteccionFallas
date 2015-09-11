@@ -322,15 +322,16 @@ class ReportePDF extends CI_Controller {
 
     $pdf->writeHTML($procesostitulohtml, true, false, true, false, '');
 
-    $cantidadprocesos = $this->piezas_model->devolver_cantidadprocesos($idcaso);
+    $cantidadprocesos = $this->piezas_model->devolver_cantidadprocesosparareporte($idcaso);
     $cantidadprocesos = $cantidadprocesos - 1;
     $nombresprocesos = $this->casos_model->devolver_procesos($idcaso);
     $nombressubtipos = $this->casos_model->devolver_subtipos($idcaso);
+    $numerosprocesos = $this->casos_model->devolver_numeroprocesoparatabla($idcaso);
 
 
     for($i=0; $i<$cantidadprocesos; $i++)
     {
-        $datosproveedor = $this->piezas_model->devolver_todosobreelproveedor($idcaso,$i+1);
+        $datosproveedor = $this->piezas_model->devolver_todosobreelproveedor($idcaso,$numerosprocesos[$i]);
 
         $proveedorhtml = '<h3>Proceso '.($i+1).': '.$nombresprocesos[$i].'. Subtipo: '.$nombressubtipos[$i].'</h3>
              <table border="1" cellpadding="2" cellspacing="2" align="center">
@@ -356,7 +357,7 @@ class ReportePDF extends CI_Controller {
         $pdf->writeHTML($proveedorhtml, true, false, true, false, '');
 
         //Parametros generales
-        $cantidadparamsgenerales = $this->piezas_model->devolver_cantidadprocesosgenerales($idcaso,$i+1);
+        $cantidadparamsgenerales = $this->piezas_model->devolver_cantidadprocesosgenerales($idcaso,$numerosprocesos[$i]);
 
         $cantidadderows = (float)$cantidadparamsgenerales/5;
         $cantidadderowsentero = intval($cantidadparamsgenerales/5);
@@ -372,9 +373,9 @@ class ReportePDF extends CI_Controller {
 
         //Devuelvo todos los nombres de los parametros generales para mostrar en el proceso, y voy a necesitar el id del proceso en
         //cuestion para consultar en la tabla atributos.
-        $nombresparametrosgen = $this->casos_model->devolver_nombresparametrosgen($idcaso,$i+1);
+        $nombresparametrosgen = $this->casos_model->devolver_nombresparametrosgen($idcaso,$numerosprocesos[$i]);
         $idprocesoinvolucrado = $this->casos_model->devolver_idprocesopornombre($nombresprocesos[$i]);
-        $valoresparametrosgen = $this->casos_model->devolver_valoresparametrosgen($idcaso,$i+1);
+        $valoresparametrosgen = $this->casos_model->devolver_valoresparametrosgen($idcaso,$numerosprocesos[$i]);
 
         $numerocolumnas = 5;
         $atributosrestantes = $cantidadparamsgenerales;
@@ -427,7 +428,7 @@ class ReportePDF extends CI_Controller {
 
         if($nombressubtipos[$i] != "Ninguno")
         {
-            $cantidadparamsespecificos = $this->piezas_model->devolver_cantidadprocesosespecificos($idcaso,$i+1);
+            $cantidadparamsespecificos = $this->piezas_model->devolver_cantidadprocesosespecificos($idcaso,$numerosprocesos[$i]);
 
             $cantidadderows = (float)$cantidadparamsespecificos/5;
             $cantidadderowsentero = intval($cantidadparamsespecificos/5);
@@ -443,9 +444,9 @@ class ReportePDF extends CI_Controller {
 
             //Devuelvo todos los nombres de los parametros especificos para mostrar en el proceso, y voy a necesitar el id del proceso en
             //cuestion para consultar en la tabla atributos.
-            $nombresparametrosesp = $this->casos_model->devolver_nombresparametrosesp($idcaso,$i+1);
+            $nombresparametrosesp = $this->casos_model->devolver_nombresparametrosesp($idcaso,$numerosprocesos[$i]);
             $idprocesoinvolucrado = $this->casos_model->devolver_idprocesopornombre($nombresprocesos[$i]);
-            $valoresparametrosesp = $this->casos_model->devolver_valoresparametrosesp($idcaso,$i+1);
+            $valoresparametrosesp = $this->casos_model->devolver_valoresparametrosesp($idcaso,$numerosprocesos[$i]);
 
             $numerocolumnas = 5;
             $atributosrestantes = $cantidadparamsespecificos;
@@ -962,6 +963,240 @@ class ReportePDF extends CI_Controller {
     // Close and output PDF document
     // This method has several options, check the source code documentation for more information.
      $pdf->Output('Proceso de '.$datosusuario['nombre'].' '.$datosusuario['apellido'].'.pdf', 'D');    
+
+     //cambiar para volver al inicio
+ 
+    //============================================================+
+    // END OF FILE
+    //============================================================+
+    }
+
+
+    public function verensayosdesdeedicion($idcaso) {
+
+    // create new PDF document
+    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);    
+ 
+    // set document information
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('Federico Sarmiento');
+    $pdf->SetTitle('Reporte de caso');
+    $pdf->SetSubject('Reporte CAFAP');
+    $pdf->SetKeywords('PDF, CAFAP, UCC, ingeniería');   
+ 
+    //Nombre Usuario
+    $datosusuario = $this->casos_model->devolver_nombreusuarioporidcaso($idcaso);
+    // set default header data
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.$datosusuario['nombre'].' '.$datosusuario['apellido'].'.', PDF_HEADER_STRING, array(0,0,0), array(0,0,0));
+    $pdf->setFooterData(array(0,64,0), array(0,0,0)); 
+ 
+    // set header and footer fonts
+    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));  
+ 
+    // set default monospaced font
+    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED); 
+ 
+    // set margins
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);    
+ 
+    // set auto page breaks
+    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM); 
+ 
+    // set image scale factor
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);  
+ 
+    // set some language-dependent strings (optional)
+    if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+        require_once(dirname(__FILE__).'/lang/eng.php');
+        $pdf->setLanguageArray($l);
+    }   
+ 
+    // ---------------------------------------------------------    
+ 
+    // set default font subsetting mode
+    $pdf->setFontSubsetting(true);   
+ 
+    // Set font
+    // dejavusans is a UTF-8 Unicode font, if you only need to
+    // print standard ASCII chars, you can use core fonts like
+    // helvetica or times to reduce file size.
+    $pdf->SetFont('dejavusans', '', 10, '', true);   
+ 
+    // Add a page
+    // This method has several options, check the source code documentation for more information.
+    $pdf->AddPage(); 
+ 
+    //Título y descripción del caso
+    $tituloydesccaso = $this->casos_model->devolver_tituloydescporidcaso($idcaso);
+
+    //Todo lo necesario para el bloque de introducción y el bloque de componente
+    $todosobrelapieza = $this->piezas_model->devolver_todosobrelapieza($idcaso);
+
+    $idpieza = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+
+    //Ensayos
+
+    $cantidadensayos = ($this->piezas_model->devolver_cantidadensayos($idcaso))-1;
+    $todosobreensayos = $this->piezas_model->devolver_todosobreensayos($idcaso);
+
+    $cantidadimagenesdeensayo = $this->piezas_model->devolver_cantidadimagenesdeensayos($idpieza);
+    $todosobreimgensayos = $this->piezas_model->devolver_todosobreimgdeensayos($idpieza);
+
+    $titulobloqueensayoshtml = '<h3>BLOQUE 4: Ensayos</h3><br/>';
+    $pdf->writeHTML($titulobloqueensayoshtml, true, false, true, false, '');
+
+    $inicio = 0;
+    $final = 0;
+
+    for($i=0;$i<$cantidadensayos;$i++)
+    {
+        $ensayoshtml = '';
+        $ensayoshtml = '<h3>Ensayo número '.($i+1).': '.$todosobreensayos[$i]['nombre'].'</h3>
+             <span style="text-align:justify;">'.$todosobreensayos[$i]['descripcion'].'</span>';
+
+        if($todosobreensayos[$i]['cant_imagenes']!=0)
+        {
+            $final = $final + $todosobreensayos[$i]['cant_imagenes'];
+
+            $ensayoshtml = $ensayoshtml.'<br/><br/><b>Imágenes del ensayo.</b>';
+            $pdf->writeHTML($ensayoshtml, true, false, true, false, '');
+
+            for($inicio;$inicio<$final;$inicio++)
+            {
+                $pdf->Image('http://localhost/cafap/uploads/'.$todosobreimgensayos[$inicio]['urlimagen'], '', '', 155, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+
+                $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                                <br/><br/><br/>';
+
+                $pdf->writeHTML($espacio, true, false, true, false, '');
+
+            }
+            
+            $inicio = 0;
+            $inicio = $inicio + $final;  
+
+        }
+        else $pdf->writeHTML($ensayoshtml, true, false, true, false, '');
+
+    }
+
+ 
+    // Close and output PDF document
+    // This method has several options, check the source code documentation for more information.
+     $pdf->Output('Ensayos de '.$datosusuario['nombre'].' '.$datosusuario['apellido'].'.pdf', 'D');    
+
+     //cambiar para volver al inicio
+ 
+    //============================================================+
+    // END OF FILE
+    //============================================================+
+    }
+
+
+
+    public function vermacrografiadesdeedicion($idcaso) {
+
+    // create new PDF document
+    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);    
+ 
+    // set document information
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('Federico Sarmiento');
+    $pdf->SetTitle('Reporte de caso');
+    $pdf->SetSubject('Reporte CAFAP');
+    $pdf->SetKeywords('PDF, CAFAP, UCC, ingeniería');   
+ 
+    //Nombre Usuario
+    $datosusuario = $this->casos_model->devolver_nombreusuarioporidcaso($idcaso);
+    // set default header data
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.$datosusuario['nombre'].' '.$datosusuario['apellido'].'.', PDF_HEADER_STRING, array(0,0,0), array(0,0,0));
+    $pdf->setFooterData(array(0,64,0), array(0,0,0)); 
+ 
+    // set header and footer fonts
+    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));  
+ 
+    // set default monospaced font
+    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED); 
+ 
+    // set margins
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);    
+ 
+    // set auto page breaks
+    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM); 
+ 
+    // set image scale factor
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);  
+ 
+    // set some language-dependent strings (optional)
+    if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+        require_once(dirname(__FILE__).'/lang/eng.php');
+        $pdf->setLanguageArray($l);
+    }   
+ 
+    // ---------------------------------------------------------    
+ 
+    // set default font subsetting mode
+    $pdf->setFontSubsetting(true);   
+ 
+    // Set font
+    // dejavusans is a UTF-8 Unicode font, if you only need to
+    // print standard ASCII chars, you can use core fonts like
+    // helvetica or times to reduce file size.
+    $pdf->SetFont('dejavusans', '', 10, '', true);   
+ 
+    // Add a page
+    // This method has several options, check the source code documentation for more information.
+    $pdf->AddPage(); 
+ 
+    //Título y descripción del caso
+    $tituloydesccaso = $this->casos_model->devolver_tituloydescporidcaso($idcaso);
+
+    //Todo lo necesario para el bloque de introducción y el bloque de componente
+    $todosobrelapieza = $this->piezas_model->devolver_todosobrelapieza($idcaso);
+
+    $idpieza = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+
+    $titulobloquemacrografiahtml = '<h3>Macrografía</h3><br/><b>Imágenes de la macrografía.';
+    $pdf->writeHTML($titulobloquemacrografiahtml, true, false, true, false, '');
+
+    $cantidadmacrografias = $this->piezas_model->devolver_cantidaddescmacrografia($idcaso);
+    $todosobremacrografia = $this->piezas_model->devolver_todosobremacrografia($idcaso);
+    $todosobreimgmacrografia = $this->piezas_model->devolver_todosobreimgmacrografia($idpieza);
+
+    if($todosobremacrografia[0]['tipo_fractura']==0) $todosobremacrografia[0]['tipo_fractura'] = 'Frágil';
+    if($todosobremacrografia[0]['tipo_fractura']==1) $todosobremacrografia[0]['tipo_fractura'] = 'Dúctil';
+    if($todosobremacrografia[0]['tipo_fractura']==2) $todosobremacrografia[0]['tipo_fractura'] = 'Mixta';
+
+    $fracturapredom = 'Fractura predominante: '.$todosobremacrografia[0]['tipo_fractura'].'</b><br/>';
+    $pdf->writeHTML($fracturapredom, true, false, true, false, '');
+
+    $macrografiahtml = '';
+
+    for($i=0; $i<$cantidadmacrografias;$i++)
+    {
+        $pdf->Image('http://localhost/cafap/uploads/'.$todosobreimgmacrografia[$i]['urlimagen'], '', '', 155, 100, '', '', 'T', false, 300, '', false, false, 1, false, false, false);
+
+        $espacio = '<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                                <br/><br/>';
+
+        $pdf->writeHTML($espacio, true, false, true, false, '');
+
+        $macrografiahtml = '<b>Descripción: </b>'.$todosobremacrografia[$i]['descripcion'].'<br/>';
+
+        $pdf->writeHTML($macrografiahtml, true, false, true, false, '');
+    }
+
+
+ 
+    // Close and output PDF document
+    // This method has several options, check the source code documentation for more information.
+     $pdf->Output('Macrografia de '.$datosusuario['nombre'].' '.$datosusuario['apellido'].'.pdf', 'D');    
 
      //cambiar para volver al inicio
  

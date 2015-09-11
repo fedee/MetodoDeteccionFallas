@@ -281,6 +281,7 @@ class Casos_model extends CI_Model{
       return $datos;
    }
 
+
    public function devolver_numeroprocesoparatabla($idcaso)
    {
 
@@ -542,6 +543,81 @@ class Casos_model extends CI_Model{
       $row = $consulta->row(1);
       $desc = $row->descripcion;
       return $desc;
+   }
+
+   public function devolver_nombresensayos($idcaso)
+   {
+
+      $this->db->select('nombre');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('ensayos');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->nombre;
+      }
+      return $datos;
+   }
+
+   public function devolver_descripcionesensayos($idcaso)
+   {
+
+      $this->db->select('descripcion');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('ensayos');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->descripcion;
+      }
+      return $datos;
+   }
+
+   public function devolver_descripcionmacro($idcaso)
+   {
+
+      $this->db->select('descripcion');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('macrografia');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->descripcion;
+      }
+      return $datos;
+   }
+
+   public function devolver_tipofracturamacro($idcaso)
+   {
+
+      $this->db->select('tipo_fractura');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('macrografia');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->tipo_fractura;
+      }
+      return $datos;
+   }
+
+   public function devolver_numerosensayos($idcaso)
+   {
+
+      $this->db->select('numero_ensayo');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('ensayos');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->numero_ensayo;
+      }
+      return $datos;
    }
 
    public function editarintroduccion($idcaso)

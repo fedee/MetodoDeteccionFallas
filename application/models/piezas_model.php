@@ -187,7 +187,24 @@ class Piezas_model extends CI_Model{
       $this->db->distinct();
       $this->db->select('numero_proceso');
       $this->db->where('id_caso', $idcaso); 
+      $this->db->order_by('numero_proceso', 'desc');
       $consulta = $this->db->get('fabricacion_listaprocesos');
+      
+      $row = $consulta->row(0);
+      $cantidad = $row->numero_proceso;
+
+      return ($cantidad+1);
+
+   }
+
+   public function devolver_cantidadprocesosparareporte($idcaso)
+   {
+      $this->db->distinct();
+      $this->db->select('numero_proceso');
+      $this->db->where('id_caso', $idcaso); 
+      $this->db->order_by('numero_proceso', 'desc');
+      $consulta = $this->db->get('fabricacion_listaprocesos');
+      
       $cantidad = 0;
 
       foreach ($consulta->result() as $row)
@@ -196,6 +213,7 @@ class Piezas_model extends CI_Model{
       }
 
       return ($cantidad+1);
+
    }
 
 
