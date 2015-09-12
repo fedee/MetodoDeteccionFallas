@@ -108,9 +108,16 @@
          //Fin del gráfico que se guarda
 
 
-
-         $this->casos_model->actualizarpaso($idcaso,'11');
-         $this->load->view('paretto.html',$datosparetto);
+        $numpasoactual = $this->casos_model->devolver_numeropaso($idcaso);
+        if($numpasoactual == 10)
+        {
+            $this->casos_model->actualizarpaso($idcaso,'11');
+            $this->load->view('paretto.html',$datosparetto);
+        }
+        else
+        {
+           $this->load->view('paretto.html',$datosparetto);
+        }
 
         } 
 

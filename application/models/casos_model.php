@@ -620,6 +620,36 @@ class Casos_model extends CI_Model{
       return $datos;
    }
 
+   public function devolver_titulohipotesis($idcaso)
+   {
+
+      $this->db->select('titulo');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('hipotesis');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->titulo;
+      }
+      return $datos;
+   }
+
+   public function devolver_descripcionhipotesis($idcaso)
+   {
+
+      $this->db->select('descripcion');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('hipotesis');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->descripcion;
+      }
+      return $datos;
+   }
+
    public function devolver_discusionparaedicion($idcaso)
    {
       $consulta = $this->db->get_where('discusion',array(
