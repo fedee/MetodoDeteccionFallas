@@ -32,7 +32,10 @@ class UsuarioEspecialista extends CI_Controller
    public function ver_estadisticas()
    {
         $this->load->helper('url');
-        $this->load->view('estadisticasusuarioesp.html');
+
+        $idespecialista = $this->session->userdata('id');
+        redirect(site_url().'/moduloestadistico/todoparagenerargraficos/'.$idespecialista);
+        
    }
 
 }

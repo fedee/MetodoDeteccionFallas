@@ -174,7 +174,8 @@
                                                                 <a href="<?= site_url()?>"><span class="label label-danger">  No Aplicable</span></a>
                                                              <?php endif;?>
                                                              <?php if($estado[$i]==2):?>
-                                                                <a href="<?= site_url().'/usuariocomun/ver_casossubidos'?>"><span class="label label-success">  Finalizado con éxito</span></a>
+                                                                <a href="<?= site_url().'/piezas/editarcasocompleto/'.$idcaso[$i]?>"><span class="label label-success">Editar caso</span></a><br/>
+                                                                <a href="<?= site_url().'/reportepdf/crearpdf/'.$idcaso[$i].'/1'?>"><span class="label label-info">Imprimir reporte PDF</span></a>
                                                              <?php endif;?>  
                                                          </td>
                                                     </tr>

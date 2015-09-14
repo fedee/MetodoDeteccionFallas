@@ -70,6 +70,28 @@ class Casos_model extends CI_Model{
       return $datos;
    }
 
+   public function devolver_tituloscasossinasignar()
+   {
+      $consulta = $this->db->get_where('casos',array('id_asignado'=>'0'));
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->titulo;
+      }
+      return $datos;
+   }
+
+   public function devolver_idscasossinasignar()
+   {
+      $consulta = $this->db->get_where('casos',array('id_asignado'=>'0'));
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->id;
+      }
+      return $datos;
+   }
+
    public function devolver_idcaso()
    {
       $idusuario = $this->session->userdata('id');
@@ -661,6 +683,17 @@ class Casos_model extends CI_Model{
 
    }
 
+   public function devolver_conclusionparaedicion($idcaso)
+   {
+      $consulta = $this->db->get_where('conclusionusuario',array(
+                                                         'id_caso'=>$idcaso,
+                                                       ));
+      $row = $consulta->row(1);
+      $conc = $row->conclusion;
+      return $conc;
+
+   }
+
    public function devolver_numerosensayos($idcaso)
    {
 
@@ -762,6 +795,26 @@ class Casos_model extends CI_Model{
 
       $this->db->where('id_caso', $idcaso);
       $this->db->update('discusion', $data); 
+   }
+
+   public function editarconclusionusuario($idcaso)
+   {
+      $data = array(
+               'conclusion'=>$this->input->post('conclusiongeneral',TRUE),
+            );
+
+      $this->db->where('id_caso', $idcaso);
+      $this->db->update('conclusionusuario', $data); 
+   }
+
+   public function cambiarestadocaso($idcaso,$estado)
+   {
+      $data = array(
+               'estado'=>$estado,
+            );
+
+      $this->db->where('id', $idcaso);
+      $this->db->update('casos', $data); 
    }
 
 }

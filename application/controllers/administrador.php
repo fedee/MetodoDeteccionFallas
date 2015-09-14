@@ -46,10 +46,10 @@ class Administrador extends CI_Controller
          'telefono' => $this->usuarios_model->devolver_espactivadostelefono(),
          'fecharegistro' => $this->usuarios_model->devolver_espactivadosfecharegistro(),
          'idesp' => $this->usuarios_model->devolver_espactivadosid(),
-         'titulo' => $this->casos_model->devolver_titulocaso(),
+         'titulo' => $this->casos_model->devolver_tituloscasossinasignar(),
          'descripcion' => $this->casos_model->devolver_descripcioncaso(),
          'fecharegistrocaso' => $this->casos_model->devolver_fecharegistrocaso(),
-         'idcaso' => $this->casos_model->devolver_idcaso(),
+         'idcaso' => $this->casos_model->devolver_idscasossinasignar(),
         );
 
         $this->load->view('asignarcasos.html',$datosesp);

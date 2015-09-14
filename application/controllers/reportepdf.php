@@ -716,7 +716,7 @@ class ReportePDF extends CI_Controller {
     // This method has several options, check the source code documentation for more information.
      $pdf->Output('Caso de '.$datosusuario['nombre'].' '.$datosusuario['apellido'].'.pdf', 'D');    
 
-     if($esusuariocomun == 1) redirect(site_url().'/usuariocomun/iraconclusionesgenerales/'.$idcaso); //cambiar para volver al inicio
+     if($esusuariocomun == 1); 
  
     //============================================================+
     // END OF FILE
