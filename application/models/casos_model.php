@@ -130,6 +130,8 @@ class Casos_model extends CI_Model{
 
    public function add_nuevocaso()
    {
+      $fechaactual = date('Y-m-d H:i:s');
+
       $var = $this->session->userdata('id');
       $this->db->insert('casos',array(
                                           'titulo'=>$this->input->post('titulo',TRUE),
@@ -137,7 +139,8 @@ class Casos_model extends CI_Model{
                                           'id_usuario'=>$var,
                                           'id_asignado'=>'0',
                                           'estado' => '0', //0= incompleto, 1=no aplicable, 2=finalizado
-                                          'paso' => '0' //el numero del paso en el que estoy. por defecto, no he hecho ninguno. 
+                                          'paso' => '0', //el numero del paso en el que estoy. por defecto, no he hecho ninguno. 
+                                          'fecha_alta' => $fechaactual,
                                           ));
    }
 
@@ -815,6 +818,87 @@ class Casos_model extends CI_Model{
 
       $this->db->where('id', $idcaso);
       $this->db->update('casos', $data); 
+   }
+
+
+   public function devolver_idcasosesp($idesp,$año,$mes,$paso)
+   {
+
+      $this->db->select('id');
+      $this->db->select('fecha_alta');
+      $this->db->where('id_asignado', $idesp); 
+      $this->db->where('MONTH(fecha_alta)', $mes);
+      $this->db->where('paso >=', $paso);
+      $this->db->order_by('fecha_alta', 'asc');
+      $consulta = $this->db->get('casos');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->id;
+      }
+      return $datos;
+   }
+
+
+   public function devolver_idcasosespsinfecha($idesp,$paso)
+   {
+
+      $this->db->select('id');
+      $this->db->where('id_asignado', $idesp); 
+      $this->db->where('paso >=', $paso);
+      $consulta = $this->db->get('casos');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->id;
+      }
+      return $datos;
+   }
+
+   public function devolver_tipofracturaporidcaso($idcaso)
+   {
+      $consulta = $this->db->get_where('macrografia',array(
+                                                         'id_caso'=>$idcaso,
+                                                       ));
+      $row = $consulta->row(1);
+      $tipofrac = $row->tipo_fractura;
+      return $tipofrac;
+
+   }
+
+    public function devolver_siesfinalizado($idcaso)
+   {
+      $consulta = $this->db->get_where('casos',array(
+                                                         'id'=>$idcaso,
+                                                       ));
+      $row = $consulta->row(1);
+      $estado = $row->estado;
+      return $estado;
+
+   }
+
+   public function devolver_faseciclovida($idpieza)
+   {
+      $consulta = $this->db->get_where('pieza',array(
+                                                         'id'=>$idpieza,
+                                                       ));
+      $row = $consulta->row(1);
+      $faseciclo = $row->fase_ciclovida;
+      return $faseciclo;
+
+   }
+
+   public function devolver_modificaciones($idpieza)
+   {
+      $consulta = $this->db->get_where('pieza',array(
+                                                         'id'=>$idpieza,
+                                                       ));
+      $row = $consulta->row(1);
+      $mod = $row->modificaciones;
+      return $mod;
+
    }
 
 }
