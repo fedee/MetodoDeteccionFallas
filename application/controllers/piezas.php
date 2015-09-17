@@ -1013,8 +1013,16 @@ class Piezas extends CI_Controller {
 
       if($this->input->post('submit_irasugerenciasdefallo'))
       {     
-            
-            redirect(site_url().'/usuariocomun/completar_caso/'.$idcaso);
+            $numpasoactual = $this->casos_model->devolver_numeropaso($idcaso);
+            if($numpasoactual == 11)
+            {
+                $this->casos_model->actualizarpaso($idcaso,'12');
+                redirect(site_url().'/usuariocomun/completar_caso/'.$idcaso);
+            }
+            else
+            {
+               redirect(site_url().'/usuariocomun/completar_caso/'.$idcaso);
+            }
 
       }
 
@@ -3531,6 +3539,24 @@ class Piezas extends CI_Controller {
 
       redirect(site_url().'/reportepdf/verprocesodesdeedicion/'.$idcaso.'/'.$numeroproceso);     
             
+   }
+
+
+   public function guardarconclusionesp($idcaso)
+   {
+     
+      if($this->input->post('submit_guardarconclusion'))
+      {
+
+        $this->load->helper('url');
+
+        $this->casos_model->guardainfo_conclusionespecialista($idcaso);
+        $this->casos_model->cambiarestadocaso($idcaso,4); 
+        
+        redirect(site_url().'/usuarioespecialista/ver_casos/');
+      
+      }
+
    }
         
       

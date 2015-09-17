@@ -190,7 +190,7 @@
                 for($i = 0; $i <count($idcasosdelespecialista); $i++)
                 {
                     $esfinalizado = $this->casos_model->devolver_siesfinalizado($idcasosdelespecialista[$i]);
-                    if($esfinalizado == 2) $cantidadfinalizados = $cantidadfinalizados + 1;
+                    if($esfinalizado == 2 || $esfinalizado == 3) $cantidadfinalizados = $cantidadfinalizados + 1;
 
                 }
 

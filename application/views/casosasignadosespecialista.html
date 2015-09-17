@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Asignar casos</title>
+    <title>Mis casos asignados</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="http://localhost/cafap/css/bootstrap.min.css" rel="stylesheet">
@@ -165,7 +165,20 @@
                                                         <td><?php echo $i+1; ?></td>
                                                         <td><?php echo $titulo[$i]; ?></td>
                                                         <td><?php echo $descripcion[$i]; ?></td>
-                                                         <td><a href="<?= site_url()?>"><span class="label label-primary">  Ir al caso</span></a></td>
+                                                         <td><?php if($estadocaso[$i]==0):?>
+                                                                <a href="<?= site_url().'/reportepdf/verdatosespecialista/'.$idcaso[$i].'/'.$pasocaso[$i]?>"><span class="label label-info">  Ver datos del caso</span></a>
+                                                             <?php endif;?> 
+                                                             <?php if($estadocaso[$i]==1):?>
+                                                                <a href="<?= site_url()?>"><span class="label label-danger">  No Aplicable</span></a>
+                                                             <?php endif;?>
+                                                             <?php if($estadocaso[$i]==2):?>
+                                                                <a href="<?= site_url().'/reportepdf/verdatosespecialista/'.$idcaso[$i].'/'.$pasocaso[$i]?>"><span class="label label-info">  Ver datos del caso</span></a><br/>
+                                                                <a href="<?= site_url().'/usuarioespecialista/dejarconclusiones_caso/'.$idcaso[$i]?>"><span class="label label-success">  Dejar conclusiones</span></a>
+                                                             <?php endif;?>
+                                                             <?php if($estadocaso[$i]==3):?>
+                                                                <a href="<?= site_url().'/reportepdf/verdatosespecialista/'.$idcaso[$i].'/'.$pasocaso[$i]?>"><span class="label label-primary">  Ver reporte con conclusión</span></a><br/>
+                                                             <?php endif;?>  
+                                                         </td>
                                                     </tr>
                                                 <?php } ?>
                                             </tbody>

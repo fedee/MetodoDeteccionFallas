@@ -19,7 +19,7 @@ class Material extends CI_Controller {
       $id_material = (int)$this->input->post('id_material');
 
       $submateriales = $this->material_model->devolver_submaterialesporidmaterial($id_material);
-      echo "<option value=<?php echo '0'; ?>Elegir</option>";
+      echo "<option value= '0'>Elegir</option>";
       foreach ($submateriales as $key => $submaterial) {
          $valor = $submaterial['id'];
          $texto = $submaterial['nombre'];         
@@ -32,7 +32,7 @@ class Material extends CI_Controller {
       $id_submaterial = (int)$this->input->post('id_submaterial');
 
       $materialesesp = $this->material_model->devolver_matespporidsubmaterial($id_submaterial);
-      echo "<option value=<?php echo '0'; ?>Elegir</option>";
+      echo "<option value='0'>Elegir</option>";
       foreach ($materialesesp as $key => $matesp) {
          $valor = $matesp['id'];
          $texto = $matesp['nombre'];         

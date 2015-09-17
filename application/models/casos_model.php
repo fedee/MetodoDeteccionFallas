@@ -189,6 +189,28 @@ class Casos_model extends CI_Model{
       return $datos;
    }
 
+   public function devolver_espestadocasoasignado()
+   {
+      $consulta = $this->db->get_where('casos',array('id_asignado'=>$this->session->userdata('id')));
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->estado;
+      }
+      return $datos;
+   }
+
+   public function devolver_esppasocasoasignado()
+   {
+      $consulta = $this->db->get_where('casos',array('id_asignado'=>$this->session->userdata('id')));
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->paso;
+      }
+      return $datos;
+   }
+
    public function devolver_comuntituloasignado()
    {
       $var = $this->session->userdata('id');
@@ -253,6 +275,14 @@ class Casos_model extends CI_Model{
       return $titulo;
    }
 
+   public function devolver_estadodelcaso($idcaso)
+   {
+      $consulta = $this->db->get_where('casos',array('id'=>$idcaso));
+      $row = $consulta->row(1);
+      $estado = $row->estado;
+      return $estado;
+   }
+
    public function actualizarestado($idcaso,$estado)
    {
       $data = array(
@@ -266,6 +296,25 @@ class Casos_model extends CI_Model{
    public function devolver_cantidadcasosasignadosesp()
    {
       $this->db->like('id_asignado', $this->session->userdata('id'));
+      $this->db->from('casos');
+      $cantidad = $this->db->count_all_results();
+      return $cantidad;
+   }
+
+   public function devolver_cantidadcasosenmarchaesp()
+   {
+      $this->db->where('id_asignado',$this->session->userdata('id'));
+      $this->db->where('estado','0');
+      $this->db->or_where('estado','2');
+      $this->db->from('casos');
+      $cantidad = $this->db->count_all_results();
+      return $cantidad;
+   }
+
+   public function devolver_cantidadcasosfinalizadosesp()
+   {
+      $this->db->like('id_asignado', $this->session->userdata('id'));
+      $this->db->like('estado', '3');
       $this->db->from('casos');
       $cantidad = $this->db->count_all_results();
       return $cantidad;
@@ -535,6 +584,14 @@ class Casos_model extends CI_Model{
       $consulta = $this->db->get_where('conclusionusuario',array('id_caso'=>$idcaso));
       $row = $consulta->row(1);
       $conc = $row->conclusion;
+      return $conc;
+   }
+
+   public function devolver_conclusionespporidcaso($idcaso)
+   {
+      $consulta = $this->db->get_where('conclusionespecialista',array('id_caso'=>$idcaso));
+      $row = $consulta->row(1);
+      $conc = $row->conclusionfinal;
       return $conc;
    }
 
@@ -891,6 +948,122 @@ class Casos_model extends CI_Model{
    }
 
    public function devolver_modificaciones($idpieza)
+   {
+      $consulta = $this->db->get_where('pieza',array(
+                                                         'id'=>$idpieza,
+                                                       ));
+      $row = $consulta->row(1);
+      $mod = $row->modificaciones;
+      return $mod;
+
+   }
+
+   public function guardainfo_conclusionespecialista($idcaso)
+   {
+
+      $idespecialista = $this->session->userdata('id');
+
+      $this->db->insert('conclusionespecialista',array(
+                                          'id_caso'=>$idcaso,
+                                          'id_especialista'=>$idespecialista,
+                                          'valoracionbloque1'=>$this->input->post('valoracionbloque1',TRUE),
+                                          'conclusionbloque1'=>$this->input->post('conclusionbloque1',TRUE),
+                                          'valoracionbloque2'=>$this->input->post('valoracionbloque2',TRUE),
+                                          'conclusionbloque2'=>$this->input->post('conclusionbloque2',TRUE),
+                                          'valoracionbloque3'=>$this->input->post('valoracionbloque3',TRUE),
+                                          'conclusionbloque3'=>$this->input->post('conclusionbloque3',TRUE),
+                                          'valoracionbloque4'=>$this->input->post('valoracionbloque4',TRUE),
+                                          'conclusionbloque4'=>$this->input->post('conclusionbloque4',TRUE),
+                                          'valoracionbloque5'=>$this->input->post('valoracionbloque5',TRUE),
+                                          'conclusionbloque5'=>$this->input->post('conclusionbloque5',TRUE),
+                                          'valoracionbloque6'=>$this->input->post('valoracionbloque6',TRUE),
+                                          'conclusionbloque6'=>$this->input->post('conclusionbloque6',TRUE),
+                                          'valoracionbloque8'=>$this->input->post('valoracionbloque8',TRUE),
+                                          'conclusionbloque8'=>$this->input->post('conclusionbloque8',TRUE),
+                                          'conclusionfinal'=>$this->input->post('conclusionespecialista',TRUE),
+
+                                          ));
+   }
+
+   public function devolver_procesosparasugerenciafallo($idcaso)
+   {
+
+      $this->db->distinct();
+      $this->db->select('numero_proceso');
+      $this->db->select('proceso');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('fabricacion_listaprocesos');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->proceso;
+      }
+      return $datos;
+   }
+
+   public function devolver_subprocesosparasugerenciafallo($idcaso)
+   {
+
+      $this->db->distinct();
+      $this->db->select('numero_proceso');
+      $this->db->select('subtipo');
+      $this->db->where('id_caso', $idcaso); 
+      $consulta = $this->db->get('fabricacion_listaprocesos');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->subtipo;
+      }
+      return $datos;
+   }
+
+   public function devolver_materialparasugerencia($idpieza)
+   {
+      $consulta = $this->db->get_where('pieza',array(
+                                                         'id'=>$idpieza,
+                                                       ));
+      $row = $consulta->row(1);
+      $mat = $row->material;
+      return $mat;
+
+   }
+
+   public function devolver_submaterialparasugerencia($idpieza)
+   {
+      $consulta = $this->db->get_where('pieza',array(
+                                                         'id'=>$idpieza,
+                                                       ));
+      $row = $consulta->row(1);
+      $smat = $row->submaterial;
+      return $smat;
+
+   }
+
+   public function devolver_materialespparasugerencia($idpieza)
+   {
+      $consulta = $this->db->get_where('pieza',array(
+                                                         'id'=>$idpieza,
+                                                       ));
+      $row = $consulta->row(1);
+      $mate = $row->especifico;
+      return $mate;
+
+   }
+
+   public function devolver_elemsuspparasugerencia($idpieza)
+   {
+      $consulta = $this->db->get_where('pieza',array(
+                                                         'id'=>$idpieza,
+                                                       ));
+      $row = $consulta->row(1);
+      $elems = $row->elemsusp;
+      return $elems;
+
+   }
+
+   public function devolver_modifcondtrabparasugerencia($idpieza)
    {
       $consulta = $this->db->get_where('pieza',array(
                                                          'id'=>$idpieza,

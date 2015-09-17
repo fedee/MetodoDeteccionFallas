@@ -24,6 +24,8 @@ class UsuarioEspecialista extends CI_Controller
          'descripcion' => $this->casos_model->devolver_espdescasignada(),
          'fecharegistrocaso' => $this->casos_model->devolver_espfechaasignada(),
          'idcaso' => $this->casos_model->devolver_espidcasoasignado(),
+         'estadocaso' => $this->casos_model->devolver_espestadocasoasignado(),
+         'pasocaso' => $this->casos_model->devolver_esppasocasoasignado(),
         );
 
         $this->load->view('casosasignadosespecialista.html',$datosesp);
@@ -37,6 +39,16 @@ class UsuarioEspecialista extends CI_Controller
         redirect(site_url().'/moduloestadistico/todoparagenerargraficos/'.$idespecialista);
         
    }
+
+   public function dejarconclusiones_caso($idcaso)
+  {
+    $this->load->helper('url');
+
+    $caso['id'] = $idcaso;
+    $caso['titulo'] =  $this->casos_model->devolver_tituloporid($idcaso);
+
+    $this->load->view('conclusionesespecialista.html',$caso); 
+  }
 
 }
 

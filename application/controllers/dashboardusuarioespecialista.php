@@ -17,6 +17,8 @@ class DashboardUsuarioEspecialista extends CI_Controller
 
         $datosesp = array(
          'cantidadcasosasignados' => $this->casos_model->devolver_cantidadcasosasignadosesp(),
+         'cantidadcasosenmarcha' => $this->casos_model->devolver_cantidadcasosenmarchaesp(),
+         'cantidadcasosfinalizados' => $this->casos_model->devolver_cantidadcasosfinalizadosesp(),
         );
 
         $this->load->view('indexusuarioespecialista.html',$datosesp);

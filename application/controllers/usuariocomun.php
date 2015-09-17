@@ -502,13 +502,125 @@ class UsuarioComun extends CI_Controller
   {
     $this->load->helper('url');
 
+    //Primera parte... Encontrando los procesos similares.
+    /* Similitud con 100% de los procesos: 50 puntos.
+       Similitud con el tipo de fractura: 20 puntos.
+       Similitud con fase del ciclo de vida donde falló la pieza: 9 puntos.
+       Si coincide con... 
+                          Material: 7 puntos.
+                          Submaterial: 11 puntos.
+                          Material específico: 15 puntos.
+       Similitud con elementos en suspensión: 3 puntos.
+       Similitud con modificaciones en condiciones de trabajo: 3 puntos. */
+
+    //Procesos y subprocesos de fabricación (50):
+    $idsprocesoscasoactual = $this->casos_model->devolver_procesosparasugerenciafallo($idcaso);
+    $idssubprocesoscasoactual = $this->casos_model->devolver_subprocesosparasugerenciafallo($idcaso);
+    //Tipo de fractura (20):
+    $tipofracturacasoactual = $this->casos_model->devolver_tipofracturaporidcaso($idcaso);
+    //Fase del ciclo de vida donde falló la pieza (9):
+    $idpiezacasoactual = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+    $faseciclovidacasoactual = $this->casos_model->devolver_faseciclovida($idpiezacasoactual);
+    //Material (7), Submaterial (11) y Material Específico (15):
+    $materialcasoactual = $this->casos_model->devolver_materialparasugerencia($idpiezacasoactual);
+    $submaterialcasoactual = $this->casos_model->devolver_submaterialparasugerencia($idpiezacasoactual);
+    $materialespcasoactual = $this->casos_model->devolver_materialespparasugerencia($idpiezacasoactual);
+    //Elementos en suspensión (3):
+    $elemsuspcasoactual = $this->casos_model->devolver_elemsuspparasugerencia($idpiezacasoactual);
+    //Modificaciones en condiciones de trabajo (3):
+    $modifcondcasoactual = $this->casos_model->devolver_modifcondtrabparasugerencia($idpiezacasoactual);
+
+
+    $totalafinidad = 0;
+
+    $casosafines = array(
+                  "id" => "",
+                  "afinidad" => "",
+                  );
+    //Empieza for
+
+        //Procesos y subprocesos de fabricación (50):
+        $idsprocesoscasoacomparar = $this->casos_model->devolver_procesosparasugerenciafallo(79);
+        $idssubprocesoscasoacomparar = $this->casos_model->devolver_subprocesosparasugerenciafallo(79);
+        //Tipo de fractura (20):
+        $tipofracturacasoacomparar = $this->casos_model->devolver_tipofracturaporidcaso(79);
+        //Fase del ciclo de vida donde falló la pieza (9):
+        $idpiezacasoacomparar = $this->piezas_model->devolver_idpiezaporidcaso(79);
+        $faseciclovidacasoacomparar = $this->casos_model->devolver_faseciclovida($idpiezacasoacomparar);
+        //Material (7), Submaterial (11) y Material Específico (15):
+        $materialcasoacomparar = $this->casos_model->devolver_materialparasugerencia($idpiezacasoacomparar);
+        $submaterialcasoacomparar = $this->casos_model->devolver_submaterialparasugerencia($idpiezacasoacomparar);
+        $materialespcasoacomparar = $this->casos_model->devolver_materialespparasugerencia($idpiezacasoacomparar);
+        //Elementos en suspensión (3):
+        $elemsuspcasoacomparar = $this->casos_model->devolver_elemsuspparasugerencia($idpiezacasoacomparar);
+        //Modificaciones en condiciones de trabajo (3):
+        $modifcondcasoacomparar = $this->casos_model->devolver_modifcondtrabparasugerencia($idpiezacasoacomparar);
+
+
+        $afinidadentreprocesos = 0;
+
+        for($i = 0; $i <count($idsprocesoscasoactual); $i++)
+        {
+            for($j = 0; $j <count($idsprocesoscasoacomparar); $j++)
+            {
+                if($idsprocesoscasoactual[$i]==$idsprocesoscasoacomparar[$j])
+                {
+                    if($idssubprocesoscasoactual[$i]==$idssubprocesoscasoacomparar[$j])
+                    {
+                        $afinidadentreprocesos++;
+                        $idsprocesoscasoacomparar[$i] = -1;
+                        $idssubprocesoscasoacomparar[$i] = -1;
+                    }          
+                } 
+            }
+        }
+
+        $cantidadprocesoscasoactual = count($idsprocesoscasoactual);
+        $porcentajeafinidadprocesos = ($afinidadentreprocesos*50)/$cantidadprocesoscasoactual;
+
+        $totalafinidad = $porcentajeafinidadprocesos;
+
+        if($tipofracturacasoactual == $tipofracturacasoacomparar) $totalafinidad += 20;
+        if($faseciclovidacasoactual == $faseciclovidacasoacomparar) $totalafinidad += 9;
+
+        $puntajematerial = 0;
+
+        if($materialcasoactual == $materialcasoacomparar) $puntajematerial = 7;
+        if($submaterialcasoactual == $submaterialcasoacomparar) $puntajematerial = 11;
+        if($materialespcasoactual == $materialespcasoacomparar) $puntajematerial = 15;
+
+        $totalafinidad += $puntajematerial;
+
+        if($elemsuspcasoactual = $elemsuspcasoacomparar) $totalafinidad += 3;
+        if($modifcondcasoactual = $modifcondcasoacomparar) $totalafinidad += 3;
+
+        $casosafines['id'][0] = 79;
+        $casosafines['id'][1] = 80;
+        $casosafines['afinidad'][0] = $totalafinidad;
+        $casosafines['afinidad'][1] = "35.1";
+    //fin for
+
       $datossugerencias = array(
          'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
          'id' => $idcaso,
         );
 
-    $this->casos_model->actualizarpaso($idcaso,'12');
-    $this->load->view('sugerenciasdefallo.html',$datossugerencias);
+
+    for($i = 0; $i <count($idsprocesoscasoactual); $i++)
+    {
+      echo "Proceso: ".$idsprocesoscasoactual[$i]." Subtipo: ".$idssubprocesoscasoactual[$i]."<br/>";
+    }
+
+    echo "Tipo de fractura: ".$tipofracturacasoactual."<br/>";
+    echo "Fase ciclo vida: ".$faseciclovidacasoactual."<br/>";
+    echo "Material: ".$materialcasoactual." Submaterial: ".$submaterialcasoactual." Material Especifico: ".$materialespcasoactual."<br/>";
+    echo "Elementos en suspension: ".$elemsuspcasoactual."<br/>";
+    echo "Modificaciones en cond de trabajo: ".$modifcondcasoactual."<br/>";
+    echo "Afinidad entre procesos: ".$totalafinidad."<br/>";
+    echo "Caso afin: ".$casosafines['id'][1]." Porc afinidad: ".$casosafines['afinidad'][1]."<br/>";
+
+    //$this->casos_model->actualizarpaso($idcaso,'12');
+    //$this->load->view('sugerenciasdefallo.html',$datossugerencias);
 
   }
 
