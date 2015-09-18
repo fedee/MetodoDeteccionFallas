@@ -936,6 +936,21 @@ class Casos_model extends CI_Model{
 
    }
 
+   public function devolver_finalizadosconconclusion()
+   {
+
+      $this->db->select('id');
+      $this->db->where('estado', '3');
+      $consulta = $this->db->get('casos');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->id;
+      }
+      return $datos;
+   }
+
    public function devolver_faseciclovida($idpieza)
    {
       $consulta = $this->db->get_where('pieza',array(
@@ -1072,6 +1087,127 @@ class Casos_model extends CI_Model{
       $mod = $row->modificaciones;
       return $mod;
 
+   }
+
+   public function insertar_afinidades($casosafines)
+   {
+      $idusuario = $this->session->userdata('id');
+
+      for($i = 0; $i <count($casosafines['id']); $i++)
+      {
+         $this->db->insert('temporal',array(
+                                           'id_caso'=>$casosafines['id'][$i],
+                                           'id_usuario'=>$idusuario,
+                                           'afinidad'=>$casosafines['afinidad'][$i],
+                                           ));
+      }
+
+   }
+
+   public function devolver_idsafinidadesord()
+   {
+
+      $idusuario = $this->session->userdata('id');
+
+      $this->db->select('id_caso');
+      $this->db->select('afinidad');
+      $this->db->where('id_usuario', $idusuario); 
+      $this->db->order_by('afinidad', 'desc');
+      $consulta = $this->db->get('temporal');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->id_caso;
+      }
+      return $datos;
+   }
+
+   public function devolver_afinidadesord()
+   {
+
+      $idusuario = $this->session->userdata('id');
+
+      $this->db->select('afinidad');
+      $this->db->where('id_usuario', $idusuario); 
+      $this->db->order_by('afinidad', 'desc');
+      $consulta = $this->db->get('temporal');
+      
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->afinidad;
+      }
+      return $datos;
+   }
+
+   public function eliminar_afinidades()
+   {
+      $idusuario = $this->session->userdata('id');
+      $this->db->delete('temporal', array('id_usuario' => $idusuario)); 
+   }
+
+   //Este voy a usar para todas las conclusiones
+   public function devolver_bloquehipotesismasrelevante($idcaso)
+   {
+      $consulta = $this->db->get_where('conclusionespecialista',array('id_caso'=>$idcaso));
+      $row = $consulta->row(1);
+
+      $maximo = $row->valoracionbloque1;
+      $nombrecampo = "conclusionbloque1";
+
+      if($row->valoracionbloque2>$maximo) 
+      {
+        $maximo = $row->valoracionbloque2;
+        $nombrecampo = "conclusionbloque2";
+      }
+      if($row->valoracionbloque3>$maximo) 
+      {
+        $maximo = $row->valoracionbloque3;
+        $nombrecampo = "conclusionbloque3";
+      }
+      if($row->valoracionbloque4>$maximo) 
+      {
+        $maximo = $row->valoracionbloque4;
+        $nombrecampo = "conclusionbloque4";
+      }
+      if($row->valoracionbloque5>$maximo) 
+      {
+        $maximo = $row->valoracionbloque5;
+        $nombrecampo = "conclusionbloque5";
+      }
+      if($row->valoracionbloque6>$maximo) 
+      {
+        $maximo = $row->valoracionbloque6;
+        $nombrecampo = "conclusionbloque6";
+      }
+      if($row->valoracionbloque8>$maximo) 
+      {
+        $maximo = $row->valoracionbloque8;
+        $nombrecampo = "conclusionbloque8";
+      }
+
+      return $nombrecampo;
+   }
+
+   public function devolver_concluhipotesismasrelevante($idcaso,$campoabuscar)
+   {
+      $consulta = $this->db->get_where('conclusionespecialista',array('id_caso'=>$idcaso));
+      $row = $consulta->row(1);
+
+      $concluabuscar = $row->$campoabuscar;
+
+      return $concluabuscar;
+   }
+
+   public function devolver_conclusiongeneralparasugerencia($idcaso)
+   {
+      $consulta = $this->db->get_where('conclusionespecialista',array('id_caso'=>$idcaso));
+      $row = $consulta->row(1);
+
+      $conc = $row->conclusionfinal;
+
+      return $conc;
    }
 
 }

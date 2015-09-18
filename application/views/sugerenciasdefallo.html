@@ -151,7 +151,7 @@
                                         <h4 align='center'><strong>SUGERENCIAS DEL SOFTWARE.</strong></h4>
                                         <div class='row'>
                                             <div class="col-lg-10">
-                                            <h5 align='center'><strong>En esta sección se muestran las sugerencias de causa de la falla propuesta por el software así como también las propuestas por el experto y le damos acceso a la biblioteca de casos.</strong></h5>
+                                            <h5 align='center'><strong>En esta sección se muestran las sugerencias de causa de la falla propuesta por el software y le damos acceso a la biblioteca de casos.</strong></h5>
                                             </div>
                                             <div class="col-lg-2">                                    
                                                 <button type="button" class="btn btn-primary btn-lg btn-block" onClick=" window.open('https://drive.google.com/file/d/0B5AXHoqHfz3qMDUzRlNDaC1QZVk/view?usp=sharing')">Fallas típicas</button>
@@ -162,75 +162,75 @@
 
                             <?=form_open_multipart(site_url()."/piezas/iraconclusionesgenerales/".$id)?>
                             <div class="row">
-                    <div class="col-lg-12">
-                        <div class="panel panel-default" >
-                            <div class="panel-heading" align ="center">
-                                <h1 class="panel-title">Sugerencia número 1</h1>
-                            </div>
-                            
+                                <div class="col-lg-12">
+
+                                    <?php for($i = 0; $i <count($idscasossimilaresconafinidades['idcasos']); $i++) { ?>
+                                        <div class="panel panel-default" >
+                                            <div class="panel-heading" align ="center">
+                                                <h1 class="panel-title">Sugerencia número <?php echo $i+1; ?>, basada en un caso con un
+                                                <?php echo 
+                                                round($idscasossimilaresconafinidades['afinidades'][$i], 2, PHP_ROUND_HALF_DOWN); 
+                                                ?>% de afinidad.</h1>
+                                            </div>
+                                              <li class="list-group-item">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                        <h5><strong>Bloque más influyente para este caso: 
+                                                            <?php if($bloquesmasrelevantescasossimilares[$i]=="conclusionbloque1"):?>
+                                                                BLOQUE 1 (INTRODUCCIÓN AL CASO).
+                                                            <?php endif;?>
+                                                            <?php if($bloquesmasrelevantescasossimilares[$i]=="conclusionbloque2"):?>
+                                                                BLOQUE 2 (DESCRIPCIÓN DEL COMPONENTE).
+                                                            <?php endif;?>
+                                                            <?php if($bloquesmasrelevantescasossimilares[$i]=="conclusionbloque3"):?>
+                                                                BLOQUE 3 (PROCESOS DE FABRICACIÓN).
+                                                            <?php endif;?>
+                                                            <?php if($bloquesmasrelevantescasossimilares[$i]=="conclusionbloque4"):?>
+                                                                BLOQUE 4 (ENSAYOS).
+                                                            <?php endif;?>
+                                                            <?php if($bloquesmasrelevantescasossimilares[$i]=="conclusionbloque5"):?>
+                                                                BLOQUE 5 (MACROGRAFÍA).
+                                                            <?php endif;?>
+                                                            <?php if($bloquesmasrelevantescasossimilares[$i]=="conclusionbloque6"):?>
+                                                                BLOQUE 6 (MICROGRAFÍA).
+                                                            <?php endif;?>
+                                                            <?php if($bloquesmasrelevantescasossimilares[$i]=="conclusionbloque8"):?>
+                                                                BLOQUE 8 (HIPÓTESIS DEL USUARIO).
+                                                            <?php endif;?>
+                                                            <br/><br/>
+                                                            Motivo de su influencia: <?php echo $conclusionbloquemasrelevantecasossim[$i]; ?>.
+                                                            <br/><br/>
+                                                            Conclusión del experto que analizó este caso (y posible motivo de la falla del suyo): <?php echo $conclusionesgeneralescasossimilares[$i]; ?>.
+                                                        </strong></h5>
+                                                    </div>
+                                                </div>
+                                              </li>     
+                                        </div>
+                                        <?php if ($i==10):?>
+                                            <?php $i = count($idscasossimilaresconafinidades['idcasos']); ?>
+                                        <?php endif;?>
+                                    <?php } ?>
                                 
-                                    <ul class="list-group">
-                                      <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-lg-10">
-                                                <h5><strong>Recubrir orificios para evitar cementado interno.</strong></h5>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                    <button type="button" class="btn btn-primary btn-lg btn-block" onClick=" window.open('https://drive.google.com/file/d/0B5AXHoqHfz3qMDUzRlNDaC1QZVk/view?usp=sharing')">Ver más</button>
-                                            </div>
+                                </br></br>
+                                <div class="row">
+                                    <div id ='botonsubmit'>
+                                        <div class="col-lg-3">
+                                            <input type="submit"value="Editar datos cargados" name="submit_editarhipotesis" class="btn btn-info btn-block btn-lg" tabindex="7">
                                         </div>
-                                      </li>
-                                      
-                                    </ul>
-                                     
-                        </div>
-
-                        <div class="panel panel-default" >
-                            <div class="panel-heading" align ="center">
-                                <h1 class="panel-title">Sugerencia número 2</h1>
-                            </div>
-                            
-                                
-                                    <ul class="list-group">
-                                      <li class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-lg-10">
-                                                <h5><strong>Evitar enderezado posterior a tratamientos térmicos.</strong></h5>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                    <button type="button" class="btn btn-primary btn-lg btn-block" onClick=" window.open('https://drive.google.com/file/d/0B5AXHoqHfz3qMDUzRlNDaC1QZVk/view?usp=sharing')">Ver más</button>
-                                            </div>
+                                        <div class="col-lg-3">
+                                            <input type="submit"value="Continuar" name="submit_iraconclusionesgenerales" class="btn btn-primary btn-block btn-lg" tabindex="7">
                                         </div>
-                                      </li>
-                                      
-                                    </ul>
-                                     
-                        </div>
-                                    
+                                    </div>                                  
+                                </div>
 
-                                    </br></br>
-                                    <div class="row">
-                                        <div id ='botonsubmit'>
-                                            <div class="col-lg-3">
-                                                <input type="submit"value="Editar datos cargados" name="submit_editarhipotesis" class="btn btn-info btn-block btn-lg" tabindex="7">
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <input type="submit"value="Continuar" name="submit_iraconclusionesgenerales" class="btn btn-primary btn-block btn-lg" tabindex="7">
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                         
-                               <?=form_close()?>
-                           </br>
-
-                              
-                                <?php if(validation_errors()!= ""):?>
-                                    <div class="alert alert-danger alert-dismissible" role="alert">
-                                      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                      <strong>Oh no!</strong><?= validation_errors(); ?>
-                                    </div>
-                                <?php endif;?>   
+                            <?=form_close()?>
+                            </br>
+                            <?php if(validation_errors()!= ""):?>
+                                <div class="alert alert-danger alert-dismissible" role="alert">
+                                  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                  <strong>Oh no!</strong><?= validation_errors(); ?>
+                                </div>
+                            <?php endif;?>   
                            
                        
                    

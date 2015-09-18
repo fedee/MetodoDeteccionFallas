@@ -1,9 +1,9 @@
 <html>
 	<h1>LISTA DE NOTICIAS</h1>
 
-	<?php foreach($noticias as $n):?>
-	<h3><?= $n['titulo']; ?></h3>
-	<p><?= $n['cuerpo']; ?></p>
+	<?php foreach($mensajes as $m):?>
+	<h3><?= $m['titulo']; ?></h3>
+	<p><?= $m['cuerpo']; ?></p>
 	<hr />
 	<?php endforeach; ?>
 

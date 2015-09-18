@@ -701,6 +701,145 @@ class ReportePDF extends CI_Controller {
 
     $pdf->writeHTML($espacio, true, false, true, false, '');
 
+    //Sugerencias del software
+
+    //Procesos y subprocesos de fabricación (50):
+    $idsprocesoscasoactual = $this->casos_model->devolver_procesosparasugerenciafallo($idcaso);
+    $idssubprocesoscasoactual = $this->casos_model->devolver_subprocesosparasugerenciafallo($idcaso);
+    //Tipo de fractura (20):
+    $tipofracturacasoactual = $this->casos_model->devolver_tipofracturaporidcaso($idcaso);
+    //Fase del ciclo de vida donde falló la pieza (9):
+    $idpiezacasoactual = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+    $faseciclovidacasoactual = $this->casos_model->devolver_faseciclovida($idpiezacasoactual);
+    //Material (7), Submaterial (11) y Material Específico (15):
+    $materialcasoactual = $this->casos_model->devolver_materialparasugerencia($idpiezacasoactual);
+    $submaterialcasoactual = $this->casos_model->devolver_submaterialparasugerencia($idpiezacasoactual);
+    $materialespcasoactual = $this->casos_model->devolver_materialespparasugerencia($idpiezacasoactual);
+    //Elementos en suspensión (3):
+    $elemsuspcasoactual = $this->casos_model->devolver_elemsuspparasugerencia($idpiezacasoactual);
+    //Modificaciones en condiciones de trabajo (3):
+    $modifcondcasoactual = $this->casos_model->devolver_modifcondtrabparasugerencia($idpiezacasoactual);
+
+
+    $totalafinidad = 0;
+
+    $casosafines = array(
+                  "id" => "",
+                  "afinidad" => "",
+                  );
+
+    $casosfinalizados = $this->casos_model->devolver_finalizadosconconclusion();
+
+    for($k = 0; $k <count($casosfinalizados); $k++)
+    {
+        //Procesos y subprocesos de fabricación (50):
+        $idsprocesoscasoacomparar = $this->casos_model->devolver_procesosparasugerenciafallo($casosfinalizados[$k]);
+        $idssubprocesoscasoacomparar = $this->casos_model->devolver_subprocesosparasugerenciafallo($casosfinalizados[$k]);
+        //Tipo de fractura (20):
+        $tipofracturacasoacomparar = $this->casos_model->devolver_tipofracturaporidcaso($casosfinalizados[$k]);
+        //Fase del ciclo de vida donde falló la pieza (9):
+        $idpiezacasoacomparar = $this->piezas_model->devolver_idpiezaporidcaso($casosfinalizados[$k]);
+        $faseciclovidacasoacomparar = $this->casos_model->devolver_faseciclovida($idpiezacasoacomparar);
+        //Material (7), Submaterial (11) y Material Específico (15):
+        $materialcasoacomparar = $this->casos_model->devolver_materialparasugerencia($idpiezacasoacomparar);
+        $submaterialcasoacomparar = $this->casos_model->devolver_submaterialparasugerencia($idpiezacasoacomparar);
+        $materialespcasoacomparar = $this->casos_model->devolver_materialespparasugerencia($idpiezacasoacomparar);
+        //Elementos en suspensión (3):
+        $elemsuspcasoacomparar = $this->casos_model->devolver_elemsuspparasugerencia($idpiezacasoacomparar);
+        //Modificaciones en condiciones de trabajo (3):
+        $modifcondcasoacomparar = $this->casos_model->devolver_modifcondtrabparasugerencia($idpiezacasoacomparar);
+
+
+        $afinidadentreprocesos = 0;
+
+        for($i = 0; $i <count($idsprocesoscasoactual); $i++)
+        {
+            for($j = 0; $j <count($idsprocesoscasoacomparar); $j++)
+            {
+                if($idsprocesoscasoactual[$i]==$idsprocesoscasoacomparar[$j])
+                {
+                    if($idssubprocesoscasoactual[$i]==$idssubprocesoscasoacomparar[$j])
+                    {
+                        $afinidadentreprocesos++;
+                        $idsprocesoscasoacomparar[$i] = -1;
+                        $idssubprocesoscasoacomparar[$i] = -1;
+                    }          
+                } 
+            }
+        }
+
+        $cantidadprocesoscasoactual = count($idsprocesoscasoactual);
+        $porcentajeafinidadprocesos = ($afinidadentreprocesos*50)/$cantidadprocesoscasoactual;
+
+        $totalafinidad = $porcentajeafinidadprocesos;
+
+        if($tipofracturacasoactual == $tipofracturacasoacomparar) $totalafinidad += 20;
+        if($faseciclovidacasoactual == $faseciclovidacasoacomparar) $totalafinidad += 9;
+
+        $puntajematerial = 0;
+
+        if($materialcasoactual == $materialcasoacomparar) $puntajematerial = 7;
+        if($submaterialcasoactual == $submaterialcasoacomparar) $puntajematerial = 11;
+        if($materialespcasoactual == $materialespcasoacomparar) $puntajematerial = 15;
+
+        $totalafinidad += $puntajematerial;
+
+        if($elemsuspcasoactual = $elemsuspcasoacomparar) $totalafinidad += 3;
+        if($modifcondcasoactual = $modifcondcasoacomparar) $totalafinidad += 3;
+
+        $casosafines['id'][$k] = $casosfinalizados[$k];
+        $casosafines['afinidad'][$k] = $totalafinidad;
+    //fin for
+    }
+
+    $this->casos_model->insertar_afinidades($casosafines);
+
+    $afinidadesordenadas['idcasos'] = $this->casos_model->devolver_idsafinidadesord();
+    $afinidadesordenadas['afinidades'] = $this->casos_model->devolver_afinidadesord();
+
+    $this->casos_model->eliminar_afinidades();
+
+    //Fin del paso 1 de obtener las afinidades ordenadas, ahora obtenemos el bloque más relevante junto con conclusión general.
+
+    for($i = 0; $i <count($afinidadesordenadas['idcasos']); $i++)
+    {
+      $conclusiongeneral[$i] = $this->casos_model->devolver_conclusiongeneralparasugerencia($afinidadesordenadas['idcasos'][$i]);;
+      $bloquehipotesismasrelevante[$i] = $this->casos_model->devolver_bloquehipotesismasrelevante($afinidadesordenadas['idcasos'][$i]);
+      $concluhipotesismasrelevante[$i] = $this->casos_model->devolver_concluhipotesismasrelevante($afinidadesordenadas['idcasos'][$i],$bloquehipotesismasrelevante[$i]);;
+
+      if ($i==10) $i = count($afinidadesordenadas['idcasos']);
+    }
+
+    $sugerenciashtml = '<h3>SUGERENCIAS DEL SOFTWARE</h3><br/>';
+
+    $pdf->writeHTML($sugerenciashtml, true, false, true, false, '');
+
+    $cuerposugerenciashtml = '';
+
+    for($i = 0; $i <count($afinidadesordenadas['idcasos']); $i++) 
+    {
+        $cuerposugerenciashtml = $cuerposugerenciashtml.'<span style="text-align:justify;"><b>SUGERENCIA NÚMERO '.($i+1).'. Basada en un 
+                                 caso con un '.$afinidadesordenadas['afinidades'][$i].'% de afinidad.</b><br/><br/>
+                                 Bloque más influyente para este caso: ';
+        $bloque = '';
+        if($bloquehipotesismasrelevante[$i]=="conclusionbloque1") $bloque = 'BLOQUE 1 (INTRODUCCIÓN AL CASO)';
+        if($bloquehipotesismasrelevante[$i]=="conclusionbloque2") $bloque = 'BLOQUE 2 (DESCRIPCIÓN DEL COMPONENTE)';
+        if($bloquehipotesismasrelevante[$i]=="conclusionbloque3") $bloque = 'BLOQUE 3 (PROCESOS DE FABRICACIÓN)';
+        if($bloquehipotesismasrelevante[$i]=="conclusionbloque4") $bloque = 'BLOQUE 4 (ENSAYOS)';
+        if($bloquehipotesismasrelevante[$i]=="conclusionbloque5") $bloque = 'BLOQUE 5 (MACROGRAFÍA)';
+        if($bloquehipotesismasrelevante[$i]=="conclusionbloque6") $bloque = 'BLOQUE 6 (MICROGRAFÍA))';
+        if($bloquehipotesismasrelevante[$i]=="conclusionbloque8") $bloque = 'BLOQUE 8 (HIPÓTESIS DEL USUARIO)';
+
+
+        $cuerposugerenciashtml = $cuerposugerenciashtml.$bloque.'. <br/><br/>
+                                 Motivo de su influencia: '.$concluhipotesismasrelevante[$i].'<br/><br/>
+                                 Conclusión del experto que analizó este caso (y posible motivo de la falla del suyo: '.$conclusiongeneral[$i].'
+                                 <br/><br/></span>';
+    }
+
+    $pdf->writeHTML($cuerposugerenciashtml, true, false, true, false, '');
+   
+
     //Conclusión del especialista
 
     $estadodelcaso = $this->casos_model->devolver_estadodelcaso($idcaso);
@@ -709,7 +848,7 @@ class ReportePDF extends CI_Controller {
     {
         $conclusionesp = $this->casos_model->devolver_conclusionespporidcaso($idcaso);
 
-        $conclusionesphtml = '<h3>CONCLUSÓN FINAL DEL ESPECIALISTA</h3>
+        $conclusionesphtml = '<br/><br/><br/><h3>CONCLUSÓN FINAL DEL ESPECIALISTA</h3>
         <span style="text-align:justify;">'.$conclusionesp.'</span>';
 
         $pdf->writeHTML($conclusionesphtml, true, false, true, false, '');
@@ -3638,6 +3777,146 @@ class ReportePDF extends CI_Controller {
         $espacio = '<br/><br/>';
 
         $pdf->writeHTML($espacio, true, false, true, false, '');
+
+
+        //Sugerencias del software
+
+        //Procesos y subprocesos de fabricación (50):
+        $idsprocesoscasoactual = $this->casos_model->devolver_procesosparasugerenciafallo($idcaso);
+        $idssubprocesoscasoactual = $this->casos_model->devolver_subprocesosparasugerenciafallo($idcaso);
+        //Tipo de fractura (20):
+        $tipofracturacasoactual = $this->casos_model->devolver_tipofracturaporidcaso($idcaso);
+        //Fase del ciclo de vida donde falló la pieza (9):
+        $idpiezacasoactual = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+        $faseciclovidacasoactual = $this->casos_model->devolver_faseciclovida($idpiezacasoactual);
+        //Material (7), Submaterial (11) y Material Específico (15):
+        $materialcasoactual = $this->casos_model->devolver_materialparasugerencia($idpiezacasoactual);
+        $submaterialcasoactual = $this->casos_model->devolver_submaterialparasugerencia($idpiezacasoactual);
+        $materialespcasoactual = $this->casos_model->devolver_materialespparasugerencia($idpiezacasoactual);
+        //Elementos en suspensión (3):
+        $elemsuspcasoactual = $this->casos_model->devolver_elemsuspparasugerencia($idpiezacasoactual);
+        //Modificaciones en condiciones de trabajo (3):
+        $modifcondcasoactual = $this->casos_model->devolver_modifcondtrabparasugerencia($idpiezacasoactual);
+
+
+        $totalafinidad = 0;
+
+        $casosafines = array(
+                      "id" => "",
+                      "afinidad" => "",
+                      );
+
+        $casosfinalizados = $this->casos_model->devolver_finalizadosconconclusion();
+
+        for($k = 0; $k <count($casosfinalizados); $k++)
+        {
+            //Procesos y subprocesos de fabricación (50):
+            $idsprocesoscasoacomparar = $this->casos_model->devolver_procesosparasugerenciafallo($casosfinalizados[$k]);
+            $idssubprocesoscasoacomparar = $this->casos_model->devolver_subprocesosparasugerenciafallo($casosfinalizados[$k]);
+            //Tipo de fractura (20):
+            $tipofracturacasoacomparar = $this->casos_model->devolver_tipofracturaporidcaso($casosfinalizados[$k]);
+            //Fase del ciclo de vida donde falló la pieza (9):
+            $idpiezacasoacomparar = $this->piezas_model->devolver_idpiezaporidcaso($casosfinalizados[$k]);
+            $faseciclovidacasoacomparar = $this->casos_model->devolver_faseciclovida($idpiezacasoacomparar);
+            //Material (7), Submaterial (11) y Material Específico (15):
+            $materialcasoacomparar = $this->casos_model->devolver_materialparasugerencia($idpiezacasoacomparar);
+            $submaterialcasoacomparar = $this->casos_model->devolver_submaterialparasugerencia($idpiezacasoacomparar);
+            $materialespcasoacomparar = $this->casos_model->devolver_materialespparasugerencia($idpiezacasoacomparar);
+            //Elementos en suspensión (3):
+            $elemsuspcasoacomparar = $this->casos_model->devolver_elemsuspparasugerencia($idpiezacasoacomparar);
+            //Modificaciones en condiciones de trabajo (3):
+            $modifcondcasoacomparar = $this->casos_model->devolver_modifcondtrabparasugerencia($idpiezacasoacomparar);
+
+
+            $afinidadentreprocesos = 0;
+
+            for($i = 0; $i <count($idsprocesoscasoactual); $i++)
+            {
+                for($j = 0; $j <count($idsprocesoscasoacomparar); $j++)
+                {
+                    if($idsprocesoscasoactual[$i]==$idsprocesoscasoacomparar[$j])
+                    {
+                        if($idssubprocesoscasoactual[$i]==$idssubprocesoscasoacomparar[$j])
+                        {
+                            $afinidadentreprocesos++;
+                            $idsprocesoscasoacomparar[$i] = -1;
+                            $idssubprocesoscasoacomparar[$i] = -1;
+                        }          
+                    } 
+                }
+            }
+
+            $cantidadprocesoscasoactual = count($idsprocesoscasoactual);
+            $porcentajeafinidadprocesos = ($afinidadentreprocesos*50)/$cantidadprocesoscasoactual;
+
+            $totalafinidad = $porcentajeafinidadprocesos;
+
+            if($tipofracturacasoactual == $tipofracturacasoacomparar) $totalafinidad += 20;
+            if($faseciclovidacasoactual == $faseciclovidacasoacomparar) $totalafinidad += 9;
+
+            $puntajematerial = 0;
+
+            if($materialcasoactual == $materialcasoacomparar) $puntajematerial = 7;
+            if($submaterialcasoactual == $submaterialcasoacomparar) $puntajematerial = 11;
+            if($materialespcasoactual == $materialespcasoacomparar) $puntajematerial = 15;
+
+            $totalafinidad += $puntajematerial;
+
+            if($elemsuspcasoactual = $elemsuspcasoacomparar) $totalafinidad += 3;
+            if($modifcondcasoactual = $modifcondcasoacomparar) $totalafinidad += 3;
+
+            $casosafines['id'][$k] = $casosfinalizados[$k];
+            $casosafines['afinidad'][$k] = $totalafinidad;
+        //fin for
+        }
+
+        $this->casos_model->insertar_afinidades($casosafines);
+
+        $afinidadesordenadas['idcasos'] = $this->casos_model->devolver_idsafinidadesord();
+        $afinidadesordenadas['afinidades'] = $this->casos_model->devolver_afinidadesord();
+
+        $this->casos_model->eliminar_afinidades();
+
+        //Fin del paso 1 de obtener las afinidades ordenadas, ahora obtenemos el bloque más relevante junto con conclusión general.
+
+        for($i = 0; $i <count($afinidadesordenadas['idcasos']); $i++)
+        {
+          $conclusiongeneral[$i] = $this->casos_model->devolver_conclusiongeneralparasugerencia($afinidadesordenadas['idcasos'][$i]);;
+          $bloquehipotesismasrelevante[$i] = $this->casos_model->devolver_bloquehipotesismasrelevante($afinidadesordenadas['idcasos'][$i]);
+          $concluhipotesismasrelevante[$i] = $this->casos_model->devolver_concluhipotesismasrelevante($afinidadesordenadas['idcasos'][$i],$bloquehipotesismasrelevante[$i]);;
+
+          if ($i==10) $i = count($afinidadesordenadas['idcasos']);
+        }
+
+        $sugerenciashtml = '<h3>SUGERENCIAS DEL SOFTWARE</h3><br/>';
+
+        $pdf->writeHTML($sugerenciashtml, true, false, true, false, '');
+
+        $cuerposugerenciashtml = '';
+
+        for($i = 0; $i <count($afinidadesordenadas['idcasos']); $i++) 
+        {
+            $cuerposugerenciashtml = $cuerposugerenciashtml.'<span style="text-align:justify;"><b>SUGERENCIA NÚMERO '.($i+1).'. Basada en un 
+                                     caso con un '.$afinidadesordenadas['afinidades'][$i].'% de afinidad.</b><br/><br/>
+                                     Bloque más influyente para este caso: ';
+            $bloque = '';
+            if($bloquehipotesismasrelevante[$i]=="conclusionbloque1") $bloque = 'BLOQUE 1 (INTRODUCCIÓN AL CASO)';
+            if($bloquehipotesismasrelevante[$i]=="conclusionbloque2") $bloque = 'BLOQUE 2 (DESCRIPCIÓN DEL COMPONENTE)';
+            if($bloquehipotesismasrelevante[$i]=="conclusionbloque3") $bloque = 'BLOQUE 3 (PROCESOS DE FABRICACIÓN)';
+            if($bloquehipotesismasrelevante[$i]=="conclusionbloque4") $bloque = 'BLOQUE 4 (ENSAYOS)';
+            if($bloquehipotesismasrelevante[$i]=="conclusionbloque5") $bloque = 'BLOQUE 5 (MACROGRAFÍA)';
+            if($bloquehipotesismasrelevante[$i]=="conclusionbloque6") $bloque = 'BLOQUE 6 (MICROGRAFÍA))';
+            if($bloquehipotesismasrelevante[$i]=="conclusionbloque8") $bloque = 'BLOQUE 8 (HIPÓTESIS DEL USUARIO)';
+
+
+            $cuerposugerenciashtml = $cuerposugerenciashtml.$bloque.'. <br/><br/>
+                                     Motivo de su influencia: '.$concluhipotesismasrelevante[$i].'<br/><br/>
+                                     Conclusión del experto que analizó este caso (y posible motivo de la falla del suyo: '.$conclusiongeneral[$i].'
+                                     <br/><br/></span>';
+        }
+
+        $pdf->writeHTML($cuerposugerenciashtml, true, false, true, false, '');
+   
 
         //Conclusión del especialista
 

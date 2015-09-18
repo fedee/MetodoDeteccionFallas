@@ -537,15 +537,18 @@ class UsuarioComun extends CI_Controller
                   "id" => "",
                   "afinidad" => "",
                   );
-    //Empieza for
 
+    $casosfinalizados = $this->casos_model->devolver_finalizadosconconclusion();
+
+    for($k = 0; $k <count($casosfinalizados); $k++)
+    {
         //Procesos y subprocesos de fabricación (50):
-        $idsprocesoscasoacomparar = $this->casos_model->devolver_procesosparasugerenciafallo(79);
-        $idssubprocesoscasoacomparar = $this->casos_model->devolver_subprocesosparasugerenciafallo(79);
+        $idsprocesoscasoacomparar = $this->casos_model->devolver_procesosparasugerenciafallo($casosfinalizados[$k]);
+        $idssubprocesoscasoacomparar = $this->casos_model->devolver_subprocesosparasugerenciafallo($casosfinalizados[$k]);
         //Tipo de fractura (20):
-        $tipofracturacasoacomparar = $this->casos_model->devolver_tipofracturaporidcaso(79);
+        $tipofracturacasoacomparar = $this->casos_model->devolver_tipofracturaporidcaso($casosfinalizados[$k]);
         //Fase del ciclo de vida donde falló la pieza (9):
-        $idpiezacasoacomparar = $this->piezas_model->devolver_idpiezaporidcaso(79);
+        $idpiezacasoacomparar = $this->piezas_model->devolver_idpiezaporidcaso($casosfinalizados[$k]);
         $faseciclovidacasoacomparar = $this->casos_model->devolver_faseciclovida($idpiezacasoacomparar);
         //Material (7), Submaterial (11) y Material Específico (15):
         $materialcasoacomparar = $this->casos_model->devolver_materialparasugerencia($idpiezacasoacomparar);
@@ -594,35 +597,45 @@ class UsuarioComun extends CI_Controller
         if($elemsuspcasoactual = $elemsuspcasoacomparar) $totalafinidad += 3;
         if($modifcondcasoactual = $modifcondcasoacomparar) $totalafinidad += 3;
 
-        $casosafines['id'][0] = 79;
-        $casosafines['id'][1] = 80;
-        $casosafines['afinidad'][0] = $totalafinidad;
-        $casosafines['afinidad'][1] = "35.1";
+        $casosafines['id'][$k] = $casosfinalizados[$k];
+        $casosafines['afinidad'][$k] = $totalafinidad;
     //fin for
-
-      $datossugerencias = array(
-         'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
-         'id' => $idcaso,
-        );
-
-
-    for($i = 0; $i <count($idsprocesoscasoactual); $i++)
-    {
-      echo "Proceso: ".$idsprocesoscasoactual[$i]." Subtipo: ".$idssubprocesoscasoactual[$i]."<br/>";
     }
 
-    echo "Tipo de fractura: ".$tipofracturacasoactual."<br/>";
-    echo "Fase ciclo vida: ".$faseciclovidacasoactual."<br/>";
-    echo "Material: ".$materialcasoactual." Submaterial: ".$submaterialcasoactual." Material Especifico: ".$materialespcasoactual."<br/>";
-    echo "Elementos en suspension: ".$elemsuspcasoactual."<br/>";
-    echo "Modificaciones en cond de trabajo: ".$modifcondcasoactual."<br/>";
-    echo "Afinidad entre procesos: ".$totalafinidad."<br/>";
-    echo "Caso afin: ".$casosafines['id'][1]." Porc afinidad: ".$casosafines['afinidad'][1]."<br/>";
+    $this->casos_model->insertar_afinidades($casosafines);
 
-    //$this->casos_model->actualizarpaso($idcaso,'12');
-    //$this->load->view('sugerenciasdefallo.html',$datossugerencias);
+    $afinidadesordenadas['idcasos'] = $this->casos_model->devolver_idsafinidadesord();
+    $afinidadesordenadas['afinidades'] = $this->casos_model->devolver_afinidadesord();
+
+    $this->casos_model->eliminar_afinidades();
+
+    //Fin del paso 1 de obtener las afinidades ordenadas, ahora obtenemos el bloque más relevante junto con conclusión general.
+
+    for($i = 0; $i <count($afinidadesordenadas['idcasos']); $i++)
+    {
+      $conclusiongeneral[$i] = $this->casos_model->devolver_conclusiongeneralparasugerencia($afinidadesordenadas['idcasos'][$i]);;
+      $bloquehipotesismasrelevante[$i] = $this->casos_model->devolver_bloquehipotesismasrelevante($afinidadesordenadas['idcasos'][$i]);
+      $concluhipotesismasrelevante[$i] = $this->casos_model->devolver_concluhipotesismasrelevante($afinidadesordenadas['idcasos'][$i],$bloquehipotesismasrelevante[$i]);;
+
+      if ($i==10) $i = count($afinidadesordenadas['idcasos']);
+    }
+
+    $datossugerencias = array(
+       'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+       'id' => $idcaso,
+       'idscasossimilaresconafinidades' => $afinidadesordenadas,
+       'conclusionesgeneralescasossimilares' => $conclusiongeneral,
+       'bloquesmasrelevantescasossimilares' => $bloquehipotesismasrelevante,
+       'conclusionbloquemasrelevantecasossim' => $concluhipotesismasrelevante,
+      );
+
+    $this->casos_model->actualizarpaso($idcaso,'12');
+    $this->load->view('sugerenciasdefallo.html',$datossugerencias);
 
   }
+
+ 
+
 
   public function iraconclusionesgenerales($idcaso)
   {
