@@ -267,6 +267,17 @@ class Casos_model extends CI_Model{
       return $datos;
    }
 
+   public function devolver_idasignado()
+   {
+      $consulta = $this->db->get_where('casos',array('id_usuario'=>$this->session->userdata('id')));
+      $datos = array(); 
+      foreach ($consulta->result() as $row)
+      {
+        $datos[] = $row->id_asignado;
+      }
+      return $datos;
+   }
+
    public function devolver_tituloporid($idcaso)
    {
       $consulta = $this->db->get_where('casos',array('id'=>$idcaso));
@@ -301,6 +312,15 @@ class Casos_model extends CI_Model{
       return $cantidad;
    }
 
+   public function devolver_cantidadcasossinesp()
+   {
+      $this->db->where('id_usuario',$this->session->userdata('id'));
+      $this->db->where('id_asignado =','0');
+      $this->db->from('casos');
+      $cantidad = $this->db->count_all_results();
+      return $cantidad;
+   }
+
    public function devolver_cantidadcasosenmarchaesp()
    {
       $this->db->where('id_asignado',$this->session->userdata('id'));
@@ -311,9 +331,28 @@ class Casos_model extends CI_Model{
       return $cantidad;
    }
 
+   public function devolver_cantidadcasosenmarchauc()
+   {
+      $this->db->where('id_usuario',$this->session->userdata('id'));
+      $this->db->where('estado','0');
+      $this->db->or_where('estado','2');
+      $this->db->from('casos');
+      $cantidad = $this->db->count_all_results();
+      return $cantidad;
+   }
+
    public function devolver_cantidadcasosfinalizadosesp()
    {
       $this->db->like('id_asignado', $this->session->userdata('id'));
+      $this->db->like('estado', '3');
+      $this->db->from('casos');
+      $cantidad = $this->db->count_all_results();
+      return $cantidad;
+   }
+
+   public function devolver_cantidadcasosfinalizadosuc()
+   {
+      $this->db->like('id_usuario', $this->session->userdata('id'));
       $this->db->like('estado', '3');
       $this->db->from('casos');
       $cantidad = $this->db->count_all_results();

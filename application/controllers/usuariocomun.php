@@ -28,6 +28,7 @@ class UsuarioComun extends CI_Controller
          'fecharegistrocaso' => $this->casos_model->devolver_comunfechaasignada(),
          'idcaso' => $this->casos_model->devolver_comunidcasoasignado(),
          'estado' => $this->casos_model->devolver_comunestadocaso(),
+         'id_asignado' => $this->casos_model->devolver_idasignado(),
         );
 
         $this->load->view('miscasosusuariocomun.html',$datosesp);

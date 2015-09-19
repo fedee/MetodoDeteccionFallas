@@ -9,14 +9,13 @@ class Mensajes_model extends CI_Model {
 
    public function num_mensajes() 
    {
-      $idusuario = $this->session->userdata('id');
 
-      $consulta = $this->db->get_where('mensajes',array(
-                                                         'id_paraquien'=>$idusuario,
-                                                         'id_msjpadre'=>'0',
-                                                       ));
+      $idusuario = $this->session->userdata('id'); 
+      $this->db->where("((id_paraquien='".$idusuario."' OR id_dequien='".$idusuario."') AND id_msjpadre='0')", NULL, FALSE);
+      $this->db->from('mensajes');
+      $cantidad = $this->db->count_all_results();
+      return $cantidad;
 
-      return $consulta->num_rows();
    }
 
    public function get_mensajes($per_page) 
@@ -31,8 +30,8 @@ class Mensajes_model extends CI_Model {
         $this->db->select('id_msjpadre');
         $this->db->select('titulo');
         $this->db->select('descripcion');
-        $this->db->where('id_paraquien', $idusuario);
-        $this->db->where('id_msjpadre', '0'); 
+        $this->db->select('leido');
+        $this->db->where("((id_paraquien='".$idusuario."' OR id_dequien='".$idusuario."') AND id_msjpadre='0')", NULL, FALSE);
         $this->db->order_by('fechaenvio', 'desc');
 
    	  $datos = $this->db->get('mensajes',$per_page,$this->uri->segment(3));
@@ -52,6 +51,7 @@ class Mensajes_model extends CI_Model {
         $datos['id_paraquien'] = $row->id_paraquien;
         $datos['titulo'] = $row->titulo;
         $datos['descripcion'] = $row->descripcion;
+        $datos['leido'] = $row->leido;
         $datos['fechaenvio'] = $row->fechaenvio;
       }
       return $datos;
@@ -71,6 +71,7 @@ class Mensajes_model extends CI_Model {
                                         'id_paraquien'=> $idparaquien,
                                         'id_msjpadre' => $idpadre,
                                         'descripcion' => $this->input->post('respuesta',TRUE),
+                                        'leido' => '0',
                                         'fechaenvio' => $fechaactual,
                                         ));
       
@@ -101,6 +102,7 @@ class Mensajes_model extends CI_Model {
    {
       $this->db->select('nombre_dequien');
       $this->db->select('descripcion');
+      $this->db->select('leido');
       $this->db->select('fechaenvio');
       $this->db->where('id_msjpadre', $idpadre); 
       $this->db->order_by('fechaenvio', 'asc');
@@ -127,6 +129,32 @@ class Mensajes_model extends CI_Model {
                                         'id_msjpadre' => '0',
                                         'titulo' => $this->input->post('titulomensaje',TRUE),
                                         'descripcion' => $this->input->post('cuerpomensaje',TRUE),
+                                        'leido' => '0',
+                                        'fechaenvio' => $fechaactual,
+                                        ));
+      
+
+   }
+
+   public function insertar_nuevomensajeaesp($idesp,$idcaso)
+   {
+      $iddequien = $this->session->userdata('id');
+      $nombreusuario = $this->devolver_nombreusuario($iddequien);
+      $apellidousuario = $this->devolver_apellidousuario($iddequien);
+      $nombredequien = $nombreusuario." ".$apellidousuario;
+
+      $idparaquien = $idesp;
+
+      $fechaactual = date('Y-m-d H:i:s');
+      
+      $this->db->insert('mensajes',array(
+                                        'id_dequien'=> $iddequien,
+                                        'nombre_dequien'=> $nombredequien,
+                                        'id_paraquien'=> $idparaquien,
+                                        'id_msjpadre' => '0',
+                                        'titulo' => $this->input->post('titulomensaje',TRUE),
+                                        'descripcion' => $this->input->post('cuerpomensaje',TRUE),
+                                        'leido' => '0',
                                         'fechaenvio' => $fechaactual,
                                         ));
       
@@ -141,6 +169,46 @@ class Mensajes_model extends CI_Model {
       $idu = $row->id_usuario;
 
       return $idu;
+   }
+
+   public function actualizarestadomsj($idmensaje,$estado)
+   {
+      $data = array(
+               'leido' => $estado,
+            );
+
+      $this->db->where('id', $idmensaje);
+      $this->db->update('mensajes', $data); 
+   }
+
+   public function devolver_paraquien($idmensaje)
+   {
+      $consulta = $this->db->get_where('mensajes',array('id'=>$idmensaje));
+      $row = $consulta->row(1);
+
+      $idpq = $row->id_paraquien;
+
+      return $idpq;
+   }
+
+   public function devolver_cantidadrespuestas($idmensaje) 
+   {
+
+      $this->db->where("(id_msjpadre='".$idmensaje."')", NULL, FALSE);
+      $this->db->from('mensajes');
+      $cantidad = $this->db->count_all_results();
+      return $cantidad;
+
+   }
+
+   public function devolver_mensajessinleer()
+   {
+      $this->db->where('id_paraquien',$this->session->userdata('id'));
+      $this->db->where('leido =','0');
+      $this->db->where('id_msjpadre =','0');
+      $this->db->from('mensajes');
+      $cantidad = $this->db->count_all_results();
+      return $cantidad;
    }
 
 

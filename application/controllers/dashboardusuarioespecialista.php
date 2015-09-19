@@ -8,6 +8,7 @@ class DashboardUsuarioEspecialista extends CI_Controller
       parent::__construct();
       $this->very_sesion();
       $this->load->model('casos_model');
+      $this->load->model('mensajes_model');
    }
 
    public function index()
@@ -17,8 +18,9 @@ class DashboardUsuarioEspecialista extends CI_Controller
 
         $datosesp = array(
          'cantidadcasosasignados' => $this->casos_model->devolver_cantidadcasosasignadosesp(),
-         'cantidadcasosenmarcha' => $this->casos_model->devolver_cantidadcasosenmarchaesp(),
+         'cantidadcasosenmarcha' => ($this->casos_model->devolver_cantidadcasosasignadosesp()-$this->casos_model->devolver_cantidadcasosfinalizadosesp()),
          'cantidadcasosfinalizados' => $this->casos_model->devolver_cantidadcasosfinalizadosesp(),
+         'mensajessinleer' => $this->mensajes_model->devolver_mensajessinleer(),
         );
 
         $this->load->view('indexusuarioespecialista.html',$datosesp);
