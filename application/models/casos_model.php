@@ -1249,5 +1249,57 @@ class Casos_model extends CI_Model{
       return $conc;
    }
 
+   public function devolver_materialespecificoporidpieza($idpieza)
+   {
+      $consulta = $this->db->get_where('pieza',array('id'=>$idpieza));
+      $row = $consulta->row(1);
+
+      $esp = $row->especifico;
+
+      return $esp;
+   }
+
+   public function devolver_limiteelasticoporidesp($materialespecifico)
+   {
+      $consulta = $this->db->get_where('material_especifico',array('id'=>$materialespecifico));
+      $row = $consulta->row(1);
+
+      $le = $row->modulo_elastico;
+
+      return $le;
+   }
+
+   public function insertar_fallatipica($idcaso,$falla,$sugerencia)
+   {
+       $this->db->insert('fallastipicas',array(
+                                         'id_caso'=>$idcaso,
+                                         'falla'=>$falla,
+                                         'sugerencia'=>$sugerencia,
+                                         ));
+   }
+
+
+   public function devolver_fallaporidcaso($idcaso)
+   {
+      $consulta = $this->db->get_where('fallastipicas',array('id_caso'=>$idcaso));
+      $row = $consulta->row(1);
+
+      $fa = $row->falla;
+
+      return $fa;
+   }
+
+   public function devolver_sugerenciaporidcaso($idcaso)
+   {
+      $consulta = $this->db->get_where('fallastipicas',array('id_caso'=>$idcaso));
+      $row = $consulta->row(1);
+
+      $sug = $row->sugerencia;
+
+      return $sug;
+   }
+
+
+
 }
 ?>

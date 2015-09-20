@@ -302,19 +302,47 @@ class UsuarioComun extends CI_Controller
       
   }
 
+  public function iramca($idcaso)
+  {
+
+      $this->load->helper('url');
+
+      $datoscaso = array(
+           'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
+           'id' => $idcaso,
+          );
+      $this->load->view('modulocalculoanalitico.html',$datoscaso);
+      
+  }
+
   public function iraensayos($idcaso)
   {
     if($this->input->post('submit_iraensayos'))
     {
         $this->load->helper('url');
+        
+        $idpieza = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
 
-        $datosensayo = array(
-           'titulo' => $this->casos_model->devolver_tituloporid($idcaso),
-           'id' => $idcaso,
-          );
+        $materialespecifico = $this->casos_model->devolver_materialespecificoporidpieza($idpieza);
+        $limiteelasticomaterial = $this->casos_model->devolver_limiteelasticoporidesp($materialespecifico);
 
-        $this->casos_model->actualizarpaso($idcaso,'6');
-        $this->load->view('ensayos.html',$datosensayo);
+        if($this->input->post('vonmises',TRUE)>$limiteelasticomaterial) 
+        {
+            echo"<script>javascript:alert('Diseno inadecuado, el material no soporta las solicitaciones a las cuales se encuentra sometido. Sugerencia: Revise detalladamente el diseno del componente, se recomienda realizar modificaciones en la geometria y/o en el material seleccionado'); window.location = '".site_url()."/usuariocomun/ver_casossubidos/'</script>";
+            
+            $falla = "Diseño inadecuado, el material no soporta las solicitaciones a las cuales se encuentra sometido";
+            $sugerencia = "Revise detalladamente el diseño del componente, se recomienda realizar modificaciones en la geometria y/o en el material seleccionado";
+
+            $this->casos_model->insertar_fallatipica($idcaso,$falla,$sugerencia);
+            $this->casos_model->cambiarestadocaso($idcaso,'4');
+            
+        }
+        else
+        {
+            echo"<script>javascript:alert('Diseno correcto, el material soporta las solicitaciones a las cuales se encuentra sometido. Continue trabajando en CAFAP.'); window.location = '".site_url()."/usuariocomun/iraensayosdesdeedicion/".$idcaso."'</script>";
+            $this->casos_model->actualizarpaso($idcaso,'6');
+        }
+        
 
     }
 
@@ -375,6 +403,49 @@ class UsuarioComun extends CI_Controller
           $this->load->view('edicionusuario.html',$caso);
       
       }
+
+  }
+
+
+  public function calculoanalitico($idcaso)
+  {
+    if($this->input->post('calcularmca'))
+    {
+        $this->load->helper('url');
+        
+        $idpieza = $this->piezas_model->devolver_idpiezaporidcaso($idcaso);
+
+        $materialespecifico = $this->casos_model->devolver_materialespecificoporidpieza($idpieza);
+        $sy = $this->casos_model->devolver_limiteelasticoporidesp($materialespecifico);
+        $sys = 0.5*$sy;
+
+        if($this->input->post('casosimplificado',TRUE)=='0') 
+        {
+            $de = (float)$this->input->post('diametroexterior',TRUE);
+            $mt = (float)$this->input->post('momentotorsor',TRUE);
+
+            //TCG=(1600*Mt)/(Pi*0.1*(De^3))
+            $tcg = (1600*$mt)/(3.1415*((0.1*$de)*(0.1*$de)*(0.1*$de)));
+
+            if($tcg>$sys) 
+            {
+                echo"<script>javascript:alert('Falla de diseno, el material no soporta la solicitacion actuante. Sugerencia: Se recomienda una revision del diseno. Pruebe incrementando el Diametro.'); window.location = '".site_url()."/usuariocomun/ver_casossubidos/'</script>";
+            
+                $falla = "Falla de diseño, el material no soporta la solicitación actuante";
+                $sugerencia = "Se recomienda una revisión del diseño. Pruebe incrementando el Diámetro";
+
+                $this->casos_model->insertar_fallatipica($idcaso,$falla,$sugerencia);
+                $this->casos_model->cambiarestadocaso($idcaso,'4');
+            }
+            else
+            {
+                echo"<script>javascript:alert('Diseno correcto. Continue trabajando en CAFAP.'); window.location = '".site_url()."/usuariocomun/iraensayosdesdeedicion/".$idcaso."'</script>";
+                $this->casos_model->actualizarpaso($idcaso,'6');
+            }
+        }
+        
+        
+    }
 
   }
 
@@ -579,8 +650,10 @@ class UsuarioComun extends CI_Controller
             }
         }
 
+        $cantidadprocesoscasoacomparar = count($idsprocesoscasoacomparar);
+
         $cantidadprocesoscasoactual = count($idsprocesoscasoactual);
-        $porcentajeafinidadprocesos = ($afinidadentreprocesos*50)/$cantidadprocesoscasoactual;
+        $porcentajeafinidadprocesos = ($afinidadentreprocesos*50)/(($cantidadprocesoscasoactual+$cantidadprocesoscasoacomparar)/2);
 
         $totalafinidad = $porcentajeafinidadprocesos;
 

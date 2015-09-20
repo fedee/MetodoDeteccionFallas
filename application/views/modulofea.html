@@ -145,6 +145,81 @@
                                                </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <br/>
+                                                <strong>A continuación coloque en los casilleros corespondientes los Resultados obtenidos de un Software comercial de Elementos Finitos tras realizar un Análisis de su componente:</strong>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <h5><strong>Máxima Tensión de von Mises en el modelo (VMS):</strong></h5>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input type="text" name="vonmises" class="form-control" placeholder="Valor">
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <h5><strong>Unidad de medida:</strong></h5>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <select name="umedida" id="umedida" class="form-control">
+                                                  <option value=<?php echo '0'; ?>>Kg/cm^2</option>
+                                                  <option value=<?php echo '1'; ?>>N/mm^2</option>
+                                                  <option value=<?php echo '2'; ?>>PSI</option>
+                                                  <option value=<?php echo '3'; ?>>KSI</option>
+                                                  <option value=<?php echo '4'; ?>>MPA</option>
+                                                </select>
+                                            </div>
+                                      </div>
+                                      <br/>
+                                      <div class="row">
+                                            <div class="col-lg-4">
+                                                <h5><strong>Máxima Deformación Unitaria en el modelo (Ɛ):</strong></h5>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input type="text" name="defunit" class="form-control" placeholder="Valor">
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <h5><strong>Unidad de medida:</strong></h5>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <select name="umedida" id="umedida" class="form-control">
+                                                  <option value=<?php echo '0'; ?>>mm/mm</option>
+                                                  <option value=<?php echo '1'; ?>>In/In</option>
+                                                </select>
+                                            </div>
+                                      </div>
+                                      <br/>
+                                      <div class="row">
+                                            <div class="col-lg-4">
+                                                <h5><strong>Máximo Desplazamiento en el modelo (δ):</strong></h5>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <input type="text" name="maxdesp" class="form-control" placeholder="Valor">
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <h5><strong>Unidad de medida:</strong></h5>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <select name="umedida" id="umedida" class="form-control">
+                                                  <option value=<?php echo '0'; ?>>mm</option>
+                                                  <option value=<?php echo '1'; ?>>cm</option>
+                                                  <option value=<?php echo '2'; ?>>In</option>
+                                                  <option value=<?php echo '3'; ?>>Ft</option>
+                                                </select>
+                                            </div>
+                                      </div>
+                                      <div class="row">
+                                            <div class="col-lg-12">
+                                                <br/><br/>
+                                                <strong>En caso de que el componente analizado tenga una geometría y forma de carga relativamente simple, puede omitir este paso en primera instancia y continuar al paso siguiente 
+
+                                                <a href="<?= site_url().'/usuariocomun/iramca/'.$id?>"><span class="label label-success"> CLICKEANDO AQUÍ</span></a>
+
+                                                en el cual se puede hacer la Validación Mecánica del Diseño a través de Modelos Simplificados que se resuelven con las Ecuaciones de Resistencia de Materiales clásicas.</strong>
+                                            </div>
+                                      </div>
                                     </li>  
                                     </br></br>
                                     <div class="row">

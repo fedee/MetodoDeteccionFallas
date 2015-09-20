@@ -54,7 +54,7 @@ class Material extends CI_Controller {
          echo "<thead>
                   <tr>
                      <th>Densidad</th>
-                     <th>Modulo elástico</th>
+                     <th>Límite elástico</th>
                      <th>Elongación porcentual</th>
                      <th>Tenacidad</th>
                      <th>Coeficiente de Poisson</th>

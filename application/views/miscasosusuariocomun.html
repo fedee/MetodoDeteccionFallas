@@ -153,6 +153,13 @@
                                                                     <a href="<?= site_url().'/mensajes/enviarmensaje_aespecialista/'.$id_asignado[$i].'/'.$idcaso[$i]?>"><span class="label label-default">  Enviar consulta a especialista</span></a>
                                                                 <?php endif;?>
                                                              <?php endif;?>  
+                                                             <?php if($estado[$i]==4):?>
+                                                                <a href="<?= site_url().'/reportepdf/verreporteconfallatipica/'.$idcaso[$i]?>"><span class="label label-warning">Ver reporte con falla típica</span></a>
+                                                                <?php if($id_asignado[$i]!=0):?>
+                                                                    <br/>
+                                                                    <a href="<?= site_url().'/mensajes/enviarmensaje_aespecialista/'.$id_asignado[$i].'/'.$idcaso[$i]?>"><span class="label label-default">  Enviar consulta a especialista</span></a>
+                                                                <?php endif;?>
+                                                             <?php endif;?>
                                                          </td>
                                                     </tr>
                                                 <?php } ?>
