@@ -443,6 +443,109 @@ class UsuarioComun extends CI_Controller
                 $this->casos_model->actualizarpaso($idcaso,'6');
             }
         }
+
+        if($this->input->post('casosimplificado',TRUE)=='1') 
+        {
+            $de = (float)$this->input->post('diametroexterior',TRUE);
+            $di = (float)$this->input->post('diametrointerior',TRUE);
+            $mt = (float)$this->input->post('momentotorsor',TRUE);
+
+            //TCG=((3200*Mt*(De/2))/((Pi*(((0.1*De)^4)-((0.1*di)^4))/4)
+            $tcg = (3200*$mt*(($de*0.1)/2))/((3.1415*(((0.1*$de)*(0.1*$de)*(0.1*$de)*(0.1*$de))-((0.1*$di)*(0.1*$di)*(0.1*$di)*(0.1*$di))))/4);
+
+            if($tcg>$sys) 
+            {
+                echo"<script>javascript:alert('Falla de diseno, el material no soporta la solicitacion actuante. Sugerencia: Se recomienda una revision del diseno. Pruebe incrementando el Diametro.'); window.location = '".site_url()."/usuariocomun/ver_casossubidos/'</script>";
+            
+                $falla = "Falla de diseño, el material no soporta la solicitación actuante";
+                $sugerencia = "Se recomienda una revisión del diseño. Pruebe incrementando el Diámetro";
+
+                $this->casos_model->insertar_fallatipica($idcaso,$falla,$sugerencia);
+                $this->casos_model->cambiarestadocaso($idcaso,'4');
+            }
+            else
+            {
+                echo"<script>javascript:alert('Diseno correcto. Continue trabajando en CAFAP.'); window.location = '".site_url()."/usuariocomun/iraensayosdesdeedicion/".$idcaso."'</script>";
+                $this->casos_model->actualizarpaso($idcaso,'6');
+            }
+        }
+
+        if($this->input->post('casosimplificado',TRUE)=='2') 
+        {
+            $a = (float)$this->input->post('areasec',TRUE);
+            $f = (float)$this->input->post('fuerzanormalc',TRUE);
+
+            //TNC= F/A
+            $tnc = $f/$a;
+
+            if($tnc>$sy) 
+            {
+                echo"<script>javascript:alert('Falla de diseno, el material no soporta la solicitacion actuante. Sugerencia: Se recomienda una revision del diseno. Pruebe incrementando el Area de Seccion.'); window.location = '".site_url()."/usuariocomun/ver_casossubidos/'</script>";
+            
+                $falla = "Falla de diseño, el material no soporta la solicitación actuante";
+                $sugerencia = "Se recomienda una revisión del diseño. Pruebe incrementando el Área de Sección";
+
+                $this->casos_model->insertar_fallatipica($idcaso,$falla,$sugerencia);
+                $this->casos_model->cambiarestadocaso($idcaso,'4');
+            }
+            else
+            {
+                echo"<script>javascript:alert('Diseno correcto. Continue trabajando en CAFAP.'); window.location = '".site_url()."/usuariocomun/iraensayosdesdeedicion/".$idcaso."'</script>";
+                $this->casos_model->actualizarpaso($idcaso,'6');
+            }
+        }
+
+        if($this->input->post('casosimplificado',TRUE)=='3') 
+        {
+            $a = (float)$this->input->post('areasec',TRUE);
+            $f = (float)$this->input->post('fuerzanormalt',TRUE);
+
+            //TNT= F/A
+            $tnt = $f/$a;
+
+            if($tnt>$sy) 
+            {
+                echo"<script>javascript:alert('Falla de diseno, el material no soporta la solicitacion actuante. Sugerencia: Se recomienda una revision del diseno. Pruebe incrementando el Area de Seccion.'); window.location = '".site_url()."/usuariocomun/ver_casossubidos/'</script>";
+            
+                $falla = "Falla de diseño, el material no soporta la solicitación actuante";
+                $sugerencia = "Se recomienda una revisión del diseño. Pruebe incrementando el Área de Sección";
+
+                $this->casos_model->insertar_fallatipica($idcaso,$falla,$sugerencia);
+                $this->casos_model->cambiarestadocaso($idcaso,'4');
+            }
+            else
+            {
+                echo"<script>javascript:alert('Diseno correcto. Continue trabajando en CAFAP.'); window.location = '".site_url()."/usuariocomun/iraensayosdesdeedicion/".$idcaso."'</script>";
+                $this->casos_model->actualizarpaso($idcaso,'6');
+            }
+        }
+
+        if($this->input->post('casosimplificado',TRUE)=='4') 
+        {
+            $p = (float)$this->input->post('cargapuntual',TRUE);
+            $l = (float)$this->input->post('luzdelaviga',TRUE);
+            $y = (float)$this->input->post('alturamaxst',TRUE);
+            $i = (float)$this->input->post('inerciaviga',TRUE);
+
+            //TNF= (P*((L*100)/2)*(Y/2))/I
+            $tnf = ($p*(($l*100)/2)*($y/2))/$i;
+
+            if($tnf>$sy) 
+            {
+                echo"<script>javascript:alert('Falla de diseno, el material no soporta la solicitacion actuante. Sugerencia: Se recomienda una revision del diseno. Pruebe incrementando la Inercia I de Seccion.'); window.location = '".site_url()."/usuariocomun/ver_casossubidos/'</script>";
+            
+                $falla = "Falla de diseño, el material no soporta la solicitación actuante";
+                $sugerencia = "Se recomienda una revisión del diseño. Pruebe incrementando la Inercia I de Sección";
+
+                $this->casos_model->insertar_fallatipica($idcaso,$falla,$sugerencia);
+                $this->casos_model->cambiarestadocaso($idcaso,'4');
+            }
+            else
+            {
+                echo"<script>javascript:alert('Diseno correcto. Continue trabajando en CAFAP.'); window.location = '".site_url()."/usuariocomun/iraensayosdesdeedicion/".$idcaso."'</script>";
+                $this->casos_model->actualizarpaso($idcaso,'6');
+            }
+        }
         
         
     }

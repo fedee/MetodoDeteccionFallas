@@ -192,6 +192,44 @@
 
     });
 
+    $(document).on('change', '#apoyo', function(e){
+
+        var apoyo = $('#apoyo').val();
+        var carga = $('#carga').val();
+
+        var params = {id_apoyo: apoyo, id_carga: carga}
+
+        $.ajax({
+          type: "POST",
+          url: '/cafap/index.php/casos/getcontenidoviga',
+          data: params,
+          success: function(data)
+          {
+            $('#viga').html(data);
+          }
+        });
+
+    });
+
+    $(document).on('change', '#carga', function(e){
+
+        var apoyo = $('#apoyo').val();
+        var carga = $('#carga').val();
+
+        var params = {id_apoyo: apoyo, id_carga: carga}
+
+        $.ajax({
+          type: "POST",
+          url: '/cafap/index.php/casos/getcontenidoviga',
+          data: params,
+          success: function(data)
+          {
+            $('#viga').html(data);
+          }
+        });
+
+    });
+
 
     </script>  
 
